@@ -6,6 +6,16 @@ from hexbytes import HexBytes
 
 
 def get_topics(abi):
+    """Generate encoded event topics from a contract ABI.
+
+    Arguments:
+    abi -- A contract ABI formatted as a list
+
+    Returns a dictionary in the following format:
+
+    {'Event Name': "encoded bytes32 topic as a string"}
+
+    """
     return dict((
         i['name'], "0x" + keccak("{}({})".format(
             i['name'],
@@ -15,6 +25,26 @@ def get_topics(abi):
 
 
 def decode_event(event, abi):
+    """Decode a transaction event.
+
+    Arguments:
+    event -- A single event from a transaction log.
+    abi -- The contract event ABI. You can supply the specific
+           event as a dict, or the entire contract ABI as a list
+           that will be processed with get_topics()
+
+    Returns a dictionary in the following format:
+
+    {
+        'name':"Event Name",
+        'data':[{
+            'name': "name of variable",
+            'type': "data type",
+            'value': "decoded value"
+        }, ...]
+    }
+
+    """
     if type(abi) is list:
         topics = get_topics(abi).items()
         topic = next(k for k, v in topics if v == event['topics'][0])
