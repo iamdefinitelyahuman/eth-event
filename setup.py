@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
   name = 'eth_event',
-  packages = ['eth_event'],
+  packages = find_packages(),
   version = '0.1',
   license = 'MIT',
   description = 'Ethereum event decoder and topic generator',
