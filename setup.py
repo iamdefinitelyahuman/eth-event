@@ -5,15 +5,15 @@ from setuptools import setup, find_packages
 setup(
   name = 'eth_event',
   packages = find_packages(),
-  version = '0.1',
+  version = '0.1.1',
   license = 'MIT',
   description = 'Ethereum event decoder and topic generator',
   author = 'Benjamin Hauser',
   author_email = 'ben.hauser@hyperlink.capital',
   url = 'https://github.com/iamdefinitelyahuman/eth-event',
-  download_url = 'https://github.com/iamdefinitelyahuman/eth-event/archive/0.1.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/iamdefinitelyahuman/eth-event/archive/0.1.1.tar.gz',
   keywords = ['ethereum'],
-  install_requires=[            # I get to this in a second
+  install_requires=[
           'eth-abi',
           'eth-hash',
           'hexbytes'
