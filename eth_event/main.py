@@ -93,3 +93,66 @@ def decode_event(event, abi):
             'value': value
         })
     return result
+
+
+def decode_logs(logs, abi):
+    """Decode a transaction event log.
+
+    Arguments:
+    logs -- A log of events from a transaction receipt.
+    abi -- The contract ABI, as a regular ABI or a dict
+           from get_event_abi()
+
+    Returns a list of event dictionaries.
+
+    """
+    if type(abi) is list:
+        abi = get_event_abi(abi)
+    return [decode_event(i, abi[HexBytes(i.topics[0]).hex()]) for i in logs]
+
+
+def decode_trace(trace, abi):
+    """Decode transaction events from a debug_traceTransaction
+    structLog. Useful when you require the events for a transaction
+    that reverted.
+
+    Arguments:
+    trace -- The complete result from a debug_traceTransaction RPC call
+    abi -- The contract ABI, as a regular ABI or a dict
+           from get_event_abi()
+
+    Returns a list of event dictionaries.
+
+    """
+    if type(abi) is list:
+        abi = get_event_abi(abi)
+    trace = [i for i in trace['result']['structLogs'] if "LOG" in i['op']]
+    events = []
+    for log in trace:
+        inputs = abi["0x"+log['stack'][-3]]['inputs']
+        stack_idx = -4
+        mem_idx = (int(log['stack'][-1], 16) // 32)
+        result = {'name': abi["0x"+log['stack'][-3]]['name'], 'data': []}
+        for i in inputs:
+            if i['indexed']:
+                value = decode_single(
+                    i['type'],
+                    HexBytes(log['stack'][stack_idx])
+                )
+                stack_idx -= 1
+            else:
+                value = decode_single(
+                    i['type'],
+                    HexBytes(log['memory'][mem_idx])
+                )
+                mem_idx += 1
+            if type(value) is bytes:
+                value = "0x" + value.hex()
+            result['data'].append({
+                'name': i['name'],
+                'type': i['type'],
+                'value': value
+            })
+        events.append(result)
+    return events
+
