@@ -129,23 +129,16 @@ def decode_trace(trace, abi):
     trace = [i for i in trace['result']['structLogs'] if "LOG" in i['op']]
     events = []
     for log in trace:
-        inputs = abi["0x"+log['stack'][-3]]['inputs']
-        stack_idx = -4
-        mem_idx = (int(log['stack'][-1], 16) // 32)
-        result = {'name': abi["0x"+log['stack'][-3]]['name'], 'data': []}
+        name = "0x"+log['stack'][-3]
+        inputs = abi[name]['inputs']
+        memory = log['memory'][:(int(log['stack'][-1], 16) // 32)-1:-1]
+        stack = log['stack'][:-3]
+        result = {'name': abi[name]['name'], 'data': []}
         for i in inputs:
-            if i['indexed']:
-                value = decode_single(
-                    i['type'],
-                    HexBytes(log['stack'][stack_idx])
-                )
-                stack_idx -= 1
-            else:
-                value = decode_single(
-                    i['type'],
-                    HexBytes(log['memory'][mem_idx])
-                )
-                mem_idx += 1
+            value = decode_single(
+                i['type'],
+                HexBytes(stack.pop() if i['indexed'] else memory.pop())
+            )
             if type(value) is bytes:
                 value = "0x" + value.hex()
             result['data'].append({
