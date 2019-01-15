@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from eth_abi import decode_abi, decode_single
+from eth_abi.exceptions import InsufficientDataBytes
 from eth_hash.auto import keccak
 from hexbytes import HexBytes
 
@@ -54,6 +55,9 @@ def decode_event(event, abi):
            event as a dict generated from get_event_abi() or
            the entire contract ABI.
 
+    Indexed arrays cannot be decoded and so the returned value will still
+    be encoded.
+    
     Returns a dictionary in the following format:
 
     {
@@ -61,7 +65,8 @@ def decode_event(event, abi):
         'data':[{
             'name': "name of variable",
             'type': "data type",
-            'value': "decoded value"
+            'value': "decoded value",
+            'decoded': True/False
         }, ...]
     }
 
@@ -71,28 +76,11 @@ def decode_event(event, abi):
         if type(key) is HexBytes:
             key = key.hex()
         abi = get_event_abi(abi)[key]
-    result = {'name': abi['name'], 'data': []}
-    types = [
-        i['type'] if i['type'] != "bytes" else "bytes[]"
-        for i in abi['inputs'] if not i['indexed']
-    ]
-    if types and event['data'] == "0x":
-        event['data'] += "0" * (len(types)*64)
-    decoded = list(decode_abi(types, HexBytes(event['data'])))[::-1]
-    topics = event['topics'][:0:-1]
-    for i in abi['inputs']:
-        if i['indexed']:
-            value = decode_single(i['type'], HexBytes(topics.pop()))
-        else:
-            value = decoded.pop()
-        if type(value) is bytes:
-            value = "0x" + value.hex()
-        result['data'].append({
-            'name': i['name'],
-            'type': i['type'],
-            'value': value
-        })
-    return result
+    
+    return {
+        'name':abi['name'],
+        'data':_decode(abi['inputs'], event['topics'][1:], event['data'])
+    }
 
 
 def decode_logs(logs, abi):
@@ -117,7 +105,7 @@ def decode_trace(trace, abi):
     that reverted.
 
     Arguments:
-    trace -- The complete result from a debug_traceTransaction RPC call
+    trace -- structLog list from a debug_traceTransaction RPC call
     abi -- The contract ABI, as a regular ABI or a dict
            from get_event_abi()
 
@@ -126,26 +114,45 @@ def decode_trace(trace, abi):
     """
     if type(abi) is list:
         abi = get_event_abi(abi)
-    trace = [i for i in trace['result']['structLogs'] if "LOG" in i['op']]
+    trace = [i for i in trace if "LOG" in i['op']]
     events = []
     for log in trace:
-        name = "0x"+log['stack'][-3]
-        inputs = abi[name]['inputs']
-        memory = log['memory'][:(int(log['stack'][-1], 16) // 32)-1:-1]
-        stack = log['stack'][:-3]
-        result = {'name': abi[name]['name'], 'data': []}
-        for i in inputs:
-            value = decode_single(
-                i['type'],
-                HexBytes(stack.pop() if i['indexed'] else memory.pop())
-            )
-            if type(value) is bytes:
-                value = "0x" + value.hex()
-            result['data'].append({
-                'name': i['name'],
-                'type': i['type'],
-                'value': value
-            })
+        topic = "0x"+log['stack'][-3]
+        offset = int(log['stack'][-1], 16) * 2
+        length = int(log['stack'][-1], 16) * 2
+        data = "".join(log['memory'])[offset:offset+length]
+        result = {
+            'name': abi[topic]['name'],
+            'data': _decode(abi[topic]['inputs'], log['stack'][-4::-1], data)
+        }
         events.append(result)
     return events
 
+
+def _decode(inputs, topics, data):
+    types = [
+        i['type'] if i['type'] != "bytes" else "bytes[]"
+        for i in inputs if not i['indexed']
+    ]
+    if types and event['data'] == "0x":
+        event['data'] += "0" * (len(types)*64)
+    decoded = list(decode_abi(types, HexBytes(data)))[::-1]
+    topics = topics[::-1]
+    result = []
+    for i in inputs:
+        result.append({'name': i['name'], 'type': i['type']})
+        if i['indexed']:
+            value = HexBytes(topics.pop())
+            try:
+                value = decode_single(i['type'], HexBytes(value))
+            except (InsufficientDataBytes, OverflowError):
+                result[-1].update({'value': value.hex(), 'decoded': False}) 
+                continue
+        else:
+            value = decoded.pop()
+            if i['type'] == "string":
+                value = HexBytes(value).decode('utf-8')
+        if type(value) is HexBytes:
+            value = value.hex()
+        result[-1].update({'value': value, 'decoded': True})
+    return result
