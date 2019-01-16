@@ -6,6 +6,10 @@ from eth_hash.auto import keccak
 from hexbytes import HexBytes
 
 
+class ABIError(Exception): pass
+class EventError(Exception): pass
+class StructLogError(Exception): pass
+
 def _topic(name, inputs):
     return "0x" + keccak(
         "{}({})".format(name, ",".join(i['type'] for i in inputs)).encode()
@@ -23,9 +27,12 @@ def get_topics(abi):
     {'Event Name': "encoded bytes32 topic as a string"}
 
     """
-    return dict((
-        i['name'], _topic(i['name'], i['inputs'])
-    ) for i in abi if i['type'] == "event" and not i['anonymous'])
+    try:
+        return dict((
+            i['name'], _topic(i['name'], i['inputs'])
+        ) for i in abi if i['type'] == "event" and not i['anonymous'])
+    except (KeyError, TypeError):
+        raise ABIError("Invalid ABI")
 
 
 def get_event_abi(abi):
@@ -39,12 +46,14 @@ def get_event_abi(abi):
     {'encoded bytes32 topic': {'name':"Event Name", 'inputs':[abi inputs]}}
 
     """
-    events = [i for i in abi if i['type']=="event" and not i['anonymous']]
-    return dict((
-        _topic(i['name'], i['inputs']),
-        {'name': i['name'], 'inputs': i['inputs']}
-    ) for i in events)
-
+    try:
+        events = [i for i in abi if i['type']=="event" and not i['anonymous']]
+        return dict((
+            _topic(i['name'], i['inputs']),
+            {'name': i['name'], 'inputs': i['inputs']}
+        ) for i in events)
+    except (KeyError, TypeError):
+        raise ABIError("Invalid ABI")
 
 def decode_event(event, abi):
     """Decode a transaction event.
@@ -72,15 +81,22 @@ def decode_event(event, abi):
 
     """
     if type(abi) is list:
-        key = event['topics'][0]
+        try:
+            key = event['topics'][0]
+        except IndexError:
+            raise EventError("Cannot decode anonymous event")
+        except (KeyError, TypeError):
+            raise EventError("Invalid event")
         if type(key) is HexBytes:
             key = key.hex()
         abi = get_event_abi(abi)[key]
-    
-    return {
-        'name':abi['name'],
-        'data':_decode(abi['inputs'], event['topics'][1:], event['data'])
-    }
+    try:
+        return {
+            'name':abi['name'],
+            'data':_decode(abi['inputs'], event['topics'][1:], event['data'])
+        }
+    except (KeyError, TypeError):
+        raise EventError("Invalid event")
 
 
 def decode_logs(logs, abi):
@@ -114,13 +130,24 @@ def decode_trace(trace, abi):
     """
     if type(abi) is list:
         abi = get_event_abi(abi)
-    trace = [i for i in trace if "LOG" in i['op']]
+    try:
+        trace = [i for i in trace if "LOG" in i['op']]
+    except (IndexError, KeyError, TypeError):
+        raise StructLogError("Invalid StructLog")
     events = []
     for log in trace:
-        topic = "0x"+log['stack'][-3]
-        offset = int(log['stack'][-1], 16) * 2
-        length = int(log['stack'][-1], 16) * 2
-        data = "".join(log['memory'])[offset:offset+length]
+        try:
+            topic = "0x"+log['stack'][-3]
+            offset = int(log['stack'][-1], 16) * 2
+            length = int(log['stack'][-1], 16) * 2
+        except KeyError:
+            raise StructLogError("StructLog has no stack")
+        except (IndexError, TypeError):
+            raise StructLogError("Malformed stack")
+        try:
+            data = "".join(log['memory'])[offset:offset+length]
+        except (KeyError, TypeError):
+            raise StructLogError("Malformed memory")
         result = {
             'name': abi[topic]['name'],
             'data': _decode(abi[topic]['inputs'], log['stack'][-4::-1], data)
@@ -130,19 +157,30 @@ def decode_trace(trace, abi):
 
 
 def _decode(inputs, topics, data):
-    types = [
-        i['type'] if i['type'] != "bytes" else "bytes[]"
-        for i in inputs if not i['indexed']
-    ]
-    if types and event['data'] == "0x":
-        event['data'] += "0" * (len(types)*64)
-    decoded = list(decode_abi(types, HexBytes(data)))[::-1]
+    try:
+        types = [
+            i['type'] if i['type'] != "bytes" else "bytes[]"
+            for i in inputs if not i['indexed']
+        ]
+    except (KeyError, TypeError):
+        raise ABIError("Invalid ABI")
+    if types and data == "0x":
+        data += "0" * (len(types)*64)
+    try:
+        decoded = list(decode_abi(types, HexBytes(data)))[::-1]
+    except InsufficientDataBytes:
+        raise EventError("Insufficient event data")
+    except OverflowError:
+        raise EventError("Cannot decode event due to overflow error")
     topics = topics[::-1]
     result = []
     for i in inputs:
         result.append({'name': i['name'], 'type': i['type']})
         if i['indexed']:
-            value = HexBytes(topics.pop())
+            try:
+                value = HexBytes(topics.pop())
+            except IndexError:
+                raise EventError("Insufficient event data")
             try:
                 value = decode_single(i['type'], HexBytes(value))
             except (InsufficientDataBytes, OverflowError):
