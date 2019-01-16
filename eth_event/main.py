@@ -190,7 +190,9 @@ def _decode(inputs, topics, data):
             value = decoded.pop()
             if i['type'] == "string":
                 value = HexBytes(value).decode('utf-8')
-        if type(value) is HexBytes:
+        if type(value) is bytes:
+            value = "0x" + value.hex()
+        elif type(value) is HexBytes:
             value = value.hex()
         result[-1].update({'value': value, 'decoded': True})
     return result
