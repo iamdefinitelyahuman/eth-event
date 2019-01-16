@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 setup(
   name = 'eth_event',
   packages = find_packages(),
-  version = '0.1.2',
+  version = '0.1.3',
   license = 'MIT',
   description = 'Ethereum event decoder and topic generator',
   long_description =  long_description,
@@ -16,7 +16,7 @@ setup(
   author = 'Benjamin Hauser',
   author_email = 'ben.hauser@hyperlink.capital',
   url = 'https://github.com/iamdefinitelyahuman/eth-event',
-  download_url = 'https://github.com/iamdefinitelyahuman/eth-event/archive/0.1.2.tar.gz',
+  download_url = 'https://github.com/iamdefinitelyahuman/eth-event/archive/0.1.3.tar.gz',
   keywords = ['ethereum'],
   install_requires=[
           'eth-abi',
