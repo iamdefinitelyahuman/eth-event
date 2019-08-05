@@ -6,9 +6,17 @@ from eth_hash.auto import keccak
 from hexbytes import HexBytes
 
 
-class ABIError(Exception): pass
-class EventError(Exception): pass
-class StructLogError(Exception): pass
+class ABIError(Exception):
+    pass
+
+
+class EventError(Exception):
+    pass
+
+
+class StructLogError(Exception):
+    pass
+
 
 def _topic(name, inputs):
     return "0x" + keccak(
@@ -47,13 +55,14 @@ def get_event_abi(abi):
 
     """
     try:
-        events = [i for i in abi if i['type']=="event" and not i['anonymous']]
+        events = [i for i in abi if i['type'] == "event" and not i['anonymous']]
         return dict((
             _topic(i['name'], i['inputs']),
             {'name': i['name'], 'inputs': i['inputs']}
         ) for i in events)
     except (KeyError, TypeError):
         raise ABIError("Invalid ABI")
+
 
 def decode_event(event, abi):
     """Decode a transaction event.
@@ -66,7 +75,7 @@ def decode_event(event, abi):
 
     Indexed arrays cannot be decoded and so the returned value will still
     be encoded.
-    
+
     Returns a dictionary in the following format:
 
     {
@@ -92,8 +101,8 @@ def decode_event(event, abi):
         abi = get_event_abi(abi)[key]
     try:
         return {
-            'name':abi['name'],
-            'data':_decode(abi['inputs'], event['topics'][1:], event['data'])
+            'name': abi['name'],
+            'data': _decode(abi['inputs'], event['topics'][1:], event['data'])
         }
     except (KeyError, TypeError):
         raise EventError("Invalid event")
@@ -184,7 +193,7 @@ def _decode(inputs, topics, data):
             try:
                 value = decode_single(i['type'], HexBytes(value))
             except (InsufficientDataBytes, OverflowError):
-                result[-1].update({'value': value.hex(), 'decoded': False}) 
+                result[-1].update({'value': value.hex(), 'decoded': False})
                 continue
         else:
             value = decoded.pop()
