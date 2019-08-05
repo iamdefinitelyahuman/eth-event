@@ -1,11 +1,21 @@
 # eth-event
 
+[![Pypi Status](https://img.shields.io/pypi/v/eth-event.svg)](https://pypi.org/project/eth-event/) [![Build Status](https://img.shields.io/travis/com/iamdefinitelyahuman/eth-event.svg)](https://travis-ci.com/iamdefinitelyahuman/eth-event) [![Coverage Status](https://coveralls.io/repos/github/iamdefinitelyahuman/eth-event/badge.svg?branch=master)](https://coveralls.io/github/iamdefinitelyahuman/eth-event?branch=master)
+
 Simple tools for Ethereum event decoding and topic generation.
 
 ## Installation
 
+You can install the latest release via ``pip``:
+
 ```bash
-pip install eth-event
+$ pip install eth-brownie
+```
+
+Or clone the repository and use ``setuptools`` for the most up-to-date version:
+
+```bash
+$ python3 setup.py install
 ```
 
 ## Usage
