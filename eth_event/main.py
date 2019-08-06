@@ -123,7 +123,7 @@ def decode_logs(logs, abi):
     """
     if isinstance(abi, list):
         abi = get_event_abi(abi)
-    return [decode_event(i, abi[HexBytes(i.topics[0]).hex()]) for i in logs]
+    return [decode_event(i, abi[HexBytes(i['topics'][0]).hex()]) for i in logs]
 
 
 def decode_trace(trace, abi):
