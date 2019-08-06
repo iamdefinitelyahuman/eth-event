@@ -18,12 +18,6 @@ class StructLogError(Exception):
     pass
 
 
-def _topic(name, inputs):
-    return "0x" + keccak(
-        "{}({})".format(name, ",".join(i['type'] for i in inputs)).encode()
-    ).hex()
-
-
 def get_topics(abi):
     """Generate encoded event topics from a contract ABI.
 
@@ -89,15 +83,13 @@ def decode_event(event, abi):
     }
 
     """
-    if type(abi) is list:
+    if isinstance(abi, list):
         try:
-            key = event['topics'][0]
+            key = _bytes_to_hex_string(event['topics'][0])
         except IndexError:
             raise EventError("Cannot decode anonymous event")
         except (KeyError, TypeError):
             raise EventError("Invalid event")
-        if type(key) is HexBytes:
-            key = key.hex()
         abi = get_event_abi(abi)[key]
     try:
         return {
@@ -119,7 +111,7 @@ def decode_logs(logs, abi):
     Returns a list of event dictionaries.
 
     """
-    if type(abi) is list:
+    if isinstance(abi, list):
         abi = get_event_abi(abi)
     return [decode_event(i, abi[HexBytes(i.topics[0]).hex()]) for i in logs]
 
@@ -137,18 +129,16 @@ def decode_trace(trace, abi):
     Returns a list of event dictionaries.
 
     """
-    if type(abi) is list:
+    if isinstance(abi, list):
         abi = get_event_abi(abi)
-    try:
-        trace = [i for i in trace if "LOG" in i['op']]
-    except (IndexError, KeyError, TypeError):
-        raise StructLogError("Invalid StructLog")
+    if isinstance(trace, dict):
+        trace = trace['result']['structLogs']
     events = []
-    for log in trace:
+    for log in (i for i in trace if i['op'].startswith("LOG")):
         try:
-            topic = "0x"+log['stack'][-3]
             offset = int(log['stack'][-1], 16) * 2
-            length = int(log['stack'][-1], 16) * 2
+            length = int(log['stack'][-2], 16) * 2
+            topic = "0x" + log['stack'][-3]
         except KeyError:
             raise StructLogError("StructLog has no stack")
         except (IndexError, TypeError):
@@ -165,12 +155,15 @@ def decode_trace(trace, abi):
     return events
 
 
+def _topic(name, inputs):
+    return "0x" + keccak(
+        "{}({})".format(name, ",".join(i['type'] for i in inputs)).encode()
+    ).hex()
+
+
 def _decode(inputs, topics, data):
     try:
-        types = [
-            i['type'] if i['type'] != "bytes" else "bytes[]"
-            for i in inputs if not i['indexed']
-        ]
+        types = [i['type'] for i in inputs if not i['indexed']]
     except (KeyError, TypeError):
         raise ABIError("Invalid ABI")
     if types and data == "0x":
@@ -197,11 +190,14 @@ def _decode(inputs, topics, data):
                 continue
         else:
             value = decoded.pop()
-            if i['type'] == "string":
-                value = HexBytes(value).decode('utf-8')
-        if type(value) is bytes:
-            value = "0x" + value.hex()
-        elif type(value) is HexBytes:
-            value = value.hex()
+        value = _bytes_to_hex_string(value)
         result[-1].update({'value': value, 'decoded': True})
     return result
+
+
+def _bytes_to_hex_string(value):
+    if isinstance(value, bytes):
+        value = value.hex()
+        if not value.startswith('0x'):
+            value = "0x" + value
+    return value
