@@ -18,11 +18,19 @@ class StructLogError(Exception):
     pass
 
 
-def get_topics(abi):
+def get_log_topic(event_abi):
+    if event_abi['anonymous']:
+        raise ABIError("Anonymous events do not have a topic")
+    types = _params(event_abi['inputs'])
+    key = f"{event_abi['name']}({','.join(types)})".encode()
+    return "0x"+keccak(key).hex()
+
+
+def get_topics(contract_abi):
     """Generate encoded event topics from a contract ABI.
 
     Arguments:
-    abi -- A standard contract ABI in list format
+    contract_abi -- A standard contract ABI in list format
 
     Returns a dictionary in the following format:
 
@@ -30,18 +38,19 @@ def get_topics(abi):
 
     """
     try:
-        return dict((
-            i['name'], _topic(i['name'], i['inputs'])
-        ) for i in abi if i['type'] == "event" and not i['anonymous'])
+        return dict(
+            (i['name'], get_log_topic(i)) for i in contract_abi if
+            i['type'] == "event" and not i['anonymous']
+        )
     except (KeyError, TypeError):
         raise ABIError("Invalid ABI")
 
 
-def get_event_abi(abi):
+def get_event_abi(contract_abi):
     """Convert a normal ABI to a dictionary style ABI specific to events.
 
     Arguments:
-    abi -- A standard contract ABI in list format
+    contract_abi -- A standard contract ABI in list format
 
     Returns a dict in the following format:
 
@@ -49,9 +58,9 @@ def get_event_abi(abi):
 
     """
     try:
-        events = [i for i in abi if i['type'] == "event" and not i['anonymous']]
+        events = [i for i in contract_abi if i['type'] == "event" and not i['anonymous']]
         return dict((
-            _topic(i['name'], i['inputs']),
+            get_log_topic(i),
             {'name': i['name'], 'inputs': i['inputs']}
         ) for i in events)
     except (KeyError, TypeError):
@@ -90,7 +99,8 @@ def decode_event(event, abi):
             raise EventError("Cannot decode anonymous event")
         except (KeyError, TypeError):
             raise EventError("Invalid event")
-        abi = get_event_abi(abi)[key]
+        abi = get_event_abi(abi)
+        abi = abi[key]
     try:
         return {
             'name': abi['name'],
@@ -155,15 +165,19 @@ def decode_trace(trace, abi):
     return events
 
 
-def _topic(name, inputs):
-    return "0x" + keccak(
-        "{}({})".format(name, ",".join(i['type'] for i in inputs)).encode()
-    ).hex()
+def _params(abi_params):
+    types = []
+    for i in abi_params:
+        if i['type'] != "tuple":
+            types.append(i['type'])
+            continue
+        types.append(f"({','.join(x for x in _params(i['components']))})")
+    return types
 
 
 def _decode(inputs, topics, data):
     try:
-        types = [i['type'] for i in inputs if not i['indexed']]
+        types = _params(i for i in inputs if not i['indexed'])
     except (KeyError, TypeError):
         raise ABIError("Invalid ABI")
     if types and data == "0x":
