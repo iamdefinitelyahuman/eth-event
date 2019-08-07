@@ -6,20 +6,20 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name = 'eth_event',
-    packages = find_packages(),
-    version = '0.1.4',
-    license = 'MIT',
-    description = 'Ethereum event decoder and topic generator',
-    long_description =  long_description,
+    name='eth_event',
+    packages=find_packages(),
+    version='0.1.4',
+    license='MIT',
+    description='Ethereum event decoder and topic generator',
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    author = 'Benjamin Hauser',
-    author_email = 'b.hauser@zerolaw.tech',
-    url = 'https://github.com/iamdefinitelyahuman/eth-event',
-    keywords = ['ethereum'],
+    author='Benjamin Hauser',
+    author_email='b.hauser@zerolaw.tech',
+    url='https://github.com/iamdefinitelyahuman/eth-event',
+    keywords=['ethereum'],
     install_requires=[
         'eth-abi>=2.0.0,<3.0.0',
-        'eth-hash>=0.2.0,<1.0.0',
+        'eth-hash[pycryptodome]>=0.2.0,<1.0.0',
         'hexbytes>=0.2.0,<1.0.0'
     ],
     classifiers=[
