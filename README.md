@@ -1,32 +1,51 @@
 # eth-event
 
+[![Pypi Status](https://img.shields.io/pypi/v/eth-event.svg)](https://pypi.org/project/eth-event/) [![Build Status](https://img.shields.io/travis/com/iamdefinitelyahuman/eth-event.svg)](https://travis-ci.com/iamdefinitelyahuman/eth-event) [![Coverage Status](https://coveralls.io/repos/github/iamdefinitelyahuman/eth-event/badge.svg?branch=master)](https://coveralls.io/github/iamdefinitelyahuman/eth-event?branch=master)
+
 Simple tools for Ethereum event decoding and topic generation.
 
 ## Installation
 
+You can install the latest release via ``pip``:
+
 ```bash
-pip install eth-event
+$ pip install eth-brownie
+```
+
+Or clone the repository and use ``setuptools`` for the most up-to-date version:
+
+```bash
+$ python3 setup.py install
 ```
 
 ## Usage
 
-The package includes five functions:
+The package includes the following functions:
 
-* `get_topics(abi)`: Given a contract ABI, returns a dictionary of `{'event name': "encrypted topic"}`.
+* `get_event_topic(event_abi)`: Given an event ABI, returns the 32 byte encoded topic.
 
 ```python
->>> import eth_event
+>>> from eth_event import get_event_topic
+>>> get_event_topic({'name': 'Approval', 'anonymous': False, 'type': 'event', 'inputs': [{'name': 'owner', 'type': 'address', 'indexed': True}, {'name': 'spender', 'type': 'address', 'indexed': True}, {'name': 'value', 'type': 'uint256', 'indexed': False}]})
+'0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925'
+```
+
+* `get_topics(contract_abi)`: Given a contract ABI, returns a dictionary of `{'event name': "encrypted topic"}`.
+
+```python
+>>> from eth_event import get_topics
 
 >>> abi = [{'name': 'Approval', 'anonymous': False, 'type': 'event', 'inputs': [{'name': 'owner', 'type': 'address', 'indexed': True}, {'name': 'spender', 'type': 'address', 'indexed': True}, {'name': 'value', 'type': 'uint256', 'indexed': False}]}, {'name': 'Transfer', 'anonymous': False, 'type': 'event', 'inputs': [{'name': 'from', 'type': 'address', 'indexed': True}, {'name': 'to', 'type': 'address', 'indexed': True}, {'name': 'value', 'type': 'uint256', 'indexed': False}]}]
 
->>> eth_event.get_topics(abi)
+>>> get_topics(abi)
 {'Transfer': '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 'Approval': '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925'}
 ```
 
-* `get_event_abi(abi)`: Given a contract ABI, returns a dictionary of `{'encrypted topic': "ABI"}`. Useful for stripping an ABI so that only event related data remains.
+* `get_event_abi(contract_abi)`: Given a contract ABI, returns a dictionary of `{'encrypted topic': "ABI"}`. Useful for stripping an ABI so that only event related data remains.
 
 ```python
->>> event_abi = eth_event.get_event_abi(abi)
+>>> from eth_event import get_event_abi
+>>> get_event_abi(abi)
 {'0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef': {'name': 'Transfer', 'inputs': [{'name': 'from', 'type': 'address', 'indexed': True}, {'name': 'to', 'type': 'address', 'indexed': True}, {'name': 'value', 'type': 'uint256', 'indexed': False}]}, '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925': {'name': 'Approval', 'inputs': [{'name': 'owner', 'type': 'address', 'indexed': True}, {'name': 'spender', 'type': 'address', 'indexed': True}, {'name': 'value', 'type': 'uint256', 'indexed': False}]}}
 ```
 
@@ -50,7 +69,7 @@ The package includes five functions:
 >>> tx = token.transfer(account[1], 100, {'from': account[0]})
 <Transaction object '0x615a157e84715d5f960a38fe2a3ddb566c8393cfc71f15b06170a0eff74dfdde'>
 
->>> eth_event.decode_event(tx.logs, token.abi)
+>>> eth_event.decode_logs(tx.logs, token.abi)
 [{'name': 'Transfer', 'data': [{'name': 'from', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a'}, {'name': 'to', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a', 'decoded': True}, {'name': 'tokens', 'type': 'uint256', 'value': 100, 'decoded': True}]}]
 ```
 
@@ -60,7 +79,7 @@ The package includes five functions:
 >>> tx = token.transfer(account[1], 100, {'from': account[0]})
 <Transaction object '0x71a7146996957b8a465a4e5dd41951d614254f8271fc9140b875c4fc55dde578'>
 
->>> trace = web3.providers[0].make_request("debug_traceTransaction", ['0x71a7146996957b8a465a4e5dd41951d614254f8271fc9140b875c4fc55dde578', {}])['result']['structLogs]
+>>> trace = web3.provider.make_request("debug_traceTransaction", ['0x71a7146996957b8a465a4e5dd41951d614254f8271fc9140b875c4fc55dde578', {}])['result']['structLogs]
 ]
 >>> eth_event.decode_trace(trace, token.abi)
 [{'name': 'Transfer', 'data': [{'name': 'from', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a'}, {'name': 'to', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a', 'decoded': True}, {'name': 'tokens', 'type': 'uint256', 'value': 100, 'decoded': True}]}]
@@ -68,7 +87,17 @@ The package includes five functions:
 
 ## Limitations
 
-If an array is indexed in an event, the topic is generated as a sha3 hash and so cannot be decrypted. In this case, the unencrypted topcic is returned and `decoded` is set to `False`.
+* If an array is indexed in an event, the topic is generated as a sha3 hash and so cannot be decrypted. In this case, the unencrypted topcic is returned and `decoded` is set to `False`.
+
+* Anonymous events cannot be decoded.
+
+## Tests
+
+To run the test suite:
+
+```bash
+$ tox
+```
 
 ## Development
 

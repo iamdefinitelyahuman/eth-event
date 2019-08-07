@@ -1,0 +1,30 @@
+0.2.0
+-----
+
+ - Support for tuples (ABIEncoderV2)
+ - Update dependency versions
+ - Require python 3.6
+ - Added get_log_topic
+
+0.1.4
+-----
+
+ - Properly handle arrays in events
+ - Verbose exceptions
+
+0.1.2
+-----
+
+ - Added decode_logs
+ - Added decode_trace
+
+0.1.1
+-----
+
+ - Added get_event_abi
+ - cleaned up the project structure
+
+0.1.0
+-----
+
+ - Initial alpha release
