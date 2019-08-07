@@ -206,6 +206,8 @@ def _decode(inputs, topics, data):
     result = []
     for i in inputs:
         result.append({'name': i['name'], 'type': i['type']})
+        if 'components' in i:
+            result[-1]['components'] = i['components']
         if i['indexed']:
             try:
                 value = HexBytes(topics.pop())
