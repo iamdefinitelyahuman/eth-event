@@ -131,6 +131,22 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize('log', log_params)
 
 
+@pytest.fixture
+def complex_log():
+    log = BASE_LOG.copy()
+    log['data'] = LOGS[1][0]
+    log['topics'] = LOGS[1][1]
+    return log
+
+
+@pytest.fixture
+def indexed_log():
+    log = BASE_LOG.copy()
+    log['data'] = LOGS[5][0]
+    log['topics'] = LOGS[5][1]
+    return log
+
+
 @pytest.fixture(scope="session")
 def anon_a_log():
     log = BASE_LOG.copy()

@@ -19,6 +19,8 @@ class StructLogError(Exception):
 
 
 def get_log_topic(event_abi):
+    if not isinstance(event_abi, dict):
+        raise TypeError("Must be a dictionary of the specific event's ABI")
     if event_abi['anonymous']:
         raise ABIError("Anonymous events do not have a topic")
     types = _params(event_abi['inputs'])
@@ -37,13 +39,15 @@ def get_topics(contract_abi):
     {'Event Name': "encoded bytes32 topic as a string"}
 
     """
+    if not isinstance(contract_abi, list):
+        raise TypeError("Must be an entire contract ABI as a list")
     try:
         return dict(
             (i['name'], get_log_topic(i)) for i in contract_abi if
             i['type'] == "event" and not i['anonymous']
         )
     except (KeyError, TypeError):
-        raise ABIError("Invalid ABI")
+        raise ABIError("Malformed ABI")
 
 
 def get_event_abi(contract_abi):
@@ -110,20 +114,30 @@ def decode_event(event, abi):
         raise EventError("Invalid event")
 
 
-def decode_logs(logs, abi):
+def decode_logs(logs, abi, skip_anonymous=True):
     """Decode a transaction event log.
 
     Arguments:
     logs -- A log of events from a transaction receipt.
     abi -- The contract ABI, as a regular ABI or a dict
            from get_event_abi()
+    skip_anonymous -- If True, events with no topic will
+                      be skipped instead of raising.
 
     Returns a list of event dictionaries.
 
     """
     if isinstance(abi, list):
         abi = get_event_abi(abi)
-    return [decode_event(i, abi[HexBytes(i['topics'][0]).hex()]) for i in logs]
+    result = []
+    for i in logs:
+        if not i['topics']:
+            if not skip_anonymous:
+                raise EventError("Cannot decode anonymous event")
+            continue
+        key = HexBytes(i['topics'][0]).hex()
+        result.append(decode_event(i, abi[key]))
+    return result
 
 
 def decode_trace(trace, abi):
