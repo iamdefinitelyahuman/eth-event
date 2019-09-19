@@ -9,5 +9,5 @@ from .main import (  # NOQA: F401
     decode_trace,
     ABIError,
     EventError,
-    StructLogError
+    StructLogError,
 )
