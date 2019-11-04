@@ -219,9 +219,7 @@ def anon_a_log():
     log = BASE_LOG.copy()
     log[
         "data"
-    ] = (
-        "0x00000000000000000000000066ab6d9362d4f35596279692f0251db635165871"
-    )  # NOQA: E501
+    ] = "0x00000000000000000000000066ab6d9362d4f35596279692f0251db635165871"  # NOQA: E501
     log["topics"] = []
     return log
 
