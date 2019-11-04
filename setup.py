@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="eth_event",
-    version="0.2.1",
+    version="0.2.2",
     license="MIT",
     description="Ethereum event decoder and topic generator",
     long_description=long_description,
