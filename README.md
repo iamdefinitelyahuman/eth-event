@@ -9,7 +9,7 @@ Tools for Ethereum event decoding and topic generation.
 You can install the latest release via ``pip``:
 
 ```bash
-$ pip install eth-brownie
+$ pip install eth-event
 ```
 
 Or clone the repository and use ``setuptools`` for the most up-to-date version:
