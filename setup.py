@@ -6,14 +6,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="eth_event",
+    name="eth-event",
     version="0.2.2",
     license="MIT",
     description="Ethereum event decoder and topic generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Benjamin Hauser",
-    author_email="b.hauser@zerolaw.tech",
+    author_email="ben@hauser.id",
     url="https://github.com/iamdefinitelyahuman/eth-event",
     include_package_data=True,
     py_modules=["eth_event"],
