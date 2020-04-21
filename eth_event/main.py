@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+from typing import Dict, List
+
 from eth_abi import decode_abi, decode_single
 from eth_abi.exceptions import InsufficientDataBytes
 from eth_hash.auto import keccak
@@ -22,53 +24,61 @@ class UnknownEvent(Exception):
     pass
 
 
-def get_log_topic(event_abi):
+def get_log_topic(event_abi: Dict) -> str:
+    """
+    Generate an encoded event topic for an event.
+
+    Arguments
+    ---------
+    event_abi : Dict
+        Dictionary from a contract ABI, describing a specific event.
+
+    Returns
+    -------
+    str
+        bytes32 encoded topic for the event.
+    """
     if not isinstance(event_abi, dict):
         raise TypeError("Must be a dictionary of the specific event's ABI")
     if event_abi["anonymous"]:
         raise ABIError("Anonymous events do not have a topic")
+
     types = _params(event_abi["inputs"])
     key = f"{event_abi['name']}({','.join(types)})".encode()
+
     return "0x" + keccak(key).hex()
 
 
-def get_topics(contract_abi):
-    """Generate encoded event topics from a contract ABI.
-
-    Arguments:
-    contract_abi -- A standard contract ABI in list format
-
-    Returns a dictionary in the following format:
-
-    {'Event Name': "encoded bytes32 topic as a string"}
-
+def get_topic_map(abi: List) -> Dict:
     """
-    if not isinstance(contract_abi, list):
-        raise TypeError("Must be an entire contract ABI as a list")
-    try:
-        return dict(
-            (i["name"], get_log_topic(i))
-            for i in contract_abi
-            if i["type"] == "event" and not i["anonymous"]
-        )
-    except (KeyError, TypeError):
-        raise ABIError("Malformed ABI")
+    Generate a dictionary of event topics from an ABI.
 
+    This dictionary is required by `decode_log`, `decode_logs`, and
+    `decode_traceTransaction`.
 
-def get_event_abi(contract_abi):
-    """Convert a normal ABI to a dictionary style ABI specific to events.
+    Anonymous events are ignored. The return data is formatted as follows:
 
-    Arguments:
-    contract_abi -- A standard contract ABI in list format
+        {
+            'encoded bytes32 topic': {
+                'name':"Event Name",
+                'inputs': [abi inputs]
+            }
+        }
 
-    Returns a dict in the following format:
+    Arguments
+    ---------
+    abi : List
+        Contract ABI
 
-    {'encoded bytes32 topic': {'name':"Event Name", 'inputs':[abi inputs]}}
-
+    Returns
+    -------
+    Dict
+        Mapping of contract events.
     """
     try:
-        events = [i for i in contract_abi if i["type"] == "event" and not i["anonymous"]]
-        return dict((get_log_topic(i), {"name": i["name"], "inputs": i["inputs"]}) for i in events)
+        events = [i for i in abi if i["type"] == "event" and not i["anonymous"]]
+        return {get_log_topic(i): {"name": i["name"], "inputs": i["inputs"]} for i in events}
+
     except (KeyError, TypeError):
         raise ABIError("Invalid ABI")
 
