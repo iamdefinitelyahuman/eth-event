@@ -2,9 +2,10 @@
 
 import json
 from pathlib import Path
+
 import pytest
 
-from eth_event import decode_trace, StructLogError
+from eth_event import StructLogError, decode_trace
 
 
 # LOG events are at indexes 378 and 536

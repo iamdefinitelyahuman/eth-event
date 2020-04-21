@@ -2,7 +2,7 @@
 
 import pytest
 
-from eth_event import get_log_topic, get_topics, get_event_abi, ABIError
+from eth_event import ABIError, get_event_abi, get_log_topic, get_topics
 
 
 def test_get_log_topic(abi):

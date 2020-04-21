@@ -63,13 +63,8 @@ def get_event_abi(contract_abi):
 
     """
     try:
-        events = [
-            i for i in contract_abi if i["type"] == "event" and not i["anonymous"]
-        ]
-        return dict(
-            (get_log_topic(i), {"name": i["name"], "inputs": i["inputs"]})
-            for i in events
-        )
+        events = [i for i in contract_abi if i["type"] == "event" and not i["anonymous"]]
+        return dict((get_log_topic(i), {"name": i["name"], "inputs": i["inputs"]}) for i in events)
     except (KeyError, TypeError):
         raise ABIError("Invalid ABI")
 
