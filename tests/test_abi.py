@@ -2,7 +2,7 @@
 
 import pytest
 
-from eth_event import ABIError, get_event_abi, get_log_topic, get_topics
+from eth_event import ABIError, get_log_topic, get_topic_map
 
 
 def test_get_log_topic(abi):
@@ -21,16 +21,6 @@ def test_get_log_topic_contract_abi(abi):
         get_log_topic(abi)
 
 
-def test_get_topics(abi):
-    result = get_topics(abi)
-    assert len(result) + 2 == len(abi)
-
-
-def test_get_topics_event_abi(abi):
-    with pytest.raises(TypeError):
-        get_topics(abi[0])
-
-
 def test_event_abi(abi):
-    result = get_event_abi(abi)
+    result = get_topic_map(abi)
     assert len(result) + 2 == len(abi)

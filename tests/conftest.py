@@ -3,6 +3,8 @@
 import pytest
 from hexbytes import HexBytes
 
+from eth_event import get_topic_map
+
 # missing 'data' and 'topics'
 BASE_LOG = {
     "logIndex": 0,
@@ -156,6 +158,11 @@ def abi():
             ],
         },
     ]
+
+
+@pytest.fixture(scope="session")
+def topic_map(abi):
+    return get_topic_map(abi)
 
 
 # auto-parametrize the log fixture with all expected-passing logs
