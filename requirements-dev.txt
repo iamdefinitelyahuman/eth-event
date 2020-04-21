@@ -1,8 +1,10 @@
 black==19.10b0
-coveralls==1.7.0
-flake8==3.7.7
-pytest>=5.0.0
-pytest-cov>=2.7.1
-tox-travis==0.12
-twine==1.13.0
-wheel==0.33.4
+bumpversion==0.5.3
+flake8==3.7.9
+isort==4.3.21
+mypy==0.770
+pytest==5.4.1
+pytest-cov==2.8.1
+tox==3.14.6
+twine==3.1.1
+wheel==0.34.2
