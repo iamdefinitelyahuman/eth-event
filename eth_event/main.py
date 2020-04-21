@@ -153,7 +153,7 @@ def decode_logs(logs, abi, allow_undecoded=True):
     return events
 
 
-def decode_trace(trace, abi):
+def decode_trace(trace, abi, allow_undecoded=True):
     """Decode transaction events from a debug_traceTransaction
     structLog. Useful when you require the events for a transaction
     that reverted.
@@ -171,24 +171,40 @@ def decode_trace(trace, abi):
     if isinstance(trace, dict):
         trace = trace["result"]["structLogs"]
     events = []
-    for log in (i for i in trace if i["op"].startswith("LOG")):
+
+    for item in (i for i in trace if i["op"].startswith("LOG")):
         try:
-            offset = int(log["stack"][-1], 16) * 2
-            length = int(log["stack"][-2], 16) * 2
-            topic = "0x" + log["stack"][-3]
+            offset = int(item["stack"][-1], 16) * 2
+            length = int(item["stack"][-2], 16) * 2
+            topic_len = int(item["op"][-1])
+            topics = [HexBytes(i).hex() for i in item["stack"][-3 : -3 - topic_len : -1]]
         except KeyError:
             raise StructLogError("StructLog has no stack")
         except (IndexError, TypeError):
             raise StructLogError("Malformed stack")
+
         try:
-            data = "".join(log["memory"])[offset : offset + length]
+            data = "".join(item["memory"])[offset : offset + length]
         except (KeyError, TypeError):
             raise StructLogError("Malformed memory")
-        result = {
-            "name": abi[topic]["name"],
-            "data": _decode(abi[topic]["inputs"], log["stack"][-4::-1], data),
-        }
+
+        if not topics or topics[0] not in abi:
+            if not allow_undecoded:
+                raise UnknownEvent("Log contains undecodable event")
+            result = {
+                "name": None,
+                "topics": topics,
+                "data": HexBytes(data).hex(),
+                "decoded": False,
+            }
+        else:
+            result = {
+                "name": abi[topics[0]]["name"],
+                "data": _decode(abi[topics[0]]["inputs"], topics[1:], data),
+                "decoded": True,
+            }
         events.append(result)
+
     return events
 
 
