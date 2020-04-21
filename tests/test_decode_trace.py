@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from eth_event import StructLogError, decode_trace
+from eth_event import StructLogError, UnknownEvent, decode_traceTransaction
 
 
 # LOG events are at indexes 378 and 536
@@ -14,35 +14,43 @@ def raw_trace():
     trace_json = Path(__file__).parent.joinpath("trace.json")
     with trace_json.open() as fs:
         data = json.load(fs)
-    return data
+    return data["result"]["structLogs"]
 
 
-def test_decode_trace_basic(abi, raw_trace):
-    events = decode_trace(raw_trace["result"]["structLogs"][:400], abi)
+def test_basic(topic_map, raw_trace):
+    events = decode_traceTransaction(raw_trace[:400], topic_map)
     assert len(events) == 1
     assert events[0]["name"] == "BasicTypesEvent"
 
 
-def test_decode_trace_complex(abi, raw_trace):
-    events = decode_trace(raw_trace["result"]["structLogs"][400:], abi)
+def test_complex(topic_map, raw_trace):
+    events = decode_traceTransaction(raw_trace[400:], topic_map)
     assert len(events) == 1
     assert events[0]["name"] == "ComplexTypesEvent"
     assert [i["value"] for i in events[0]["data"]] == ["hello", "0x6689"]
 
 
-def test_decode_trace_multiple(abi, raw_trace):
-    events = decode_trace(raw_trace, abi)
+def test_multiple(topic_map, raw_trace):
+    events = decode_traceTransaction(raw_trace, topic_map)
     assert len(events) == 2
 
 
-def test_decode_raises(abi, raw_trace):
-    trace = raw_trace["result"]["structLogs"]
-    del trace[378]["memory"]
+def test_decode_raises(topic_map, raw_trace):
+    del raw_trace[378]["memory"]
     with pytest.raises(StructLogError):
-        decode_trace(raw_trace["result"]["structLogs"][:400], abi)
-    trace[378]["stack"] = []
+        decode_traceTransaction(raw_trace[:400], topic_map)
+    raw_trace[378]["stack"] = []
     with pytest.raises(StructLogError):
-        decode_trace(raw_trace["result"]["structLogs"][:400], abi)
-    del trace[378]["stack"]
+        decode_traceTransaction(raw_trace[:400], topic_map)
+    del raw_trace[378]["stack"]
     with pytest.raises(StructLogError):
-        decode_trace(raw_trace["result"]["structLogs"][:400], abi)
+        decode_traceTransaction(raw_trace[:400], topic_map)
+
+
+def test_allow_undecoded(raw_trace):
+    decode_traceTransaction(raw_trace, [], allow_undecoded=True)
+
+
+def test_not_allow_undecoded(raw_trace):
+    with pytest.raises(UnknownEvent):
+        decode_traceTransaction(raw_trace, [], allow_undecoded=False)
