@@ -5,10 +5,9 @@ from .main import (  # NOQA: F401
     EventError,
     StructLogError,
     UnknownEvent,
-    decode_event,
+    decode_log,
     decode_logs,
-    decode_trace,
-    get_event_abi,
+    decode_traceTransaction,
     get_log_topic,
-    get_topics,
+    get_topic_map,
 )
