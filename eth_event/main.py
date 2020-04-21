@@ -18,6 +18,10 @@ class StructLogError(Exception):
     pass
 
 
+class UnknownEvent(Exception):
+    pass
+
+
 def get_log_topic(event_abi):
     if not isinstance(event_abi, dict):
         raise TypeError("Must be a dictionary of the specific event's ABI")
@@ -102,40 +106,51 @@ def decode_event(event, abi):
         except (KeyError, TypeError):
             raise EventError("Invalid event")
         abi = get_event_abi(abi)
-        abi = abi[key]
+        try:
+            abi = abi[key]
+        except KeyError:
+            raise UnknownEvent("Event topic is not present in given ABI")
     try:
         return {
             "name": abi["name"],
             "data": _decode(abi["inputs"], event["topics"][1:], event["data"]),
+            "decoded": True,
         }
     except (KeyError, TypeError):
         raise EventError("Invalid event")
 
 
-def decode_logs(logs, abi, skip_anonymous=True):
+def decode_logs(logs, abi, allow_undecoded=True):
     """Decode a transaction event log.
 
     Arguments:
     logs -- A log of events from a transaction receipt.
     abi -- The contract ABI, as a regular ABI or a dict
            from get_event_abi()
-    skip_anonymous -- If True, events with no topic will
-                      be skipped instead of raising.
 
     Returns a list of event dictionaries.
 
     """
     if isinstance(abi, list):
         abi = get_event_abi(abi)
-    result = []
-    for i in logs:
-        if not i["topics"]:
-            if not skip_anonymous:
-                raise EventError("Cannot decode anonymous event")
-            continue
-        key = HexBytes(i["topics"][0]).hex()
-        result.append(decode_event(i, abi[key]))
-    return result
+    events = []
+
+    for item in logs:
+        topics = [HexBytes(i).hex() for i in item["topics"]]
+        if not topics or topics[0] not in abi:
+            if not allow_undecoded:
+                raise UnknownEvent("Log contains undecodable event")
+            event = {
+                "name": None,
+                "topics": topics,
+                "data": HexBytes(item["data"]).hex(),
+                "decoded": False,
+            }
+        else:
+            event = decode_event(item, abi[topics[0]])
+        events.append(event)
+
+    return events
 
 
 def decode_trace(trace, abi):

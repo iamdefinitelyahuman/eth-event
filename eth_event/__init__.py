@@ -4,6 +4,7 @@ from .main import (  # NOQA: F401
     ABIError,
     EventError,
     StructLogError,
+    UnknownEvent,
     decode_event,
     decode_logs,
     decode_trace,
