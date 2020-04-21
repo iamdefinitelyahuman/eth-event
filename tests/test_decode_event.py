@@ -2,7 +2,7 @@
 
 import pytest
 
-from eth_event import decode_event, decode_logs, EventError
+from eth_event import EventError, decode_event, decode_logs
 
 
 def test_decode_event(log, abi):
