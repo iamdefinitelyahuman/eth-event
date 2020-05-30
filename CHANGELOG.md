@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 
+## [1.1.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.1.0) - 2020-05-30
+### Added
+- Decode events when the ABI contains indexed values but the log has None
+
+### Changed
+- More expressive error messages when an event cannot be decoded from an incorrect number of topics
+
 ## [1.0.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.0.0) - 2020-04-21
 ### Added
 - Anonymous and undecodable events can be returned without raising with the `allow_undecoded` kwarg

@@ -3,7 +3,7 @@
 from typing import Dict, List
 
 from eth_abi import decode_abi, decode_single
-from eth_abi.exceptions import InsufficientDataBytes
+from eth_abi.exceptions import InsufficientDataBytes, NonEmptyPaddingBytes
 from eth_hash.auto import keccak
 from hexbytes import HexBytes
 
@@ -256,39 +256,67 @@ def _params(abi_params: List) -> List:
 
 
 def _decode(inputs: List, topics: List, data: str) -> List:
+    indexed_count = len([i for i in inputs if i["indexed"]])
+
+    if indexed_count and not topics:
+        # special case - if the ABI has indexed values but the log does not,
+        # we should still be able to decode the data
+        unindexed_types = inputs
+
+    else:
+        if indexed_count < len(topics):
+            raise EventError(
+                "Event log does not contain enough topics for the given ABI - this"
+                " is usually because an event argument is not marked as indexed"
+            )
+        if indexed_count > len(topics):
+            raise EventError(
+                "Event log contains more topics than expected for the given ABI - this is"
+                " usually because an event argument is incorrectly marked as indexed"
+            )
+        unindexed_types = [i for i in inputs if not i["indexed"]]
+
+    # decode the unindexed event data
     try:
-        types = _params([i for i in inputs if not i["indexed"]])
+        unindexed_types = _params(unindexed_types)
     except (KeyError, TypeError):
         raise ABIError("Invalid ABI")
 
-    if types and data == "0x":
-        data += "0" * (len(types) * 64)
+    if unindexed_types and data == "0x":
+        length = len(unindexed_types) * 32
+        data = f"0x{bytes(length).hex()}"
 
     try:
-        decoded = list(decode_abi(types, HexBytes(data)))[::-1]
+        decoded = list(decode_abi(unindexed_types, HexBytes(data)))[::-1]
     except InsufficientDataBytes:
-        raise EventError("Insufficient event data")
+        raise EventError("Event data has insufficient length")
+    except NonEmptyPaddingBytes:
+        raise EventError("Malformed data field in event log")
     except OverflowError:
         raise EventError("Cannot decode event due to overflow error")
 
+    # decode the indexed event data and create the returned dict
     topics = topics[::-1]
     result = []
     for i in inputs:
         result.append({"name": i["name"], "type": i["type"]})
+
         if "components" in i:
             result[-1]["components"] = i["components"]
-        if i["indexed"]:
-            if not topics:
-                raise EventError("Insufficient event data")
+
+        if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
             try:
                 value = decode_single(i["type"], encoded)
             except (InsufficientDataBytes, OverflowError):
+                # an array or other data type that uses multiple slots
                 result[-1].update({"value": encoded.hex(), "decoded": False})
                 continue
         else:
             value = decoded.pop()
+
         if isinstance(value, bytes):
+            # converting to `HexBytes` first ensures the leading `0x`
             value = HexBytes(value).hex()
         result[-1].update({"value": value, "decoded": True})
 
