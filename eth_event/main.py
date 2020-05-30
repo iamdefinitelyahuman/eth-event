@@ -3,7 +3,7 @@
 from typing import Dict, List
 
 from eth_abi import decode_abi, decode_single
-from eth_abi.exceptions import InsufficientDataBytes
+from eth_abi.exceptions import InsufficientDataBytes, NonEmptyPaddingBytes
 from eth_hash.auto import keccak
 from hexbytes import HexBytes
 
@@ -264,10 +264,24 @@ def _decode(inputs: List, topics: List, data: str) -> List:
     if types and data == "0x":
         data += "0" * (len(types) * 64)
 
+    indexed_count = len([i for i in inputs if i["indexed"]])
+    if indexed_count < len(topics):
+        raise EventError(
+            "Event log does not contain enough topics for the given ABI - this"
+            " is usually because an event argument is not marked as indexed"
+        )
+    if indexed_count > len(topics):
+        raise EventError(
+            "Event log contains more topics than expected for the given ABI - this is"
+            " usually because an event argument is incorrectly marked as indexed"
+        )
+
     try:
         decoded = list(decode_abi(types, HexBytes(data)))[::-1]
     except InsufficientDataBytes:
-        raise EventError("Insufficient event data")
+        raise EventError("Event data has insufficient length")
+    except NonEmptyPaddingBytes:
+        raise EventError("Malformed data field in event log")
     except OverflowError:
         raise EventError("Cannot decode event due to overflow error")
 
@@ -278,8 +292,6 @@ def _decode(inputs: List, topics: List, data: str) -> List:
         if "components" in i:
             result[-1]["components"] = i["components"]
         if i["indexed"]:
-            if not topics:
-                raise EventError("Insufficient event data")
             encoded = HexBytes(topics.pop())
             try:
                 value = decode_single(i["type"], encoded)
