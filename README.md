@@ -1,6 +1,6 @@
 # eth-event
 
-[![Pypi Status](https://img.shields.io/pypi/v/eth-event.svg)](https://pypi.org/project/eth-event/) [![Build Status](https://img.shields.io/travis/com/iamdefinitelyahuman/eth-event.svg)](https://travis-ci.com/iamdefinitelyahuman/eth-event) [![Coverage Status](https://coveralls.io/repos/github/iamdefinitelyahuman/eth-event/badge.svg?branch=master)](https://coveralls.io/github/iamdefinitelyahuman/eth-event?branch=master)
+[![Pypi Status](https://img.shields.io/pypi/v/eth-event.svg)](https://pypi.org/project/eth-event/) [![Build Status](https://img.shields.io/travis/com/iamdefinitelyahuman/eth-event.svg)](https://travis-ci.com/iamdefinitelyahuman/eth-event) [![Coverage Status](https://img.shields.io/codecov/c/github/iamdefinitelyahuman/eth-event)](https://codecov.io/gh/iamdefinitelyahuman/eth-event)
 
 Tools for Ethereum event decoding and topic generation.
 
