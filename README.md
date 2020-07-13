@@ -1,6 +1,6 @@
 # eth-event
 
-[![Pypi Status](https://img.shields.io/pypi/v/eth-event.svg)](https://pypi.org/project/eth-event/) [![Build Status](https://img.shields.io/travis/com/iamdefinitelyahuman/eth-event.svg)](https://travis-ci.com/iamdefinitelyahuman/eth-event) [![Coverage Status](https://img.shields.io/codecov/c/github/iamdefinitelyahuman/eth-event)](https://codecov.io/gh/iamdefinitelyahuman/eth-event)
+[![Pypi Status](https://img.shields.io/pypi/v/eth-event.svg)](https://pypi.org/project/eth-event/) [![Build Status](https://img.shields.io/github/workflow/status/iamdefinitelyahuman/eth-event/main%20workflow)](https://github.com/iamdefinitelyahuman/eth-event/actions) [![Coverage Status](https://img.shields.io/codecov/c/github/iamdefinitelyahuman/eth-event)](https://codecov.io/gh/iamdefinitelyahuman/eth-event)
 
 Tools for Ethereum event decoding and topic generation.
 
@@ -48,11 +48,12 @@ The public API is well documented within the docstrings. The following example m
 >>> eth_event.decode_logs(tx.logs, topic_map)
 [{
     'name': 'Transfer',
+    'address': "0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87",
     'data': [
         {'name': 'from', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a', 'decoded': True},
         {'name': 'to', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a', 'decoded': True},
         {'name': 'tokens', 'type': 'uint256', 'value': 100, 'decoded': True}
-    ]
+    ],
 }]
 
 # decoding a structLog from Geth's debug_traceTransaction endpoint
@@ -62,14 +63,15 @@ The public API is well documented within the docstrings. The following example m
 )
 >>> struct_log = trace['result']['structLogs']
 
->>> eth_event.decode_trace(struct_log, topic_map)
+>>> eth_event.decode_trace(struct_log, topic_map, initial_address="0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87")
 [{
     'name': 'Transfer',
+    'address': "0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87",
     'data': [
         {'name': 'from', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a', 'decoded': True},
         {'name': 'to', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a', 'decoded': True},
         {'name': 'tokens', 'type': 'uint256', 'value': 100, 'decoded': True}
-    ]
+    ],
 }]
 ```
 
@@ -78,6 +80,8 @@ The public API is well documented within the docstrings. The following example m
 * If an array is indexed in an event, the topic is generated as a sha3 hash and so cannot be decrypted. In this case, the unencrypted topic is returned and `decoded` is set to `False`.
 
 * Anonymous events cannot be decoded. Use the `allow_undecoded` kwarg when calling `decode_logs` and `decode_trace` to receive the undecoded log without raising an exception.
+
+* When decoding a trace, the initial address for the call cannot be determined. To include addresses where decoded events were emitted you must supply the initial address with the `initial_address` keyword argument.
 
 ## Tests
 
