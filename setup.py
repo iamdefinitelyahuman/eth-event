@@ -25,6 +25,7 @@ setup(
     install_requires=[
         "eth-abi>=2.0.0,<3.0.0",
         "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
+        "eth-utils>=1.2.0,<2.0.0",
         "hexbytes>=0.2.0,<1.0.0",
     ],
     classifiers=[
