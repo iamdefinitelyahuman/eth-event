@@ -5,6 +5,7 @@ from typing import Dict, List
 from eth_abi import decode_abi, decode_single
 from eth_abi.exceptions import InsufficientDataBytes, NonEmptyPaddingBytes
 from eth_hash.auto import keccak
+from eth_utils import to_checksum_address
 from hexbytes import HexBytes
 
 
@@ -95,6 +96,7 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
 
     {
         'name': "",  # event name
+        'address': "",  # address where the event was emitted
         'decoded': True / False,
         'data': [{
             'name': "",  # variable name
@@ -129,6 +131,7 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
             "name": abi["name"],
             "data": _decode(abi["inputs"], log["topics"][1:], log["data"]),
             "decoded": True,
+            "address": to_checksum_address(log["address"]),
         }
     except (KeyError, TypeError):
         raise EventError("Invalid event")
@@ -146,6 +149,7 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
         'decoded': False,
         'data': "",  # raw data hexstring
         'topics': [],  # list of undecoded topics as 32 byte hexstrings
+        'address: "",  # address where the event was emitted
     }
 
     Arguments
@@ -176,6 +180,7 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
                 "topics": topics,
                 "data": HexBytes(item["data"]).hex(),
                 "decoded": False,
+                "address": to_checksum_address(item["address"]),
             }
         else:
             event = decode_log(item, topic_map)
