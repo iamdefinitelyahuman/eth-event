@@ -46,6 +46,7 @@ def test_decode_logs_no_topic(anon_a_log, topic_map):
     assert event == [
         {
             "name": None,
+            "address": "0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87",
             "data": "0x00000000000000000000000066ab6d9362d4f35596279692f0251db635165871",
             "topics": [],
             "decoded": False,
