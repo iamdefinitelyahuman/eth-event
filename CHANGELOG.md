@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 
+## [1.2.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.0) - 2020-07-14
+### Added
+- Include address in decoded event logs
+
 ## [1.1.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.1.0) - 2020-05-30
 ### Added
 - Decode events when the ABI contains indexed values but the log has None
