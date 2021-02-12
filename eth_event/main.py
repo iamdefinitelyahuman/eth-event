@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from typing import Dict, List
 import re
+from typing import Dict, List
 
 from eth_abi import decode_abi, decode_single
 from eth_abi.exceptions import InsufficientDataBytes, NonEmptyPaddingBytes
