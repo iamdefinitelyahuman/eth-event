@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import re
 from typing import Dict, List
 
 from eth_abi import decode_abi, decode_single
@@ -279,11 +280,18 @@ def decode_traceTransaction(
 
 def _params(abi_params: List) -> List:
     types = []
+    # regex with 2 capturing groups
+    # first group captures whether this is an array tuple
+    # second group captures the size if this is a fixed size tuple
+    pattern = re.compile(r"tuple(\[(\d*)\])?")
     for i in abi_params:
-        if i["type"] != "tuple":
-            types.append(i["type"])
+        tuple_match = pattern.match(i["type"])
+        if tuple_match:
+            _array, _size = tuple_match.group(1, 2)  # unpack the captured info
+            tuple_type_tail = f"[{_size}]" if _array is not None else ""
+            types.append(f"({','.join(x for x in _params(i['components']))}){tuple_type_tail}")
             continue
-        types.append(f"({','.join(x for x in _params(i['components']))})")
+        types.append(i["type"])
 
     return types
 
