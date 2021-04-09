@@ -4,7 +4,7 @@ import re
 from typing import Dict, List
 
 from eth_abi import decode_abi, decode_single
-from eth_abi.exceptions import InsufficientDataBytes, NonEmptyPaddingBytes
+from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash.auto import keccak
 from eth_utils import to_checksum_address
 from hexbytes import HexBytes
@@ -349,7 +349,7 @@ def _decode(inputs: List, topics: List, data: str) -> List:
             encoded = HexBytes(topics.pop())
             try:
                 value = decode_single(i["type"], encoded)
-            except (InsufficientDataBytes, OverflowError):
+            except (InsufficientDataBytes, NoEntriesFound, OverflowError):
                 # an array or other data type that uses multiple slots
                 result[-1].update({"value": encoded.hex(), "decoded": False})
                 continue
