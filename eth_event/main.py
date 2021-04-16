@@ -42,7 +42,7 @@ def get_log_topic(event_abi: Dict) -> str:
     """
     if not isinstance(event_abi, dict):
         raise TypeError("Must be a dictionary of the specific event's ABI")
-    if event_abi["anonymous"]:
+    if event_abi.get("anonymous"):
         raise ABIError("Anonymous events do not have a topic")
 
     types = _params(event_abi["inputs"])
@@ -78,7 +78,7 @@ def get_topic_map(abi: List) -> Dict:
         Mapping of contract events.
     """
     try:
-        events = [i for i in abi if i["type"] == "event" and not i["anonymous"]]
+        events = [i for i in abi if i["type"] == "event" and not i.get("anonymous")]
         return {get_log_topic(i): {"name": i["name"], "inputs": i["inputs"]} for i in events}
 
     except (KeyError, TypeError):
