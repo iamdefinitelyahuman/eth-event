@@ -25,7 +25,7 @@ python3 setup.py install
 The public API is well documented within the docstrings. The following example may also help:
 
 ```python
->>> from eth_event import get_topics
+>>> from eth_event import get_topic_map
 
 # generating a topic map
 >>> abi = open('abi.json').read()
@@ -77,7 +77,7 @@ The public API is well documented within the docstrings. The following example m
 
 ## Limitations
 
-* If an array is indexed in an event, the topic is generated as a sha3 hash and so cannot be decrypted. In this case, the unencrypted topic is returned and `decoded` is set to `False`.
+* If an array is indexed in an event, the topic is generated as a sha3 hash and so cannot be decoded. In this case, the undecoded topic is returned and `decoded` is set to `False`.
 
 * Anonymous events cannot be decoded. Use the `allow_undecoded` kwarg when calling `decode_logs` and `decode_trace` to receive the undecoded log without raising an exception.
 
