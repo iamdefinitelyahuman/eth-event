@@ -26,6 +26,9 @@ class UnknownEvent(Exception):
     pass
 
 
+ADD_LOG_ENTRIES = ['logIndex', 'blockNumber', 'transactionIndex']
+
+
 def get_log_topic(event_abi: Dict) -> str:
     """
     Generate an encoded event topic for an event.
@@ -107,6 +110,9 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
         }, ...]
     }
 
+    And additional entries: 'logIndex', 'blockNumber', 'transactionIndex', if
+    they are present in log.
+
     Arguments
     ---------
     log : Dict
@@ -128,12 +134,14 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
     abi = topic_map[key]
 
     try:
-        return {
+        event = {
             "name": abi["name"],
             "data": _decode(abi["inputs"], log["topics"][1:], log["data"]),
             "decoded": True,
             "address": to_checksum_address(log["address"]),
         }
+        event = append_additional_log_data(log, event, ADD_LOG_ENTRIES)
+        return event
     except (KeyError, TypeError):
         raise EventError("Invalid event")
 
@@ -152,6 +160,9 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
         'topics': [],  # list of undecoded topics as 32 byte hexstrings
         'address: "",  # address where the event was emitted
     }
+
+    And additional entries: 'logIndex', 'blockNumber', 'transactionIndex', if
+    they are present in log.
 
     Arguments
     ---------
@@ -183,15 +194,24 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
                 "decoded": False,
                 "address": to_checksum_address(item["address"]),
             }
+            event = append_additional_log_data(item, event, ADD_LOG_ENTRIES)
         else:
             event = decode_log(item, topic_map)
+
         events.append(event)
 
     return events
 
 
+def append_additional_log_data(log: Dict, event: Dict, log_entries: List[str]):
+    for log_entry in log_entries:
+        if log_entry in log:
+            event[log_entry] = log[log_entry]
+    return event
+
+
 def decode_traceTransaction(
-    struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: str = None
+        struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: str = None
 ) -> List:
     """
     Extract and decode a list of event logs from a transaction traceback.
