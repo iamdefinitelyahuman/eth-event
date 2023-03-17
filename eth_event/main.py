@@ -3,7 +3,7 @@
 import re
 from typing import Dict, List
 
-from eth_abi import decode_abi, decode_single
+from eth_abi import decode
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash.auto import keccak
 from eth_utils import to_checksum_address
@@ -328,7 +328,7 @@ def _decode(inputs: List, topics: List, data: str) -> List:
         data = f"0x{bytes(length).hex()}"
 
     try:
-        decoded = list(decode_abi(unindexed_types, HexBytes(data)))[::-1]
+        decoded = list(decode(unindexed_types, HexBytes(data)))[::-1]
     except InsufficientDataBytes:
         raise EventError("Event data has insufficient length")
     except NonEmptyPaddingBytes:
@@ -348,7 +348,7 @@ def _decode(inputs: List, topics: List, data: str) -> List:
         if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
             try:
-                value = decode_single(i["type"], encoded)
+                value = decode(i["type"], encoded)
             except (InsufficientDataBytes, NoEntriesFound, OverflowError):
                 # an array or other data type that uses multiple slots
                 result[-1].update({"value": encoded.hex(), "decoded": False})
