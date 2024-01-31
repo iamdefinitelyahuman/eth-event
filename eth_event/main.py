@@ -3,7 +3,7 @@
 import re
 from typing import Dict, List
 
-from eth_abi import decode_abi, decode_single
+import eth_abi
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash.auto import keccak
 from eth_utils import to_checksum_address
@@ -51,7 +51,7 @@ def get_log_topic(event_abi: Dict) -> str:
     types = _params(event_abi["inputs"])
     key = f"{event_abi['name']}({','.join(types)})".encode()
 
-    return "0x" + keccak(key).hex()
+    return _0xstring(keccak(key))
 
 
 def get_topic_map(abi: List) -> Dict:
@@ -128,7 +128,7 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
     if not log["topics"]:
         raise EventError("Cannot decode an anonymous event")
 
-    key = HexBytes(log["topics"][0]).hex()
+    key = _0xstring(log["topics"][0])
     if key not in topic_map:
         raise UnknownEvent("Event topic is not present in given ABI")
     abi = topic_map[key]
@@ -183,14 +183,14 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
     events = []
 
     for item in logs:
-        topics = [HexBytes(i).hex() for i in item["topics"]]
+        topics = [_0xstring(i) for i in item["topics"]]
         if not topics or topics[0] not in topic_map:
             if not allow_undecoded:
                 raise UnknownEvent("Log contains undecodable event")
             event = {
                 "name": None,
                 "topics": topics,
-                "data": HexBytes(item["data"]).hex(),
+                "data": _0xstring(item["data"]),
                 "decoded": False,
                 "address": to_checksum_address(item["address"]),
             }
@@ -265,14 +265,14 @@ def decode_traceTransaction(
             offset = int(step["stack"][-1], 16)
             length = int(step["stack"][-2], 16)
             topic_len = int(step["op"][-1])
-            topics = [HexBytes(i).hex() for i in step["stack"][-3 : -3 - topic_len : -1]]
+            topics = [_0xstring(i) for i in step["stack"][-3 : -3 - topic_len : -1]]
         except KeyError:
             raise StructLogError("StructLog has no stack")
         except (IndexError, TypeError):
             raise StructLogError("Malformed stack")
 
         try:
-            data = HexBytes("".join(step["memory"]))[offset : offset + length].hex()
+            data = _0xstring(HexBytes("".join(step["memory"]))[offset : offset + length].hex())
         except (KeyError, TypeError):
             raise StructLogError("Malformed memory")
 
@@ -296,6 +296,11 @@ def decode_traceTransaction(
         events.append(result)
 
     return events
+
+
+def _0xstring(value: bytes) -> str:
+    # prepend bytes with 0x to avoid a breaking change from HexBytes v1
+    return f"0x{HexBytes(value).hex()}"
 
 
 def _params(abi_params: List) -> List:
@@ -345,10 +350,10 @@ def _decode(inputs: List, topics: List, data: str) -> List:
 
     if unindexed_types and data == "0x":
         length = len(unindexed_types) * 32
-        data = f"0x{bytes(length).hex()}"
+        data = _0xstring(length)
 
     try:
-        decoded = list(decode_abi(unindexed_types, HexBytes(data)))[::-1]
+        decoded = list(eth_abi.decode(unindexed_types, HexBytes(data)))[::-1]
     except InsufficientDataBytes:
         raise EventError("Event data has insufficient length")
     except NonEmptyPaddingBytes:
@@ -368,17 +373,16 @@ def _decode(inputs: List, topics: List, data: str) -> List:
         if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
             try:
-                value = decode_single(i["type"], encoded)
+                value = eth_abi.decode([i["type"]], encoded)[0]
             except (InsufficientDataBytes, NoEntriesFound, OverflowError):
                 # an array or other data type that uses multiple slots
-                result[-1].update({"value": encoded.hex(), "decoded": False})
+                result[-1].update({"value": _0xstring(encoded), "decoded": False})
                 continue
         else:
             value = decoded.pop()
 
         if isinstance(value, bytes):
-            # converting to `HexBytes` first ensures the leading `0x`
-            value = HexBytes(value).hex()
+            value = _0xstring(value)
         result[-1].update({"value": value, "decoded": True})
 
     return result
