@@ -54,6 +54,9 @@ The public API is well documented within the docstrings. The following example m
         {'name': 'to', 'type': 'address', 'value': '0xbd4940951bfa463f8fb6db762e55686f6cfdb73a', 'decoded': True},
         {'name': 'tokens', 'type': 'uint256', 'value': 100, 'decoded': True}
     ],
+    'logIndex': 0,
+    'blockNumber': 0,
+    'transactionIndex': 0
 }]
 
 # decoding a structLog from Geth's debug_traceTransaction endpoint

@@ -50,6 +50,9 @@ def test_decode_logs_no_topic(anon_a_log, topic_map):
             "data": "0x00000000000000000000000066ab6d9362d4f35596279692f0251db635165871",
             "topics": [],
             "decoded": False,
+            "logIndex": 0,
+            "blockNumber": 2,
+            "transactionIndex": 0,
         }
     ]
 
