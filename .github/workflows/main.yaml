@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
-    - name: Setup Python 3.8
-      uses: actions/setup-python@v1
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: '3.10'
 
     - name: Install Tox
       run: pip install tox
@@ -24,7 +24,7 @@ jobs:
     - name: Run Tox
       run: tox -e lint
 
-  py38core:
+  py310core:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -32,26 +32,26 @@ jobs:
         os: [windows-latest, ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
-    - name: Setup Python 3.8
-      uses: actions/setup-python@v1
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: '3.10'
 
     - name: Install Tox
       run: pip install tox
 
     - name: Run Tox
-      run: tox -e py38
+      run: tox -e py310
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
         file: ./coverage.xml
-        fail_ci_if_error: true
+        fail_ci_if_error: false
 
-  py37core:
+  py311core:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -59,26 +59,26 @@ jobs:
         os: [windows-latest, ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
-    - name: Setup Python 3.7
-      uses: actions/setup-python@v1
+    - name: Setup Python 3.11
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.7
+        python-version: '3.11'
 
     - name: Install Tox
       run: pip install tox
 
     - name: Run Tox
-      run: tox -e py37
+      run: tox -e py311
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
         file: ./coverage.xml
-        fail_ci_if_error: true
+        fail_ci_if_error: false
 
-  py36core:
+  py312core:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -86,21 +86,21 @@ jobs:
         os: [windows-latest, ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
-    - name: Setup Python 3.6
-      uses: actions/setup-python@v1
+    - name: Setup Python 3.12
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.6
+        python-version: '3.12'
 
     - name: Install Tox
       run: pip install tox
 
     - name: Run Tox
-      run: tox -e py36
+      run: tox -e py312
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
         file: ./coverage.xml
-        fail_ci_if_error: true
+        fail_ci_if_error: false

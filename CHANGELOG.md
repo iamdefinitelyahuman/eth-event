@@ -6,8 +6,14 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)\
+
+## [1.2.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.4) - 2024-01-31
 ### Added
 - Include `logIndex`, `blockNumber`, `transactionIndex` in decoded event logs
+
+### Fixed
+- Bump dependencies
+- Updates to handle downstream breaking changes
 
 ## [1.2.3](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.3) - 2021-04-16
 ### Fixed
