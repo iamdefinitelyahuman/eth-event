@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="eth-event",
-    version="1.2.3",  # do not edit directly, use bumpversion
+    version="1.2.4",  # do not edit directly, use bumpversion
     license="MIT",
     description="Ethereum event decoder and topic generator",
     long_description=long_description,
@@ -34,8 +34,5 @@ setup(
         "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
     ],
 )
