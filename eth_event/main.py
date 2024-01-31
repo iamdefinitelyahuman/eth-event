@@ -26,7 +26,7 @@ class UnknownEvent(Exception):
     pass
 
 
-ADD_LOG_ENTRIES = ['logIndex', 'blockNumber', 'transactionIndex']
+ADD_LOG_ENTRIES = ["logIndex", "blockNumber", "transactionIndex"]
 
 
 def get_log_topic(event_abi: Dict) -> str:
@@ -211,7 +211,7 @@ def append_additional_log_data(log: Dict, event: Dict, log_entries: List[str]):
 
 
 def decode_traceTransaction(
-        struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: str = None
+    struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: str = None
 ) -> List:
     """
     Extract and decode a list of event logs from a transaction traceback.
