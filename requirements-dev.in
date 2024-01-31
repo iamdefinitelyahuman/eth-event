@@ -1,0 +1,11 @@
+black
+bumpversion
+flake8
+isort
+mypy
+pip-tools
+pytest
+pytest-cov
+tox
+twine
+wheel
