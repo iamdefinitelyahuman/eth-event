@@ -5,7 +5,12 @@ All notable changes to this project are documented in this file.
 This changelog format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)\
+## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+
+## [1.2.5](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.5) - 2024-02-02
+### Fixed
+- Loosen dependencies
+- Revert to `hexbytes<1`
 
 ## [1.2.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.4) - 2024-01-31
 ### Added

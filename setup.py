@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="eth-event",
-    version="1.2.4",  # do not edit directly, use bumpversion
+    version="1.2.5",  # do not edit directly, use bumpversion
     license="MIT",
     description="Ethereum event decoder and topic generator",
     long_description=long_description,
@@ -23,10 +23,10 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     python_requires=">=3.6, <4",
     install_requires=[
-        "eth-abi>=5,<6",
+        "eth-abi>=4,<6",
         "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
-        "eth-utils>=3,<4",
-        "hexbytes>=1,<2",
+        "eth-utils>=2,<4",
+        "hexbytes<1",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
