@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements-dev.in
 #
-black==24.1.1
+black==24.3.0
     # via -r requirements-dev.in
 build==1.0.3
     # via pip-tools
