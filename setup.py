@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="eth-event",
-    version="1.2.5",  # do not edit directly, use bumpversion
+    version="1.2.6",  # do not edit directly, use bumpversion
     license="MIT",
     description="Ethereum event decoder and topic generator",
     long_description=long_description,
