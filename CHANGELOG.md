@@ -6,6 +6,8 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+### Changed
+- Replace eth_utils.to_checksum_address with cchecksum.to_checksum_address for ~8x faster checksumming
 
 ## [1.2.6](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.6) - 2025-04-20
 ### Fixed
