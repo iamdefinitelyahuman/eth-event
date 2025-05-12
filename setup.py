@@ -23,6 +23,7 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     python_requires=">=3.6, <4",
     install_requires=[
+        "cchecksum>=0.2.6,<0.3",
         "eth-abi>=4,<6",
         "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
         "eth-utils>=2,<4",
