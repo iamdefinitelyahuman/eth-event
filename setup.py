@@ -26,7 +26,6 @@ setup(
         "cchecksum>=0.2.6,<0.3",
         "eth-abi>=4,<6",
         "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
-        "eth-utils>=2,<4",
         "hexbytes<1",
     ],
     classifiers=[
