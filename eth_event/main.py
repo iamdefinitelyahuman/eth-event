@@ -135,7 +135,7 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
     if not log_topics:
         raise EventError("Cannot decode an anonymous event")
 
-    topic0, *topics = log_topics
+    topic0, *data_topics = log_topics
     key = _0xstring(topic0)
     if key not in topic_map:
         raise UnknownEvent("Event topic is not present in given ABI")
@@ -144,7 +144,7 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
     try:
         event = {
             "name": abi["name"],
-            "data": _decode(abi["inputs"], topics, log["data"]),
+            "data": _decode(abi["inputs"], data_topics, log["data"]),
             "decoded": True,
             "address": to_checksum_address(log["address"]),
         }
