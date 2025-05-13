@@ -4,6 +4,7 @@ import re
 from typing import Dict, List
 
 import eth_abi
+from cchecksum import to_checksum_address
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 
 try:
@@ -12,7 +13,6 @@ except ImportError:
     # Define a stub exception for older eth-abi versions
     InvalidPointer = type("InvalidPointer", (Exception,), {})
 from eth_hash.auto import keccak
-from eth_utils import to_checksum_address
 from hexbytes import HexBytes
 
 
