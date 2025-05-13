@@ -382,7 +382,7 @@ def _decode(inputs: List, topics: List, data: str) -> List:
             encoded = HexBytes(topics.pop())
             try:
                 value = eth_abi.decode([i["type"]], encoded)[0]
-            except (InsufficientDataBytes, NoEntriesFound, OverflowError):
+            except (InsufficientDataBytes, NoEntriesFound, OverflowError, InvalidPointer):
                 # an array or other data type that uses multiple slots
                 result[-1].update({"value": _0xstring(encoded), "decoded": False})
                 continue
