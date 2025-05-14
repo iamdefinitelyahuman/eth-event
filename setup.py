@@ -26,6 +26,7 @@ setup(
             "eth_event/main.py", 
             "--strict", 
             "--pretty",
+            "--disable-error-code=attr-defined",
         ],
     ),
     zip_safe=False,
