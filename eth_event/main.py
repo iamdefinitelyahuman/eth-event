@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 
 import re
-from typing import Dict, Final, List, final
+from typing import Dict, Final, List, Optional, final
 
 import cchecksum
 import eth_abi
 import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
+from eth_typing import ChecksumAddress
 
 from .conditional_imports import InvalidPointer
 
@@ -38,7 +39,7 @@ HexBytes: Final = hexbytes.HexBytes
 
 to_checksum_address: Final = cchecksum.to_checksum_address
 keccak: Final = auto.keccak
-_tuple_match: Final = re.compile(r"tuple(\[(\d*)\])?")
+_tuple_match: Final = re.compile(r"tuple(\[(\d*)\])?").match
 
 
 def get_log_topic(event_abi: Dict) -> str:  # type: ignore [type-arg]
@@ -217,7 +218,7 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
     return events
 
 
-def _append_additional_log_data(log: Dict, event: Dict):  # type: ignore [type-arg]
+def _append_additional_log_data(log: Dict, event: Dict) -> Dict:  # type: ignore [type-arg]
     for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
             event[log_entry] = log[log_entry]
@@ -225,7 +226,7 @@ def _append_additional_log_data(log: Dict, event: Dict):  # type: ignore [type-a
 
 
 def decode_traceTransaction(
-    struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: str = None  # type: ignore [type-arg]
+    struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: Optional[str] = None  # type: ignore [type-arg]
 ) -> List:  # type: ignore [type-arg]
     """
     Extract and decode a list of event logs from a transaction traceback.
@@ -249,9 +250,11 @@ def decode_traceTransaction(
     List
         A list of decoded events, formatted in the same structure as `decode_log`
     """
+    address_list: List[Optional[ChecksumAddress]]
+    
     events = []
     if initial_address is not None:
-        address_list: List = [to_checksum_address(initial_address)]
+        address_list = [to_checksum_address(initial_address)]
     else:
         address_list = [None]
 
@@ -350,7 +353,7 @@ def _decode(inputs: List, topics: List, data: str) -> List:  # type: ignore [typ
         unindexed_types = inputs
 
     else:
-        topics_len = len(topics)
+        len_topics = len(topics)
         if indexed_count < len_topics:
             raise EventError(
                 "Event log does not contain enough topics for the given ABI - this"
@@ -402,7 +405,7 @@ def _decode(inputs: List, topics: List, data: str) -> List:  # type: ignore [typ
             except (InsufficientDataBytes, NoEntriesFound, OverflowError, InvalidPointer):
                 # an array or other data type that uses multiple slots
                 element.update({"value": _0xstring(encoded), "decoded": False})
-                result.append(decoded)
+                result.append(element)
                 continue
         else:
             value = decoded.pop()
