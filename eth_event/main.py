@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import re
-from typing import Dict, Final, List, Optional, final
+from typing import Any, Dict, Final, List, Optional, final
 
 import cchecksum
 import eth_abi
@@ -306,7 +306,7 @@ def decode_traceTransaction(
                 "address": address_list[-1],
             }
         else:
-            topic0, data_topics = topics
+            topic0, *data_topics = topics
             topic0_map = topic_map[topic0]
             result = {
                 "name": topic0_map["name"],
@@ -319,7 +319,7 @@ def decode_traceTransaction(
     return events
 
 
-def _0xstring(value: bytes) -> str:
+def _0xstring(value: Any) -> str:
     # placeholder, will be used to prepend bytes with 0x to avoid HexBytes v1 breaking change
     return f"{HexBytes(value).hex()}"
 
