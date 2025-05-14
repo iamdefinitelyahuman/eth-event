@@ -41,7 +41,7 @@ keccak: Final = auto.keccak
 _tuple_match: Final = re.compile(r"tuple(\[(\d*)\])?")
 
 
-def get_log_topic(event_abi: Dict) -> str:
+def get_log_topic(event_abi: Dict) -> str:  # type: ignore [type-arg]
     """
     Generate an encoded event topic for an event.
 
@@ -66,7 +66,7 @@ def get_log_topic(event_abi: Dict) -> str:
     return _0xstring(keccak(key))
 
 
-def get_topic_map(abi: List) -> Dict:
+def get_topic_map(abi: List) -> Dict:  # type: ignore [type-arg]
     """
     Generate a dictionary of event topics from an ABI.
 
@@ -100,7 +100,7 @@ def get_topic_map(abi: List) -> Dict:
         raise ABIError("Invalid ABI")
 
 
-def decode_log(log: Dict, topic_map: Dict) -> Dict:
+def decode_log(log: Dict, topic_map: Dict) -> Dict:  # type: ignore [type-arg]
     """
     Decode a single event log from a transaction receipt.
 
@@ -160,7 +160,7 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
         raise EventError("Invalid event")
 
 
-def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> List:
+def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> List:  # type: ignore [type-arg]
     """
     Decode a list of event logs from a transaction receipt.
 
@@ -217,7 +217,7 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
     return events
 
 
-def _append_additional_log_data(log: Dict, event: Dict):
+def _append_additional_log_data(log: Dict, event: Dict):  # type: ignore [type-arg]
     for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
             event[log_entry] = log[log_entry]
@@ -225,8 +225,8 @@ def _append_additional_log_data(log: Dict, event: Dict):
 
 
 def decode_traceTransaction(
-    struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: str = None
-) -> List:
+    struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: str = None  # type: ignore [type-arg]
+) -> List:  # type: ignore [type-arg]
     """
     Extract and decode a list of event logs from a transaction traceback.
 
@@ -321,7 +321,7 @@ def _0xstring(value: bytes) -> str:
     return f"{HexBytes(value).hex()}"
 
 
-def _params(abi_params: List) -> List:
+def _params(abi_params: List) -> List:  # type: ignore [type-arg]
     types = []
     # regex with 2 capturing groups
     # first group captures whether this is an array tuple
@@ -338,7 +338,7 @@ def _params(abi_params: List) -> List:
     return types
 
 
-def _decode(inputs: List, topics: List, data: str) -> List:
+def _decode(inputs: List, topics: List, data: str) -> List:  # type: ignore [type-arg]
     indexed_count = 0
     for i in inputs:
         if i["indexed"]:
