@@ -3,36 +3,42 @@
 import re
 from typing import Dict, List
 
+import cchecksum
 import eth_abi
-from cchecksum import to_checksum_address
-from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
+import hexbytes
+from eth_abi import exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
+from eth_hash import auto
 
-try:
-    from eth_abi.exceptions import InvalidPointer
-except ImportError:
-    # Define a stub exception for older eth-abi versions
-    InvalidPointer = type("InvalidPointer", (Exception,), {})
-from eth_hash.auto import keccak
-from hexbytes import HexBytes
+from .conditional_imports import InvalidPointer
 
 
+@final
 class ABIError(Exception):
     pass
 
 
+@final
 class EventError(Exception):
     pass
 
 
+@final
 class StructLogError(Exception):
     pass
 
 
+@final
 class UnknownEvent(Exception):
     pass
 
 
-ADD_LOG_ENTRIES = ["logIndex", "blockNumber", "transactionIndex"]
+ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
+
+HexBytes: Final = hexbytes.HexBytes
+
+to_checksum_address: Final = cchecksum.to_checksum_address
+keccak: Final = auto.keccak
+_tuple_match: Final = re.compile(r"tuple(\[(\d*)\])?")
 
 
 def get_log_topic(event_abi: Dict) -> str:
@@ -148,7 +154,7 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:
             "decoded": True,
             "address": to_checksum_address(log["address"]),
         }
-        event = append_additional_log_data(log, event, ADD_LOG_ENTRIES)
+        event = _append_additional_log_data(log, event)
         return event
     except (KeyError, TypeError):
         raise EventError("Invalid event")
@@ -202,7 +208,7 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
                 "decoded": False,
                 "address": to_checksum_address(item["address"]),
             }
-            event = append_additional_log_data(item, event, ADD_LOG_ENTRIES)
+            event = _append_additional_log_data(item, event)
         else:
             event = decode_log(item, topic_map)
 
@@ -211,8 +217,8 @@ def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> L
     return events
 
 
-def append_additional_log_data(log: Dict, event: Dict, log_entries: List[str]):
-    for log_entry in log_entries:
+def _append_additional_log_data(log: Dict, event: Dict):
+    for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
             event[log_entry] = log[log_entry]
     return event
@@ -297,9 +303,11 @@ def decode_traceTransaction(
                 "address": address_list[-1],
             }
         else:
+            topic0, data_topics = topics
+            topic0_map = topic_map[topic0]
             result = {
-                "name": topic_map[topics[0]]["name"],
-                "data": _decode(topic_map[topics[0]]["inputs"], topics[1:], data),
+                "name": topic0_map["name"],
+                "data": _decode(topic0_map["inputs"], data_topics, data),
                 "decoded": True,
                 "address": address_list[-1],
             }
@@ -318,21 +326,23 @@ def _params(abi_params: List) -> List:
     # regex with 2 capturing groups
     # first group captures whether this is an array tuple
     # second group captures the size if this is a fixed size tuple
-    pattern = re.compile(r"tuple(\[(\d*)\])?")
     for i in abi_params:
-        tuple_match = pattern.match(i["type"])
-        if tuple_match:
+        i_type = i["type"]
+        if tuple_match := _tuple_match(i_type):
             _array, _size = tuple_match.group(1, 2)  # unpack the captured info
             tuple_type_tail = f"[{_size}]" if _array is not None else ""
             types.append(f"({','.join(x for x in _params(i['components']))}){tuple_type_tail}")
             continue
-        types.append(i["type"])
+        types.append(i_type)
 
     return types
 
 
 def _decode(inputs: List, topics: List, data: str) -> List:
-    indexed_count = len([i for i in inputs if i["indexed"]])
+    indexed_count = 0
+    for i in inputs:
+        if i["indexed"]:
+            indexed_count += 1
 
     if indexed_count and not topics:
         # special case - if the ABI has indexed values but the log does not,
@@ -340,12 +350,13 @@ def _decode(inputs: List, topics: List, data: str) -> List:
         unindexed_types = inputs
 
     else:
-        if indexed_count < len(topics):
+        topics_len = len(topics)
+        if indexed_count < len_topics:
             raise EventError(
                 "Event log does not contain enough topics for the given ABI - this"
                 " is usually because an event argument is not marked as indexed"
             )
-        if indexed_count > len(topics):
+        if indexed_count > len_topics:
             raise EventError(
                 "Event log contains more topics than expected for the given ABI - this is"
                 " usually because an event argument is incorrectly marked as indexed"
@@ -377,24 +388,29 @@ def _decode(inputs: List, topics: List, data: str) -> List:
     topics = topics[::-1]
     result = []
     for i in inputs:
-        result.append({"name": i["name"], "type": i["type"]})
-
+        i_type = i["type"]
+        
         if "components" in i:
-            result[-1]["components"] = i["components"]
-
+            element = {"name": i["name"], "type": i_type, "components": i["components"]}
+        else
+            element = {"name": i["name"], "type": i_type}
+        
         if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
             try:
-                value = eth_abi.decode([i["type"]], encoded)[0]
+                value = eth_abi.decode([i_type], encoded)[0]
             except (InsufficientDataBytes, NoEntriesFound, OverflowError, InvalidPointer):
                 # an array or other data type that uses multiple slots
-                result[-1].update({"value": _0xstring(encoded), "decoded": False})
+                element.update({"value": _0xstring(encoded), "decoded": False})
+                result.append(decoded)
                 continue
         else:
             value = decoded.pop()
 
         if isinstance(value, bytes):
             value = _0xstring(value)
-        result[-1].update({"value": value, "decoded": True})
+        
+        element.update({"value": value, "decoded": True})
+        result.append(element)
 
     return result
