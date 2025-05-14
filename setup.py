@@ -2,6 +2,9 @@
 
 from setuptools import setup, find_packages
 
+from mypyc.build import mypycify
+
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
@@ -17,7 +20,14 @@ setup(
     url="https://github.com/iamdefinitelyahuman/eth-event",
     include_package_data=True,
     py_modules=["eth_event"],
-    setup_requires=[],
+    ext_modules=mypycify(
+        [
+            "eth_event/__init__.py", 
+            "eth_event/main.py", 
+            "--strict", 
+            "--pretty",
+        ],
+    ),
     zip_safe=False,
     keywords=["ethereum"],
     packages=find_packages(exclude=["tests", "tests.*"]),
