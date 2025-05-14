@@ -6,7 +6,7 @@ from typing import Dict, List
 import cchecksum
 import eth_abi
 import hexbytes
-from eth_abi import exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
+from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
 
 from .conditional_imports import InvalidPointer
