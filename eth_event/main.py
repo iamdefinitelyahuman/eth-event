@@ -392,7 +392,7 @@ def _decode(inputs: List, topics: List, data: str) -> List:
         
         if "components" in i:
             element = {"name": i["name"], "type": i_type, "components": i["components"]}
-        else
+        else:
             element = {"name": i["name"], "type": i_type}
         
         if topics and i["indexed"]:
