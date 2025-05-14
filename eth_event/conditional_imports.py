@@ -6,3 +6,6 @@ try:
 except ImportError:
     # Define a stub exception for older eth-abi versions
     InvalidPointer: Type[Exception] = type("InvalidPointer", (Exception,), {})
+
+
+__all__ = ["InvalidPointer"]
