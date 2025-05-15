@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import re
-from typing import Any, Dict, Final, List, Literal, Optional, TypedDict, TypeVar, Union, final, overload
+from typing import Any, Dict, Final, List, Literal, Optional, TypedDict, Union, final, overload
 
 import cchecksum
 import eth_abi
@@ -52,7 +52,6 @@ class NonDecodedEvent(TypedDict, total=False):
 
 Event = Union[DecodedEvent, NonDecodedEvent]
 
-_E = TypeVar("_E", bound=Event)
 
 ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
 
@@ -184,7 +183,7 @@ def decode_log(log: Dict[str, Any], topic_map: TopicMap) -> Event:
             "decoded": True,
             "address": to_checksum_address(log["address"]),
         }
-        event = _append_additional_log_data(log, event)
+        _append_additional_log_data(log, event)
         return event
     except (KeyError, TypeError):
         raise EventError("Invalid event")
@@ -248,17 +247,16 @@ def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) 
                 "decoded": False,
                 "address": to_checksum_address(item["address"]),
             }
-            event = _append_additional_log_data(item, event)
+            _append_additional_log_data(item, event)
             events.append(event)            
 
     return events
 
 
-def _append_additional_log_data(log: Dict[str, Any], event: _E) -> _E:
+def _append_additional_log_data(log: Dict[str, Any], event: Event) -> None:
     for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
             event[log_entry] = log[log_entry]
-    return event
 
 
 def decode_traceTransaction(
