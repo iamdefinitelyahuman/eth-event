@@ -33,6 +33,15 @@ class UnknownEvent(Exception):
     pass
 
 
+@final
+class EventData(TypedDict):
+    name: Optional[str]
+    topics: List[HexStr]
+    data: Any  # TODO: specify this
+    decoded: bool
+    address: Optional[ChecksumAddress]
+
+
 ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
 
 HexBytes: Final = hexbytes.HexBytes
@@ -109,7 +118,7 @@ def get_topic_map(abi: List) -> TopicMap:  # type: ignore [type-arg]
         raise ABIError("Invalid ABI")
 
 
-def decode_log(log: Dict, topic_map: TopicMap) -> Dict:  # type: ignore [type-arg]
+def decode_log(log: Dict, topic_map: TopicMap) -> EventData:  # type: ignore [type-arg]
     """
     Decode a single event log from a transaction receipt.
 
@@ -169,7 +178,7 @@ def decode_log(log: Dict, topic_map: TopicMap) -> Dict:  # type: ignore [type-ar
         raise EventError("Invalid event")
 
 
-def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) -> List:  # type: ignore [type-arg]
+def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) -> List[EventData]:  # type: ignore [type-arg]
     """
     Decode a list of event logs from a transaction receipt.
 
@@ -231,14 +240,6 @@ def _append_additional_log_data(log: Dict, event: Dict) -> Dict:  # type: ignore
         if log_entry in log:
             event[log_entry] = log[log_entry]
     return event
-
-
-class EventData(TypedDict):
-    name: Optional[str]
-    topics: List[HexStr]
-    data: Any  # TODO: specify this
-    decoded: bool
-    address: Optional[ChecksumAddress]
 
 
 def decode_traceTransaction(
@@ -310,8 +311,6 @@ def decode_traceTransaction(
             data = _0xstring(HexBytes("".join(step["memory"]))[offset : offset + length].hex())
         except (KeyError, TypeError):
             raise StructLogError("Malformed memory")
-
-        result: EventData
 
         if not topics or topics[0] not in topic_map:
             if not allow_undecoded:
