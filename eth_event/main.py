@@ -304,13 +304,16 @@ def decode_traceTransaction(
     """
     address_list: List[Optional[ChecksumAddress]]
     
+    # we loosely cache the results to save time during processing
+    # but discard the cache after each batch of logs is processed
+    to_checksum_address_cached = lru_cache(to_checksum_address)
+    
     events: List[Event] = []
     if initial_address is not None:
-        address_list = [to_checksum_address(initial_address)]
+        address_list = [to_checksum_address_cached(initial_address)]
     else:
         address_list = [None]
 
-    checksum = lru_cache(to_checksum_address)
 
     last_step = struct_logs[0]
     for i in range(1, len(struct_logs)):
@@ -319,10 +322,10 @@ def decode_traceTransaction(
             if step["depth"] > last_step["depth"]:
                 if last_step["op"] in ("CREATE", "CREATE2"):
                     out_step = next(x for x in struct_logs[i:] if x["depth"] == last_step["depth"])
-                    address = to_checksum_address(f"0x{out_step['stack'][-1][-40:]}")
+                    address = to_checksum_address_cached(f"0x{out_step['stack'][-1][-40:]}")
                     address_list.append(address)
                 else:
-                    address = to_checksum_address(f"0x{last_step['stack'][-2][-40:]}")
+                    address = to_checksum_address_cached(f"0x{last_step['stack'][-2][-40:]}")
                     address_list.append(address)
 
             elif step["depth"] < last_step["depth"]:
