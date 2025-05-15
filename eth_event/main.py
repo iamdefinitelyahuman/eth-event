@@ -92,6 +92,7 @@ class TopicMapData(TypedDict):
     inputs: List[Dict[str, Any]]
 
 
+# must use Mapping instead of Dict because brownie will pass in AttributeDicts
 TopicMap = Mapping[HexStr, TopicMapData]
 
 
