@@ -52,6 +52,7 @@ class NonDecodedEvent(TypedDict):
 
 Event = Union[DecodedEvent, NonDecodedEvent]
 
+_E = TypeVar("_E", bound=Event)
 
 ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
 
@@ -254,7 +255,7 @@ def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) 
     return events
 
 
-def _append_additional_log_data(log: Dict, event: Dict) -> Dict:  # type: ignore [type-arg]
+def _append_additional_log_data(log: Dict[str, Any], event: _E) -> _E:
     for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
             event[log_entry] = log[log_entry]
