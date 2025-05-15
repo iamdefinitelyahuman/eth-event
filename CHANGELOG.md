@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.7](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.7) - 2025-05-13
 ### Changed
+- Compiled eth-event to C for blazing fast decoding
 - Replace `eth_utils.to_checksum_address` with `cchecksum.to_checksum_address` for ~8x faster checksumming
 
 ### Fixed
