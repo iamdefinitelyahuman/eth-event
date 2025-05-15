@@ -378,7 +378,7 @@ def _params(abi_params: List) -> List:  # type: ignore [type-arg]
     return types
 
 
-def _decode(inputs: List, topics: List, data: str) -> List:  # type: ignore [type-arg]
+def _decode(inputs: List, topics: List, data: Any) -> List:  # type: ignore [type-arg]
     indexed_count = 0
     for i in inputs:
         if i["indexed"]:
