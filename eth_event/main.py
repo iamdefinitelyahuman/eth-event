@@ -149,8 +149,8 @@ def get_topic_map(abi: List) -> Dict[HexStr, TopicMapData]:  # type: ignore [typ
 
 
 def decode_log(
-    log: Mapping[str, Any], 
-    topic_map: TopicMap, 
+    log: Mapping[str, Any],
+    topic_map: TopicMap,
     __checksum_func: Callable[[HexAddress], ChecksumAddress] = to_checksum_address,
 ) -> Event:
     """
@@ -320,17 +320,16 @@ def decode_traceTransaction(
         A list of decoded events, formatted in the same structure as `decode_log`
     """
     address_list: List[Optional[ChecksumAddress]]
-    
+
     # we loosely cache the results to save time during processing
     # but discard the cache after each batch of logs is processed
     to_checksum_address_cached = lru_cache(to_checksum_address)
-    
+
     events: List[Event] = []
     if initial_address is not None:
         address_list = [to_checksum_address_cached(initial_address)]
     else:
         address_list = [None]
-
 
     last_step = struct_logs[0]
     for i in range(1, len(struct_logs)):
