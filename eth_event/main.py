@@ -339,7 +339,7 @@ def decode_traceTransaction(
                 "topics": topics,
                 "data": data,
                 "decoded": False,
-                "address": address_list[-1],
+                "address": address_list[-1],  # type: ignore [typeddict-item]
             }
             events.append(non_decoded)
         else:
@@ -349,7 +349,7 @@ def decode_traceTransaction(
                 "name": topic0_map["name"],
                 "data": _decode(topic0_map["inputs"], data_topics, data),
                 "decoded": True,
-                "address": address_list[-1],
+                "address": address_list[-1],  # type: ignore [typeddict-item]
             }
             events.append(decoded)
 
