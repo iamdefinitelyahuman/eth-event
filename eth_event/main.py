@@ -254,7 +254,7 @@ def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undeco
     for item in logs:
         topics = [_0xstring(i) for i in item["topics"]]
         if topics and topics[0] in topic_map:
-            events.append(decode_log(item, topic_map, checksum))
+            events.append(decode_log(item, topic_map, to_checksum_address_cached))
         elif not allow_undecoded:
             raise UnknownEvent("Log contains undecodable event")
         else:
