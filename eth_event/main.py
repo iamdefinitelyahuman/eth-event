@@ -222,7 +222,7 @@ def decode_logs(
     return events
 
 
-def _append_additional_log_data(log: Dict, event: Dict) -> Dict:  # type: ignore [type-arg]
+def _append_additional_log_data(log: Mapping[str, Any], event: Dict) -> Dict:  # type: ignore [type-arg]
     for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
             event[log_entry] = log[log_entry]
@@ -302,6 +302,8 @@ def decode_traceTransaction(
         except (KeyError, TypeError):
             raise StructLogError("Malformed memory")
 
+        result: Dict[str, Any]
+        
         if not topics or topics[0] not in topic_map:
             if not allow_undecoded:
                 raise UnknownEvent("Log contains undecodable event")
@@ -348,7 +350,7 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
     return types
 
 
-def _decode(inputs: List[Dict[str, Any]], topics: List[str], data: str) -> List[Dict[str, Any]]:
+def _decode(inputs: List, topics: List[str], data: str) -> List[Dict[str, Any]]:
     indexed_count = 0
     for i in inputs:
         if i["indexed"]:
