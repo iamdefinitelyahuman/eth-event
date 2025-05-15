@@ -198,7 +198,7 @@ def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undeco
 def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[False]) -> List[Event]:
     ...
 
-def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:
+def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:  # type: ignore [misc]
     """
     Decode a list of event logs from a transaction receipt.
 
