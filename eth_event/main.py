@@ -2,14 +2,14 @@
 
 import functools
 import re
-from typing import Any, Dict, Final, List, Literal, Mapping, Optional, TypedDict, Union, final, overload
+from typing import Any, Callable, Dict, Final, List, Literal, Mapping, Optional, TypedDict, Union, final, overload
 
 import cchecksum
 import eth_abi
 import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
-from eth_typing import ChecksumAddress, HexStr
+from eth_typing import ChecksumAddress, HexAddress, HexStr
 
 from .conditional_imports import InvalidPointer
 
