@@ -335,23 +335,24 @@ def decode_traceTransaction(
         if not topics or topics[0] not in topic_map:
             if not allow_undecoded:
                 raise UnknownEvent("Log contains undecodable event")
-            result = {
+            non_decoded: NonDecodedEvent = {
                 "name": None,
                 "topics": topics,
                 "data": data,
                 "decoded": False,
                 "address": address_list[-1],
             }
+            events.append(non_decoded)
         else:
             topic0, *data_topics = topics
             topic0_map = topic_map[topic0]
-            result = {
+            decoded: DecodedEvent = {
                 "name": topic0_map["name"],
                 "data": _decode(topic0_map["inputs"], data_topics, data),
                 "decoded": True,
                 "address": address_list[-1],
             }
-        events.append(result)
+            events.append(decoded)
 
     return events
 
