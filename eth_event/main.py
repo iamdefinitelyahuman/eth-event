@@ -232,7 +232,7 @@ def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) 
     List
         A list of decoded events, formatted in the same structure as `decode_log`
     """
-    events = []
+    events: List[Event] = []
 
     for item in logs:
         topics = [_0xstring(i) for i in item["topics"]]
@@ -289,7 +289,7 @@ def decode_traceTransaction(
     """
     address_list: List[Optional[ChecksumAddress]]
     
-    events = []
+    events: List[Event] = []
     if initial_address is not None:
         address_list = [to_checksum_address(initial_address)]
     else:
