@@ -42,7 +42,7 @@ keccak: Final = auto.keccak
 _tuple_match: Final = re.compile(r"tuple(\[(\d*)\])?").match
 
 
-def get_log_topic(event_abi: Dict) -> str:  # type: ignore [type-arg]
+def get_log_topic(event_abi: Dict[str, Any]) -> str:
     """
     Generate an encoded event topic for an event.
 
