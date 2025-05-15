@@ -1,8 +1,28 @@
 #!/usr/bin/python3
 
+import platform
 from setuptools import setup, find_packages
 
-from mypyc.build import mypycify
+if platform.python_implementation() != "CPython":
+    # We only compile this library for CPython, other implementations will use it as normal interpreted python code
+    ext_modules = []
+else:
+    try:
+        from mypyc.build import mypycify
+    except ImportError:
+        ext_modules = []
+    else:
+        ext_modules = mypycify(
+            [
+                "eth_event/__init__.py", 
+                "eth_event/main.py", 
+                "--strict", 
+                "--pretty",
+                "--disable-error-code=attr-defined",
+                "--disable-error-code=typeddict-unknown-key",
+                "--disable-error-code=unused-ignore",
+            ],
+        )
 
 
 with open("README.md", "r") as fh:
@@ -20,17 +40,7 @@ setup(
     url="https://github.com/iamdefinitelyahuman/eth-event",
     include_package_data=True,
     py_modules=["eth_event"],
-    ext_modules=mypycify(
-        [
-            "eth_event/__init__.py", 
-            "eth_event/main.py", 
-            "--strict", 
-            "--pretty",
-            "--disable-error-code=attr-defined",
-            "--disable-error-code=typeddict-unknown-key",
-            "--disable-error-code=unused-ignore",
-        ],
-    ),
+    ext_modules=ext_modules,
     zip_safe=False,
     keywords=["ethereum"],
     packages=find_packages(exclude=["tests", "tests.*"]),
