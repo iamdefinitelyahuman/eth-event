@@ -6,6 +6,8 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+
+## [1.2.8](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.2.8) - 2025-05-15
 ### Changed
 - Compiled eth-event to C for blazing fast decoding
 
