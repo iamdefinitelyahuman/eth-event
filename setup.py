@@ -3,6 +3,7 @@
 import platform
 from setuptools import setup, find_packages
 
+
 if platform.python_implementation() != "CPython":
     # We only compile this library for CPython, other implementations will use it as normal interpreted python code
     ext_modules = []
