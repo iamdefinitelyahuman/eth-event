@@ -45,6 +45,7 @@ setup(
     zip_safe=False,
     keywords=["ethereum"],
     packages=find_packages(exclude=["tests", "tests.*"]),
+    package_data={"eth_event": ["py.typed"]},
     python_requires=">=3.8,<4",
     install_requires=[
         "cchecksum>=0.2.6,<0.3",
