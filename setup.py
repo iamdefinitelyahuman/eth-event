@@ -21,7 +21,7 @@ setup(
     zip_safe=False,
     keywords=["ethereum"],
     packages=find_packages(exclude=["tests", "tests.*"]),
-    python_requires=">=3.6, <4",
+    python_requires=">=3.8,<4",
     install_requires=[
         "cchecksum>=0.2.6,<0.3",
         "eth-abi>=4,<6",
