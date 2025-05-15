@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import re
-from typing import Any, Dict, Final, List, Optional, TypedDict, final
+from typing import Any, Dict, Final, List, Literal, Optional, TypedDict, Union, final, overload
 
 import cchecksum
 import eth_abi
@@ -34,12 +34,23 @@ class UnknownEvent(Exception):
 
 
 @final
-class EventData(TypedDict):
-    name: Optional[str]
+class DecodedEvent(TypedDict):
+    name: str
+    data: List[Dict[str, Any]]
+    decoded: Literal[True]
+    address: ChecksumAddress
+
+
+@final
+class NonDecodedEvent(TypedDict):
+    name: None
     topics: List[HexStr]
-    data: Any  # TODO: specify this
-    decoded: bool
-    address: Optional[ChecksumAddress]
+    data: HexStr
+    decoded: Literal[False]
+    address: ChecksumAddress
+
+
+Event = Union[DecodedEvent, NonDecodedEvent]
 
 
 ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
@@ -118,7 +129,7 @@ def get_topic_map(abi: List) -> TopicMap:  # type: ignore [type-arg]
         raise ABIError("Invalid ABI")
 
 
-def decode_log(log: Dict, topic_map: TopicMap) -> EventData:  # type: ignore [type-arg]
+def decode_log(log: Dict[str, Any], topic_map: TopicMap) -> Event:
     """
     Decode a single event log from a transaction receipt.
 
@@ -178,7 +189,15 @@ def decode_log(log: Dict, topic_map: TopicMap) -> EventData:  # type: ignore [ty
         raise EventError("Invalid event")
 
 
-def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) -> List[EventData]:  # type: ignore [type-arg]
+@overload
+def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: Literal[True]) -> List[DecodedEvent]:  # type: ignore [type-arg]
+    ...
+
+@overload
+def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: Literal[False]) -> List[Event]:  # type: ignore [type-arg]
+    ...
+
+def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:  # type: ignore [type-arg]
     """
     Decode a list of event logs from a transaction receipt.
 
@@ -244,7 +263,7 @@ def _append_additional_log_data(log: Dict, event: Dict) -> Dict:  # type: ignore
 
 def decode_traceTransaction(
     struct_logs: List, topic_map: TopicMap, allow_undecoded: bool = False, initial_address: Optional[str] = None  # type: ignore [type-arg]
-) -> List[EventData]:
+) -> List[Event]:
     """
     Extract and decode a list of event logs from a transaction traceback.
 
