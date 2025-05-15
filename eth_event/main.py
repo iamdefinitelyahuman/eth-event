@@ -327,9 +327,9 @@ def decode_traceTransaction(
     return events
 
 
-def _0xstring(value: Any) -> str:
+def _0xstring(value: Any) -> HexStr:
     # placeholder, will be used to prepend bytes with 0x to avoid HexBytes v1 breaking change
-    return f"{HexBytes(value).hex()}"
+    return f"{HexBytes(value).hex()}"  # type: ignore [return-value]
 
 
 def _params(abi_params: List) -> List:  # type: ignore [type-arg]
