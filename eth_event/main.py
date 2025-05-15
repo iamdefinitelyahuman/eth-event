@@ -249,7 +249,7 @@ def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undeco
 
     # we loosely cache the results to save time during processing
     # but discard the cache after each batch of logs is processed
-    checksum = lru_cache(to_checksum_address)
+    to_checksum_address_cached = lru_cache(to_checksum_address)
 
     for item in logs:
         topics = [_0xstring(i) for i in item["topics"]]
@@ -263,7 +263,7 @@ def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undeco
                 "topics": topics,
                 "data": _0xstring(item["data"]),
                 "decoded": False,
-                "address": checksum(item["address"]),
+                "address": to_checksum_address_cached(item["address"]),
             }
             _append_additional_log_data(item, event)
             events.append(event)            
