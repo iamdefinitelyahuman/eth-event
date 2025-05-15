@@ -30,25 +30,35 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-        pyversion: [ "3.6.15", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
+        system: [windows, ubuntu, macos]
+        pyversion: [ "3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
         include: 
-        - pyversion: "3.6.15"
+        - pyversion: "3.6"
+          system: ubuntu
           toxenv: "py36"
+          os: ubuntu-20.04
         - pyversion: "3.7"
-          toxenv: "py37"
+          system: ubuntu
+          toxenv: "py36"
+          os: ubuntu-20.04
         - pyversion: "3.8"
           toxenv: "py38"
+          os: ${{ matrix.system }}-latest
         - pyversion: "3.9"
           toxenv: "py39"
+          os: ${{ matrix.system }}-latest
         - pyversion: "3.10"
           toxenv: "py310"
+          os: ${{ matrix.system }}-latest
         - pyversion: "3.11"
           toxenv: "py311"
+          os: ${{ matrix.system }}-latest
         - pyversion: "3.12"
           toxenv: "py312"
+          os: ${{ matrix.system }}-latest
         - pyversion: "3.13"
           toxenv: "py313"
+          os: ${{ matrix.system }}-latest
         exclude:
         # gh runner throws "Error: Version ${{ matrix.pyversion }} with arch arm64 not found"
         - os: macos-latest
