@@ -350,7 +350,7 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
     return types
 
 
-def _decode(inputs: List, topics: List[str], data: str) -> List[Dict[str, Any]]:
+def _decode(inputs: List, topics: List[str], data: str) -> List[Dict[str, Any]]:  # type: ignore [type-arg]
     indexed_count = 0
     for i in inputs:
         if i["indexed"]:
