@@ -92,11 +92,12 @@ class TopicMapData(TypedDict):
     inputs: List[Dict[str, Any]]
 
 
-# must use Mapping instead of Dict because brownie will pass in AttributeDicts
 TopicMap = Mapping[HexStr, TopicMapData]
+# must use Mapping instead of Dict because this change will be breaking if we don't.
+# brownie passes in an AttributeDict not a dict.
 
 
-def get_topic_map(abi: List) -> TopicMap:  # type: ignore [type-arg]
+def get_topic_map(abi: List) -> Dict[HexStr, TopicMapData]:  # type: ignore [type-arg]
     """
     Generate a dictionary of event topics from an ABI.
 
