@@ -24,80 +24,46 @@ jobs:
     - name: Run Tox
       run: tox -e lint
 
-  py310core:
+  core:
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        pyversion: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
+        include: 
+        - pversion: "3.8"
+          toxenv: "py38"
+        - pversion: "3.9"
+          toxenv: "py39"
+        - pversion: "3.10"
+          toxenv: "py310"
+        - pversion: "3.11"
+          toxenv: "py311"
+        - pversion: "3.12"
+          toxenv: "py312"
+        - pversion: "3.13"
+          toxenv: "py313"
+        exclude:
+        # gh runner throws "Error: Version ${{ matrix.pyversion }} with arch arm64 not found"
+        - os: macos-latest
+          pyversion: "3.8"
+        - os: macos-latest
+          pyversion: "3.9"
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Python 3.10
+    - name: Setup Python ${{ matrix.pyversion }}
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: ${{ matrix.pyversion }}
 
     - name: Install Tox
       run: pip install tox
 
     - name: Run Tox
-      run: tox -e py310
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        file: ./coverage.xml
-        fail_ci_if_error: false
-
-  py311core:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Install Tox
-      run: pip install tox
-
-    - name: Run Tox
-      run: tox -e py311
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        file: ./coverage.xml
-        fail_ci_if_error: false
-
-  py312core:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup Python 3.12
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-
-    - name: Install Tox
-      run: pip install tox
-
-    - name: Run Tox
-      run: tox -e py312
+      run: tox -e ${{ matrix.toxenv }}
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
