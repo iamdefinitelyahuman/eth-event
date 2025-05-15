@@ -124,11 +124,13 @@ def get_topic_map(abi: List) -> Dict[HexStr, TopicMapData]:  # type: ignore [typ
         Mapping of contract events.
     """
     try:
-        events = [i for i in abi if i["type"] == "event" and not i.get("anonymous")]
-        return {get_log_topic(i): {"name": i["name"], "inputs": i["inputs"]} for i in events}
-
-    except (KeyError, TypeError):
-        raise ABIError("Invalid ABI")
+        return {
+            get_log_topic(i): {"name": i["name"], "inputs": i["inputs"]}
+            for i in abi
+            if i["type"] == "event" and not i.get("anonymous")
+        }
+    except (KeyError, TypeError) as e:
+        raise ABIError("Invalid ABI") from e
 
 
 def decode_log(log: Mapping[str, Any], topic_map: TopicMap) -> Event:
@@ -188,8 +190,8 @@ def decode_log(log: Mapping[str, Any], topic_map: TopicMap) -> Event:
         }
         _append_additional_log_data(log, event)
         return event
-    except KeyError:
-        raise EventError("Invalid event")
+    except KeyError as e:
+        raise EventError("Invalid event") from e
 
 
 @overload
@@ -322,15 +324,15 @@ def decode_traceTransaction(
             length = int(stack[-2], 16)
             topic_len = int(op[-1])
             topics = [_0xstring(i) for i in stack[-3 : -3 - topic_len : -1]]
-        except KeyError:
-            raise StructLogError("StructLog has no stack")
-        except (IndexError, TypeError):
-            raise StructLogError("Malformed stack")
+        except KeyError as e:
+            raise StructLogError("StructLog has no stack") from e
+        except (IndexError, TypeError) as e:
+            raise StructLogError("Malformed stack") from e
 
         try:
             data = _0xstring(HexBytes("".join(step["memory"]))[offset : offset + length].hex())
-        except (KeyError, TypeError):
-            raise StructLogError("Malformed memory")
+        except (KeyError, TypeError) as e:
+            raise StructLogError("Malformed memory") from e
 
         if not topics or topics[0] not in topic_map:
             if not allow_undecoded:
@@ -407,8 +409,8 @@ def _decode(inputs: List, topics: List, data: Any) -> List:  # type: ignore [typ
     # decode the unindexed event data
     try:
         unindexed_types = _params(unindexed_types)
-    except (KeyError, TypeError):
-        raise ABIError("Invalid ABI")
+    except (KeyError, TypeError) as e:
+        raise ABIError("Invalid ABI") from e
 
     if unindexed_types and data == "0x":
         length = len(unindexed_types) * 32
