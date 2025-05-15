@@ -2,7 +2,20 @@
 
 import functools
 import re
-from typing import Any, Callable, Dict, Final, List, Literal, Mapping, Optional, TypedDict, Union, final, overload
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Final,
+    List,
+    Literal,
+    Mapping,
+    Optional,
+    TypedDict,
+    Union,
+    final,
+    overload,
+)
 
 import cchecksum
 import eth_abi
@@ -187,7 +200,7 @@ def decode_log(
     key = _0xstring(topic0)
     if key not in topic_map:
         raise UnknownEvent("Event topic is not present in given ABI")
-    
+
     abi = topic_map[key]
 
     try:
@@ -204,12 +217,16 @@ def decode_log(
 
 
 @overload
-def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[True]) -> List[DecodedEvent]:
-    ...
+def decode_logs(
+    logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[True]
+) -> List[DecodedEvent]: ...
+
 
 @overload
-def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[False]) -> List[Event]:
-    ...
+def decode_logs(
+    logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[False]
+) -> List[Event]: ...
+
 
 def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:  # type: ignore [misc]
     """
@@ -266,7 +283,7 @@ def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undeco
                 "address": to_checksum_address_cached(item["address"]),
             }
             _append_additional_log_data(item, event)
-            events.append(event)            
+            events.append(event)
 
     return events
 
@@ -450,12 +467,12 @@ def _decode(inputs: List, topics: List, data: Any) -> List:  # type: ignore [typ
     result = []
     for i in inputs:
         i_type = i["type"]
-        
+
         if "components" in i:
             element = {"name": i["name"], "type": i_type, "components": i["components"]}
         else:
             element = {"name": i["name"], "type": i_type}
-        
+
         if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
             try:
@@ -470,7 +487,7 @@ def _decode(inputs: List, topics: List, data: Any) -> List:  # type: ignore [typ
 
         if isinstance(value, bytes):
             value = _0xstring(value)
-        
+
         element.update({"value": value, "decoded": True})
         result.append(element)
 

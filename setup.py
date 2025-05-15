@@ -15,9 +15,9 @@ else:
     else:
         ext_modules = mypycify(
             [
-                "eth_event/__init__.py", 
-                "eth_event/main.py", 
-                "--strict", 
+                "eth_event/__init__.py",
+                "eth_event/main.py",
+                "--strict",
                 "--pretty",
                 "--disable-error-code=attr-defined",
                 "--disable-error-code=typeddict-unknown-key",
