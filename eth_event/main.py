@@ -233,9 +233,17 @@ def _append_additional_log_data(log: Dict, event: Dict) -> Dict:  # type: ignore
     return event
 
 
+class EventData(TypedDict):
+    name: Optional[str]
+    topics: List[HexStr]
+    data: Any  # TODO: specify this
+    decoded: bool
+    address: Optional[ChecksumAddress]
+
+
 def decode_traceTransaction(
     struct_logs: List, topic_map: TopicMap, allow_undecoded: bool = False, initial_address: Optional[str] = None  # type: ignore [type-arg]
-) -> List:  # type: ignore [type-arg]
+) -> List[EventData]:
     """
     Extract and decode a list of event logs from a transaction traceback.
 
@@ -303,6 +311,8 @@ def decode_traceTransaction(
         except (KeyError, TypeError):
             raise StructLogError("Malformed memory")
 
+        result: EventData
+
         if not topics or topics[0] not in topic_map:
             if not allow_undecoded:
                 raise UnknownEvent("Log contains undecodable event")
@@ -329,7 +339,7 @@ def decode_traceTransaction(
 
 def _0xstring(value: Any) -> HexStr:
     # placeholder, will be used to prepend bytes with 0x to avoid HexBytes v1 breaking change
-    return HexBytes(value).hex()
+    return HexBytes(value).hex()  # type: ignore [return-value]
 
 
 def _params(abi_params: List) -> List:  # type: ignore [type-arg]
