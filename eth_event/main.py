@@ -92,7 +92,7 @@ class TopicMapData(TypedDict):
     inputs: List[Dict[str, Any]]
 
 
-TopicMap = Dict[HexStr, TopicMapData]
+TopicMap = Mapping[HexStr, TopicMapData]
 
 
 def get_topic_map(abi: List) -> TopicMap:  # type: ignore [type-arg]
