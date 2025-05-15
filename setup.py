@@ -51,7 +51,7 @@ setup(
         "cchecksum>=0.2.6,<0.3",
         "eth-abi>=4,<6",
         "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
-        "hexbytes<1",
+        "hexbytes>=1,<2",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
