@@ -178,7 +178,7 @@ def decode_log(log: Dict[str, Any], topic_map: TopicMap) -> Event:
     abi = topic_map[key]
 
     try:
-        event = {
+        event: DecodedEvent = {
             "name": abi["name"],
             "data": _decode(abi["inputs"], data_topics, log["data"]),
             "decoded": True,
@@ -236,10 +236,12 @@ def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) 
 
     for item in logs:
         topics = [_0xstring(i) for i in item["topics"]]
-        if not topics or topics[0] not in topic_map:
-            if not allow_undecoded:
-                raise UnknownEvent("Log contains undecodable event")
-            event = {
+        if topics and topics[0] in topic_map:
+            events.append(decode_log(item, topic_map))
+        elif not allow_undecoded:
+            raise UnknownEvent("Log contains undecodable event")
+        else:
+            event: NonDecodedEvent = {
                 "name": None,
                 "topics": topics,
                 "data": _0xstring(item["data"]),
@@ -247,10 +249,7 @@ def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) 
                 "address": to_checksum_address(item["address"]),
             }
             event = _append_additional_log_data(item, event)
-        else:
-            event = decode_log(item, topic_map)
-
-        events.append(event)
+            events.append(event)            
 
     return events
 
