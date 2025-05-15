@@ -48,10 +48,6 @@ jobs:
         exclude:
         # gh runner throws "Error: Version ${{ matrix.pyversion }} with arch arm64 not found"
         - os: macos-latest
-          pyversion: "3.6"
-        - os: macos-latest
-          pyversion: "3.7"
-        - os: macos-latest
           pyversion: "3.8"
         - os: macos-latest
           pyversion: "3.9"
