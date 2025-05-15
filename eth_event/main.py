@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import re
-from typing import Any, Dict, Final, List, Literal, Optional, TypedDict, Union, final, overload
+from typing import Any, Dict, Final, List, Literal, Optional, TypedDict, TypeVar, Union, final, overload
 
 import cchecksum
 import eth_abi
