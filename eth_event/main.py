@@ -34,7 +34,7 @@ class UnknownEvent(Exception):
 
 
 @final
-class DecodedEvent(TypedDict):
+class DecodedEvent(TypedDict, total=False):
     name: str
     data: List[Dict[str, Any]]
     decoded: Literal[True]
@@ -42,7 +42,7 @@ class DecodedEvent(TypedDict):
 
 
 @final
-class NonDecodedEvent(TypedDict):
+class NonDecodedEvent(TypedDict, total=False):
     name: None
     topics: List[HexStr]
     data: HexStr
@@ -198,7 +198,7 @@ def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: Literal[True])
 def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: Literal[False]) -> List[Event]:  # type: ignore [type-arg]
     ...
 
-def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:  # type: ignore [type-arg]
+def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:  # type: ignore [type-arg, misc]
     """
     Decode a list of event logs from a transaction receipt.
 
