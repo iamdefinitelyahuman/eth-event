@@ -146,7 +146,7 @@ wheel==0.42.0
     # via
     #   -r requirements-dev.in
     #   pip-tools
-zipp==3.17.0
+zipp==3.19.1
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
