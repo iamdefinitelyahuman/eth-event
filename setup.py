@@ -27,6 +27,7 @@ setup(
             "--strict", 
             "--pretty",
             "--disable-error-code=attr-defined",
+            "--disable-error-code=unused-ignore",
         ],
     ),
     zip_safe=False,
