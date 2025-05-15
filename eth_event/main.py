@@ -175,6 +175,7 @@ def decode_log(log: Mapping[str, Any], topic_map: TopicMap) -> Event:
     key = _0xstring(topic0)
     if key not in topic_map:
         raise UnknownEvent("Event topic is not present in given ABI")
+    
     abi = topic_map[key]
 
     try:
@@ -186,7 +187,7 @@ def decode_log(log: Mapping[str, Any], topic_map: TopicMap) -> Event:
         }
         _append_additional_log_data(log, event)
         return event
-    except (KeyError, TypeError):
+    except KeyError:
         raise EventError("Invalid event")
 
 
