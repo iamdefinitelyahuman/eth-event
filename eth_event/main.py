@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import re
-from typing import Any, Dict, Final, List, Literal, Optional, TypedDict, Union, final, overload
+from typing import Any, Dict, Final, List, Literal, Mapping, Optional, TypedDict, Union, final, overload
 
 import cchecksum
 import eth_abi
@@ -129,7 +129,7 @@ def get_topic_map(abi: List) -> TopicMap:  # type: ignore [type-arg]
         raise ABIError("Invalid ABI")
 
 
-def decode_log(log: Dict[str, Any], topic_map: TopicMap) -> Event:
+def decode_log(log: Mapping[str, Any], topic_map: TopicMap) -> Event:
     """
     Decode a single event log from a transaction receipt.
 
@@ -190,14 +190,14 @@ def decode_log(log: Dict[str, Any], topic_map: TopicMap) -> Event:
 
 
 @overload
-def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: Literal[True]) -> List[DecodedEvent]:  # type: ignore [type-arg]
+def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[True]) -> List[DecodedEvent]:
     ...
 
 @overload
-def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: Literal[False]) -> List[Event]:  # type: ignore [type-arg]
+def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[False]) -> List[Event]:
     ...
 
-def decode_logs(logs: List, topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:  # type: ignore [type-arg, misc]
+def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:
     """
     Decode a list of event logs from a transaction receipt.
 
