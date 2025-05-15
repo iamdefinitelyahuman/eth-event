@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import re
-from typing import Any, Dict, Final, List, Optional, final
+from typing import Any, Dict, Final, List, Mapping, Optional, final
 
 import cchecksum
 import eth_abi
@@ -42,7 +42,7 @@ keccak: Final = auto.keccak
 _tuple_match: Final = re.compile(r"tuple(\[(\d*)\])?").match
 
 
-def get_log_topic(event_abi: Dict) -> str:  # type: ignore [type-arg]
+def get_log_topic(event_abi: Dict[str, Any]) -> str:
     """
     Generate an encoded event topic for an event.
 
@@ -67,7 +67,7 @@ def get_log_topic(event_abi: Dict) -> str:  # type: ignore [type-arg]
     return _0xstring(keccak(key))
 
 
-def get_topic_map(abi: List) -> Dict:  # type: ignore [type-arg]
+def get_topic_map(abi: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     """
     Generate a dictionary of event topics from an ABI.
 
@@ -101,7 +101,7 @@ def get_topic_map(abi: List) -> Dict:  # type: ignore [type-arg]
         raise ABIError("Invalid ABI")
 
 
-def decode_log(log: Dict, topic_map: Dict) -> Dict:  # type: ignore [type-arg]
+def decode_log(log: Mapping[str, Any], topic_map: Dict[str, Any]) -> Dict[str, Any]:
     """
     Decode a single event log from a transaction receipt.
 
@@ -161,7 +161,11 @@ def decode_log(log: Dict, topic_map: Dict) -> Dict:  # type: ignore [type-arg]
         raise EventError("Invalid event")
 
 
-def decode_logs(logs: List, topic_map: Dict, allow_undecoded: bool = False) -> List:  # type: ignore [type-arg]
+def decode_logs(
+    logs: List[Mapping[str, Any]], 
+    topic_map: Dict[str, Any], 
+    allow_undecoded: bool = False,
+) -> List[Dict[str, Any]]:
     """
     Decode a list of event logs from a transaction receipt.
 
@@ -226,8 +230,11 @@ def _append_additional_log_data(log: Dict, event: Dict) -> Dict:  # type: ignore
 
 
 def decode_traceTransaction(
-    struct_logs: List, topic_map: Dict, allow_undecoded: bool = False, initial_address: Optional[str] = None  # type: ignore [type-arg]
-) -> List:  # type: ignore [type-arg]
+    struct_logs: List[Dict[str, Any]], 
+    topic_map: Dict[str, Any], 
+    allow_undecoded: bool = False, 
+    initial_address: Optional[str] = None,
+) -> List[Dict[str, Any]]:
     """
     Extract and decode a list of event logs from a transaction traceback.
 
@@ -324,7 +331,7 @@ def _0xstring(value: Any) -> str:
     return f"{HexBytes(value).hex()}"
 
 
-def _params(abi_params: List) -> List:  # type: ignore [type-arg]
+def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
     types = []
     # regex with 2 capturing groups
     # first group captures whether this is an array tuple
@@ -341,7 +348,7 @@ def _params(abi_params: List) -> List:  # type: ignore [type-arg]
     return types
 
 
-def _decode(inputs: List, topics: List, data: str) -> List:  # type: ignore [type-arg]
+def _decode(inputs: List[Dict[str, Any]], topics: List[str], data: str) -> List[Dict[str, Any]]:
     indexed_count = 0
     for i in inputs:
         if i["indexed"]:
