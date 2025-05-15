@@ -254,7 +254,7 @@ def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undeco
     return events
 
 
-def _append_additional_log_data(log: Dict[str, Any], event: Event) -> None:
+def _append_additional_log_data(log: Mapping[str, Any], event: Event) -> None:
     for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
             event[log_entry] = log[log_entry]
