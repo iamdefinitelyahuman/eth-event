@@ -48,7 +48,7 @@ setup(
     package_data={"eth_event": ["py.typed"]},
     python_requires=">=3.8,<4",
     install_requires=[
-        "cchecksum>=0.2.6,<0.3",
+        "cchecksum>=0.2.6,<0.4",
         "eth-abi>=4,<6",
         "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
         "hexbytes>=1,<2",
