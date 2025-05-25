@@ -6,6 +6,8 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+### Changed
+- Loosen cchecksum pin to support all v0.3.x
 
 ## [1.3.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.0) - 2025-05-15
 ### Changed
