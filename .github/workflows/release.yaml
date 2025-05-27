@@ -30,7 +30,7 @@ jobs:
 
       - name: Install cibuildwheel
         run: |
-          python -m pip install --upgrade pip setuptools wheel cibuildwheel mypy[mypyc]
+          python -m pip install --upgrade pip setuptools wheel cibuildwheel mypy[mypyc] -r requirements.txt
 
       - name: Build wheels
         env:

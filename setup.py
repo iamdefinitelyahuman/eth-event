@@ -4,6 +4,9 @@ import platform
 from setuptools import setup, find_packages
 
 
+with open("requirements.txt", "r") as f:
+    requirements = list(map(str.strip, f.read().split("\n")))[:-1]
+
 if platform.python_implementation() != "CPython":
     # We only compile this library for CPython, other implementations will use it as normal interpreted python code
     ext_modules = []
@@ -47,14 +50,9 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={"eth_event": ["py.typed"]},
     python_requires=">=3.8,<4",
-    install_requires=[
-        "cchecksum>=0.2.6,<0.4",
-        "eth-abi>=4,<6",
-        "eth-hash[pycryptodome]>=0.2.0,<1.0.0",
-        "hexbytes>=1,<2",
-    ],
+    install_requires=requirements,
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: MIT License",

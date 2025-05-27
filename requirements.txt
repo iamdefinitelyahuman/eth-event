@@ -1,0 +1,4 @@
+cchecksum>=0.2.6,<0.4
+eth-abi>=4,<6
+eth-hash[pycryptodome]>=0.2.0,<1.0.0
+hexbytes>=1,<2
