@@ -4,11 +4,14 @@ __pycache__/
 *$py.class
 
 # C extensions
+*.o
 *.so
+*.pyd
 
 # Distribution / packaging
 .Python
-build/
+build/ops.txt
+build/setup.py
 develop-eggs/
 dist/
 downloads/
