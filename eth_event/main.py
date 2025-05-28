@@ -415,13 +415,18 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
 
 
 def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[str, Any]]:  # type: ignore[type-arg]
-    unindexed_types = [i for i in inputs if not i["indexed"]]
+    unindexed_types = []
+    includes_indexed = False
+    for i in inputs:
+        if i["indexed"]:
+            includes_indexed = True
+        else:
+            unindexed_types.append(i)
 
-    if unindexed_types and not topics:
+    if includes_indexed and not topics:
         # special case - if the ABI has indexed values but the log does not,
         # we should still be able to decode the data
         unindexed_types = inputs
-
     else:
         if len(unindexed_types) == len(topics):
             pass
