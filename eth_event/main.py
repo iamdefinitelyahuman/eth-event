@@ -23,6 +23,7 @@ import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
 from eth_typing import ChecksumAddress, HexAddress, HexStr
+from mypy_extensions import u8
 
 from .conditional_imports import InvalidPointer
 
