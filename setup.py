@@ -6,9 +6,7 @@ from setuptools import setup, find_packages
 
 
 this_directory = Path(__file__).parent
-requirements = list(map(str.strip, (this_directory / "requirements.txt").read_text().splitlines()))[
-    :-1
-]
+requirements = list(map(str.strip, (this_directory / "requirements.txt").read_text().splitlines()))
 
 if platform.python_implementation() != "CPython":
     # We only compile this library for CPython, other implementations will use it as normal interpreted python code
