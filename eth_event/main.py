@@ -23,7 +23,6 @@ import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
 from eth_typing import ChecksumAddress, HexAddress, HexStr
-from mypy_extensions import i16
 
 from .conditional_imports import InvalidPointer
 
@@ -417,7 +416,7 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
 
 def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[str, Any]]:  # type: ignore[type-arg]
     unindexed_types = []
-    indexed_count: i16 = 0
+    indexed_count = 0
     for i in inputs:
         if i["indexed"]:
             indexed_count += 1
