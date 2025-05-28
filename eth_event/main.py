@@ -427,17 +427,19 @@ def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[
 
     else:
         len_topics = len(topics)
-        if indexed_count < len_topics:
+        if indexed_count == len_topics:
+            unindexed_types = [i for i in inputs if not i["indexed"]]
+        elif indexed_count < len_topics:
             raise EventError(
                 "Event log does not contain enough topics for the given ABI - this"
                 " is usually because an event argument is not marked as indexed"
             )
-        if indexed_count > len_topics:
+        else:
             raise EventError(
                 "Event log contains more topics than expected for the given ABI - this is"
                 " usually because an event argument is incorrectly marked as indexed"
             )
-        unindexed_types = [i for i in inputs if not i["indexed"]]
+        
 
     # decode the unindexed event data
     try:
