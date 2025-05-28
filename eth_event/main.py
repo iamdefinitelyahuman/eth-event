@@ -424,7 +424,7 @@ def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[
         else:
             unindexed_types.append(i)
 
-    if includes_indexed and not topics:
+    if indexed_count and not topics:
         # special case - if the ABI has indexed values but the log does not,
         # we should still be able to decode the data
         unindexed_types = inputs
