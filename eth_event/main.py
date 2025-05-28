@@ -416,10 +416,10 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
 
 def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[str, Any]]:  # type: ignore[type-arg]
     unindexed_types = []
-    includes_indexed = False
+    indexed_count: u8 = 0
     for i in inputs:
         if i["indexed"]:
-            includes_indexed = True
+            indexed_count += 1
         else:
             unindexed_types.append(i)
 
@@ -428,9 +428,9 @@ def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[
         # we should still be able to decode the data
         unindexed_types = inputs
     else:
-        if len(unindexed_types) == len(topics):
+        if indexed_count == len(topics):
             pass
-        elif len(unindexed_types) < len(topics):
+        elif indexed_count < len(topics):
             raise EventError(
                 "Event log does not contain enough topics for the given ABI - this"
                 " is usually because an event argument is not marked as indexed"
