@@ -435,7 +435,6 @@ def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[
                 "Event log contains more topics than expected for the given ABI - this is"
                 " usually because an event argument is incorrectly marked as indexed"
             )
-        
 
     # decode the unindexed event data
     try:
