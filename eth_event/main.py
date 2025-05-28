@@ -397,7 +397,7 @@ def _0xstring(value: Any) -> HexStr:
     return f"0x{HexBytes(value).hex()}"  # type: ignore [return-value]
 
 
-def _params(abi_params: List) -> List:  # type: ignore [type-arg]
+def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
     types = []
     # regex with 2 capturing groups
     # first group captures whether this is an array tuple
@@ -414,7 +414,7 @@ def _params(abi_params: List) -> List:  # type: ignore [type-arg]
     return types
 
 
-def _decode(inputs: List, topics: List, data: Any) -> List:  # type: ignore [type-arg]
+def _decode(inputs: List[Dict[str, Any]], topics: List, data: Any) -> List[Dict[str, Any]]:  # type: ignore[type-arg]
     indexed_count = 0
     for i in inputs:
         if i["indexed"]:
@@ -441,16 +441,16 @@ def _decode(inputs: List, topics: List, data: Any) -> List:  # type: ignore [typ
 
     # decode the unindexed event data
     try:
-        unindexed_types = _params(unindexed_types)
+        unindexed = _params(unindexed_types)
     except (KeyError, TypeError) as e:
         raise ABIError("Invalid ABI") from e
 
-    if unindexed_types and data == "0x":
-        length = len(unindexed_types) * 32
+    if unindexed and data == "0x":
+        length = len(unindexed) * 32
         data = _0xstring(length)
 
     try:
-        decoded = list(eth_abi.decode(unindexed_types, HexBytes(data)))[::-1]
+        decoded = list(eth_abi.decode(unindexed, HexBytes(data)))[::-1]
     except InsufficientDataBytes:
         raise EventError("Event data has insufficient length")
     except NonEmptyPaddingBytes:
