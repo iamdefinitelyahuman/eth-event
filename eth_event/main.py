@@ -308,7 +308,10 @@ class _TraceStep(TypedDict):
 
 
 def decode_traceTransaction(
-    struct_logs: List[_TraceStep], topic_map: TopicMap, allow_undecoded: bool = False, initial_address: Optional[str] = None
+    struct_logs: List[_TraceStep],
+    topic_map: TopicMap,
+    allow_undecoded: bool = False,
+    initial_address: Optional[str] = None,
 ) -> List[Event]:
     """
     Extract and decode a list of event logs from a transaction traceback.
