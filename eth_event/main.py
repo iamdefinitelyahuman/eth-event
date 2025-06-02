@@ -147,7 +147,7 @@ def get_topic_map(abi: List[ABIElement]) -> Dict[HexStr, TopicMapData]:
     """
     try:
         return {
-            get_log_topic(i): {"name": i["name"], "inputs": i["inputs"]}
+            get_log_topic(i): {"name": i["name"], "inputs": i["inputs"]}  # type: ignore [typeddict-item]
             for i in abi
             if i["type"] == "event" and not i.get("anonymous")
         }
