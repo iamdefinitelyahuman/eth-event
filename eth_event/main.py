@@ -465,7 +465,7 @@ def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[
     # decode the indexed event data and create the returned dict
     topics = topics[::-1]
     result = []
-    element: Dict[str, Any]
+    element: Dict[str, Any]  # TODO: make this a typed dict
     for i in inputs:
         i_type = i["type"]
 
