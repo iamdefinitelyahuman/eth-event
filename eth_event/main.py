@@ -119,7 +119,7 @@ TopicMap = Mapping[HexStr, TopicMapData]
 # brownie passes in an AttributeDict not a dict.
 
 
-def get_topic_map(abi: List[ABIElement]) -> Dict[HexStr, TopicMapData]:  # type: ignore [type-arg]
+def get_topic_map(abi: List[ABIElement]) -> Dict[HexStr, TopicMapData]:
     """
     Generate a dictionary of event topics from an ABI.
 
