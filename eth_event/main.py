@@ -22,7 +22,7 @@ import eth_abi
 import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
-from eth_typing import ABIEvent, ChecksumAddress, HexAddress, HexStr
+from eth_typing import ABIComponentIndexed, ABIEvent, ChecksumAddress, HexAddress, HexStr
 
 from .conditional_imports import InvalidPointer
 
@@ -104,7 +104,7 @@ def get_log_topic(event_abi: ABIEvent) -> HexStr:
 
 class TopicMapData(TypedDict):
     name: str
-    inputs: List[Dict[str, Any]]
+    inputs: List[ABIComponentIndexed]
 
 
 TopicMap = Mapping[HexStr, TopicMapData]
@@ -206,7 +206,7 @@ def decode_log(
     try:
         event: DecodedEvent = {
             "name": abi["name"],
-            "data": _decode(abi["inputs"], data_topics, log["data"]),
+            "data": _decode(abi["inputs"], data_topics, log["data"]),  # type: ignore [arg-type]
             "decoded": True,
             "address": __checksum_func(log["address"]),
         }
@@ -384,7 +384,7 @@ def decode_traceTransaction(
             topic0_map = topic_map[topic0]
             decoded: DecodedEvent = {
                 "name": topic0_map["name"],
-                "data": _decode(topic0_map["inputs"], data_topics, data),
+                "data": _decode(topic0_map["inputs"], data_topics, data),  # type: ignore [arg-type]
                 "decoded": True,
                 "address": address_list[-1],  # type: ignore [typeddict-item]
             }
