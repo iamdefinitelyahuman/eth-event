@@ -480,7 +480,8 @@ def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[
                 value = eth_abi.decode([i_type], encoded)[0]
             except (InsufficientDataBytes, NoEntriesFound, OverflowError, InvalidPointer):
                 # an array or other data type that uses multiple slots
-                element.update({"value": _0xstring(encoded), "decoded": False})
+                element["value"] = _0xstring(encoded)
+                element["decoded"] = False
                 result.append(element)
                 continue
         else:
@@ -489,7 +490,8 @@ def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[
         if isinstance(value, bytes):
             value = _0xstring(value)
 
-        element.update({"value": value, "decoded": True})
+        element["value"] = value
+        element["decoded"] = True
         result.append(element)
 
     return result
