@@ -305,6 +305,7 @@ class _TraceStep(TypedDict):
     depth: int
     op: str
     stack: List[HexStr]
+    memory: List[HexStr]
 
 
 def decode_traceTransaction(
