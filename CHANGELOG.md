@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 
+## [1.3.2](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.2) - 2025-06-02
+### Changed
+- More specific type hints to enable better compiler optimizations
+
 ## [1.3.1](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.1) - 2025-06-01
 ### Changed
 - Loosen cchecksum pin to support all v0.3.x
