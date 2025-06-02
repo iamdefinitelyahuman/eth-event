@@ -22,7 +22,7 @@ import eth_abi
 import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
-from eth_typing import ChecksumAddress, HexAddress, HexStr
+from eth_typing import ABIEvent, ChecksumAddress, HexAddress, HexStr
 
 from .conditional_imports import InvalidPointer
 
@@ -77,7 +77,7 @@ lru_cache: Final = functools.lru_cache
 _tuple_match: Final = re.compile(r"tuple(\[(\d*)\])?").match
 
 
-def get_log_topic(event_abi: Dict[str, Any]) -> HexStr:
+def get_log_topic(event_abi: ABIEvent) -> HexStr:
     """
     Generate an encoded event topic for an event.
 
@@ -96,7 +96,7 @@ def get_log_topic(event_abi: Dict[str, Any]) -> HexStr:
     if event_abi.get("anonymous"):
         raise ABIError("Anonymous events do not have a topic")
 
-    types = _params(event_abi["inputs"])
+    types = _params(event_abi["inputs"])  # type: ignore [arg-type]
     key = f"{event_abi['name']}({','.join(types)})".encode()
 
     return _0xstring(keccak(key))
