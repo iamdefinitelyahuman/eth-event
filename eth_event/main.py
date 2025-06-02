@@ -22,7 +22,14 @@ import eth_abi
 import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
-from eth_typing import ABIComponentIndexed, ABIElement, ABIEvent, ChecksumAddress, HexAddress, HexStr
+from eth_typing import (
+    ABIComponentIndexed,
+    ABIElement,
+    ABIEvent,
+    ChecksumAddress,
+    HexAddress,
+    HexStr,
+)
 
 from .conditional_imports import InvalidPointer
 
