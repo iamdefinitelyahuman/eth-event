@@ -6,7 +6,7 @@
 
 int CPyGlobalsInit(void);
 
-extern PyObject *CPyStatics[145];
+extern PyObject *CPyStatics[144];
 extern const char * const CPyLit_Str[];
 extern const char * const CPyLit_Bytes[];
 extern const char * const CPyLit_Int[];
@@ -45,6 +45,7 @@ extern PyTypeObject *CPyType_main___UnknownEvent;
 extern PyTypeObject *CPyType_main___DecodedEvent;
 extern PyTypeObject *CPyType_main___NonDecodedEvent;
 extern PyTypeObject *CPyType_main___TopicMapData;
+extern PyTypeObject *CPyType_main____TraceStep;
 extern PyObject *CPyDef_main___get_log_topic(PyObject *cpy_r_event_abi);
 extern PyObject *CPyPy_main___get_log_topic(PyObject *self, PyObject *const *args, size_t nargs, PyObject *kwnames);
 extern PyObject *CPyDef_main___get_topic_map(PyObject *cpy_r_abi);
