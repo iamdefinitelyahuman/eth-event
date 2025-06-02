@@ -65,6 +65,7 @@ struct export_table_7eaee132373d5bf56d84 {
     PyTypeObject **CPyType_main___DecodedEvent;
     PyTypeObject **CPyType_main___NonDecodedEvent;
     PyTypeObject **CPyType_main___TopicMapData;
+    PyTypeObject **CPyType_main____TraceStep;
     PyObject *(*CPyDef_main___get_log_topic)(PyObject *cpy_r_event_abi);
     PyObject *(*CPyDef_main___get_topic_map)(PyObject *cpy_r_abi);
     PyObject *(*CPyDef_main___decode_log)(PyObject *cpy_r_log, PyObject *cpy_r_topic_map, PyObject *cpy_r___checksum_func);
