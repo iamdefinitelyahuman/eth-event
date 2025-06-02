@@ -22,7 +22,7 @@ import eth_abi
 import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
-from eth_typing import ABIEvent, ChecksumAddress, HexAddress, HexStr
+from eth_typing import ABIComponentIndexed, ABIEvent, ChecksumAddress, HexAddress, HexStr
 
 from .conditional_imports import InvalidPointer
 
@@ -104,7 +104,7 @@ def get_log_topic(event_abi: ABIEvent) -> HexStr:
 
 class TopicMapData(TypedDict):
     name: str
-    inputs: List[Dict[str, Any]]
+    inputs: List[ABIComponentIndexed]
 
 
 TopicMap = Mapping[HexStr, TopicMapData]
