@@ -22,7 +22,7 @@ import eth_abi
 import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
-from eth_typing import ABIComponentIndexed, ABIEvent, ChecksumAddress, HexAddress, HexStr
+from eth_typing import ABIComponentIndexed, ABIElement, ABIEvent, ChecksumAddress, HexAddress, HexStr
 
 from .conditional_imports import InvalidPointer
 
@@ -112,7 +112,7 @@ TopicMap = Mapping[HexStr, TopicMapData]
 # brownie passes in an AttributeDict not a dict.
 
 
-def get_topic_map(abi: List) -> Dict[HexStr, TopicMapData]:  # type: ignore [type-arg]
+def get_topic_map(abi: List[ABIElement]) -> Dict[HexStr, TopicMapData]:  # type: ignore [type-arg]
     """
     Generate a dictionary of event topics from an ABI.
 
