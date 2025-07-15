@@ -15,29 +15,9 @@
 #include "pythonsupport.c"
 #include "__native_7eaee132373d5bf56d84.h"
 #include "__native_internal_7eaee132373d5bf56d84.h"
-static PyMethodDef eth_eventmodule_methods[] = {
-    {NULL, NULL, 0, NULL}
-};
-
-static struct PyModuleDef eth_eventmodule = {
-    PyModuleDef_HEAD_INIT,
-    "eth_event",
-    NULL, /* docstring */
-    -1,       /* size of per-interpreter state of the module,
-                 or -1 if the module keeps state in global variables. */
-    eth_eventmodule_methods
-};
-
-PyObject *CPyInit_eth_event(void)
+static int eth_event_exec(PyObject *module)
 {
     PyObject* modname = NULL;
-    if (CPyModule_eth_event_internal) {
-        Py_INCREF(CPyModule_eth_event_internal);
-        return CPyModule_eth_event_internal;
-    }
-    CPyModule_eth_event_internal = PyModule_Create(&eth_eventmodule);
-    if (unlikely(CPyModule_eth_event_internal == NULL))
-        goto fail;
     modname = PyObject_GetAttrString((PyObject *)CPyModule_eth_event_internal, "__name__");
     CPyStatic_eth_event___globals = PyModule_GetDict(CPyModule_eth_event_internal);
     if (unlikely(CPyStatic_eth_event___globals == NULL))
@@ -48,10 +28,38 @@ PyObject *CPyInit_eth_event(void)
     if (result == 2)
         goto fail;
     Py_DECREF(modname);
-    return CPyModule_eth_event_internal;
+    return 0;
     fail:
     Py_CLEAR(CPyModule_eth_event_internal);
     Py_CLEAR(modname);
+    return -1;
+}
+static PyMethodDef eth_eventmodule_methods[] = {
+    {NULL, NULL, 0, NULL}
+};
+
+static struct PyModuleDef eth_eventmodule = {
+    PyModuleDef_HEAD_INIT,
+    "eth_event",
+    NULL, /* docstring */
+    0,       /* size of per-interpreter state of the module */
+    eth_eventmodule_methods,
+    NULL,
+};
+
+PyObject *CPyInit_eth_event(void)
+{
+    if (CPyModule_eth_event_internal) {
+        Py_INCREF(CPyModule_eth_event_internal);
+        return CPyModule_eth_event_internal;
+    }
+    CPyModule_eth_event_internal = PyModule_Create(&eth_eventmodule);
+    if (unlikely(CPyModule_eth_event_internal == NULL))
+        goto fail;
+    if (eth_event_exec(CPyModule_eth_event_internal) != 0)
+        goto fail;
+    return CPyModule_eth_event_internal;
+    fail:
     return NULL;
 }
 
@@ -215,38 +223,9 @@ static PyTypeObject CPyType_main___UnknownEvent_template_ = {
 };
 static PyTypeObject *CPyType_main___UnknownEvent_template = &CPyType_main___UnknownEvent_template_;
 
-static PyMethodDef mainmodule_methods[] = {
-    {"get_log_topic", (PyCFunction)CPyPy_main___get_log_topic, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"get_topic_map", (PyCFunction)CPyPy_main___get_topic_map, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"decode_log", (PyCFunction)CPyPy_main___decode_log, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"decode_logs", (PyCFunction)CPyPy_main___decode_logs, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"_append_additional_log_data", (PyCFunction)CPyPy_main____append_additional_log_data, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"decode_traceTransaction", (PyCFunction)CPyPy_main___decode_traceTransaction, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"_0xstring", (PyCFunction)CPyPy_main____0xstring, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"_params", (PyCFunction)CPyPy_main____params, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {"_decode", (PyCFunction)CPyPy_main____decode, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
-    {NULL, NULL, 0, NULL}
-};
-
-static struct PyModuleDef mainmodule = {
-    PyModuleDef_HEAD_INIT,
-    "eth_event.main",
-    NULL, /* docstring */
-    -1,       /* size of per-interpreter state of the module,
-                 or -1 if the module keeps state in global variables. */
-    mainmodule_methods
-};
-
-PyObject *CPyInit_eth_event___main(void)
+static int main_exec(PyObject *module)
 {
     PyObject* modname = NULL;
-    if (CPyModule_eth_event___main_internal) {
-        Py_INCREF(CPyModule_eth_event___main_internal);
-        return CPyModule_eth_event___main_internal;
-    }
-    CPyModule_eth_event___main_internal = PyModule_Create(&mainmodule);
-    if (unlikely(CPyModule_eth_event___main_internal == NULL))
-        goto fail;
     modname = PyObject_GetAttrString((PyObject *)CPyModule_eth_event___main_internal, "__name__");
     CPyStatic_main___globals = PyModule_GetDict(CPyModule_eth_event___main_internal);
     if (unlikely(CPyStatic_main___globals == NULL))
@@ -257,7 +236,7 @@ PyObject *CPyInit_eth_event___main(void)
     if (result == 2)
         goto fail;
     Py_DECREF(modname);
-    return CPyModule_eth_event___main_internal;
+    return 0;
     fail:
     Py_CLEAR(CPyModule_eth_event___main_internal);
     Py_CLEAR(modname);
@@ -283,6 +262,43 @@ PyObject *CPyInit_eth_event___main(void)
     Py_CLEAR(CPyType_main___NonDecodedEvent);
     Py_CLEAR(CPyType_main___TopicMapData);
     Py_CLEAR(CPyType_main____TraceStep);
+    return -1;
+}
+static PyMethodDef mainmodule_methods[] = {
+    {"get_log_topic", (PyCFunction)CPyPy_main___get_log_topic, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"get_topic_map", (PyCFunction)CPyPy_main___get_topic_map, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"decode_log", (PyCFunction)CPyPy_main___decode_log, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"decode_logs", (PyCFunction)CPyPy_main___decode_logs, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"_append_additional_log_data", (PyCFunction)CPyPy_main____append_additional_log_data, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"decode_traceTransaction", (PyCFunction)CPyPy_main___decode_traceTransaction, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"_0xstring", (PyCFunction)CPyPy_main____0xstring, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"_params", (PyCFunction)CPyPy_main____params, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {"_decode", (PyCFunction)CPyPy_main____decode, METH_FASTCALL | METH_KEYWORDS, NULL /* docstring */},
+    {NULL, NULL, 0, NULL}
+};
+
+static struct PyModuleDef mainmodule = {
+    PyModuleDef_HEAD_INIT,
+    "eth_event.main",
+    NULL, /* docstring */
+    0,       /* size of per-interpreter state of the module */
+    mainmodule_methods,
+    NULL,
+};
+
+PyObject *CPyInit_eth_event___main(void)
+{
+    if (CPyModule_eth_event___main_internal) {
+        Py_INCREF(CPyModule_eth_event___main_internal);
+        return CPyModule_eth_event___main_internal;
+    }
+    CPyModule_eth_event___main_internal = PyModule_Create(&mainmodule);
+    if (unlikely(CPyModule_eth_event___main_internal == NULL))
+        goto fail;
+    if (main_exec(CPyModule_eth_event___main_internal) != 0)
+        goto fail;
+    return CPyModule_eth_event___main_internal;
+    fail:
     return NULL;
 }
 
