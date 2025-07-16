@@ -6,7 +6,7 @@
 
 int CPyGlobalsInit(void);
 
-extern PyObject *CPyStatics[144];
+extern PyObject *CPyStatics[150];
 extern const char * const CPyLit_Str[];
 extern const char * const CPyLit_Bytes[];
 extern const char * const CPyLit_Int[];
@@ -30,6 +30,7 @@ extern CPyModule *CPyModule_hexbytes;
 extern CPyModule *CPyModule_eth_abi___exceptions;
 extern CPyModule *CPyModule_eth_hash;
 extern CPyModule *CPyModule_eth_typing;
+extern CPyModule *CPyModule_typing_extensions;
 extern CPyModule *CPyModule_eth_event___conditional_imports;
 extern char CPyDef_eth_event_____top_level__(void);
 extern tuple_T3OOO CPyStatic_main___ADD_LOG_ENTRIES;
@@ -42,6 +43,7 @@ extern PyTypeObject *CPyType_main___ABIError;
 extern PyTypeObject *CPyType_main___EventError;
 extern PyTypeObject *CPyType_main___StructLogError;
 extern PyTypeObject *CPyType_main___UnknownEvent;
+extern PyTypeObject *CPyType_main___EventData;
 extern PyTypeObject *CPyType_main___DecodedEvent;
 extern PyTypeObject *CPyType_main___NonDecodedEvent;
 extern PyTypeObject *CPyType_main___TopicMapData;

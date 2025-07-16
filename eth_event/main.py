@@ -11,6 +11,7 @@ from typing import (
     Literal,
     Mapping,
     Optional,
+    Sequence,
     TypedDict,
     Union,
     final,
@@ -23,6 +24,7 @@ import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
 from eth_typing import (
+    ABIComponent,
     ABIComponentIndexed,
     ABIElement,
     ABIEvent,
@@ -30,6 +32,7 @@ from eth_typing import (
     HexAddress,
     HexStr,
 )
+from typing_extensions import NotRequired
 
 from .conditional_imports import InvalidPointer
 
@@ -55,9 +58,18 @@ class UnknownEvent(Exception):
 
 
 @final
+class EventData(TypedDict, total=False):
+    name: str
+    type: str
+    components: NotRequired[Sequence[ABIComponent]]  # TODO: define a typed dict for components
+    value: HexStr
+    decoded: bool
+
+
+@final
 class DecodedEvent(TypedDict, total=False):
     name: str
-    data: List[Dict[str, Any]]
+    data: List[EventData]
     decoded: Literal[True]
     address: ChecksumAddress
 
@@ -431,7 +443,7 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
     return types
 
 
-def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[Dict[str, Any]]:  # type: ignore[type-arg]
+def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[EventData]:  # type: ignore[type-arg]
     unindexed_types = []
     indexed_count = 0
     for i in inputs:
@@ -481,8 +493,8 @@ def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[
 
     # decode the indexed event data and create the returned dict
     topics = topics[::-1]
-    result = []
-    element: Dict[str, Any]  # TODO: make this a typed dict
+    result: List[EventData] = []
+    element: EventData
     for i in inputs:
         i_type = i["type"]
 
