@@ -30,6 +30,7 @@ from eth_typing import (
     HexAddress,
     HexStr,
 )
+from typing_extensions import NotRequired
 
 from .conditional_imports import InvalidPointer
 
