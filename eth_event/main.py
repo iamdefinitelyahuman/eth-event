@@ -11,6 +11,7 @@ from typing import (
     Literal,
     Mapping,
     Optional,
+    Sequence,
     TypedDict,
     Union,
     final,
@@ -59,7 +60,7 @@ class UnknownEvent(Exception):
 class EventData(TypedDict, total=False):
     name: str
     type: str
-    components: NotRequired[List[dict]]  # TODO: define a typed dict for components
+    components: NotRequired[Sequence[ABIComponent]]  # TODO: define a typed dict for components
     value: HexStr
     decoded: bool
 
