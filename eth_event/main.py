@@ -24,6 +24,7 @@ import hexbytes
 from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
 from eth_hash import auto
 from eth_typing import (
+    ABIComponent,
     ABIComponentIndexed,
     ABIElement,
     ABIEvent,
