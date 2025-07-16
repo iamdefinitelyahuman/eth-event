@@ -439,7 +439,7 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
 
     return types
 
-    
+
 def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[Dict[str, Any]]:  # type: ignore[type-arg]
     unindexed_types = []
     indexed_count = 0
