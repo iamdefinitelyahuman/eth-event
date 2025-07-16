@@ -62,6 +62,7 @@ struct export_table_7eaee132373d5bf56d84 {
     PyTypeObject **CPyType_main___EventError;
     PyTypeObject **CPyType_main___StructLogError;
     PyTypeObject **CPyType_main___UnknownEvent;
+    PyTypeObject **CPyType_main___EventData;
     PyTypeObject **CPyType_main___DecodedEvent;
     PyTypeObject **CPyType_main___NonDecodedEvent;
     PyTypeObject **CPyType_main___TopicMapData;
