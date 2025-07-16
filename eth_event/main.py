@@ -55,9 +55,18 @@ class UnknownEvent(Exception):
 
 
 @final
+class EventData(TypedDict, total=False):
+    name: str
+    type: str
+    components: NotRequired[List[dict]]  # TODO: define a typed dict for components
+    value: HexStr
+    decoded: bool
+
+
+@final
 class DecodedEvent(TypedDict, total=False):
     name: str
-    data: List[Dict[str, Any]]
+    data: List[EventData]
     decoded: Literal[True]
     address: ChecksumAddress
 
@@ -430,7 +439,7 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
 
     return types
 
-
+    
 def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[Dict[str, Any]]:  # type: ignore[type-arg]
     unindexed_types = []
     indexed_count = 0
