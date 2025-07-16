@@ -7,11 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 
-## [1.3.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.4) - 2025-07-16
+## [1.3.3](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.3) - 2025-07-16
 ### Added
 - EventData typed dict
-
-## [1.3.3](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.3) - 2025-07-14
 ### Changed
 - Bump compiler version
 
