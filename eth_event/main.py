@@ -19,9 +19,14 @@ from typing import (
 )
 
 import cchecksum
-import eth_abi
 import hexbytes
-from eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
+from faster_eth_abi import decode
+from faster_eth_abi.exceptions import (
+    InsufficientDataBytes,
+    InvalidPointer,
+    NoEntriesFound,
+    NonEmptyPaddingBytes,
+)
 from eth_hash import auto
 from eth_typing import (
     ABIComponent,
@@ -34,8 +39,6 @@ from eth_typing import (
     HexStr,
 )
 from typing_extensions import NotRequired
-
-from .conditional_imports import InvalidPointer
 
 
 @final
@@ -482,7 +485,7 @@ def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[
         data = _0xstring(length)
 
     try:
-        decoded = list(eth_abi.decode(unindexed, HexBytes(data)))[::-1]
+        decoded = list(decode(unindexed, HexBytes(data)))[::-1]
     except InsufficientDataBytes:
         raise EventError("Event data has insufficient length")
     except NonEmptyPaddingBytes:
@@ -507,7 +510,7 @@ def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[
         if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
             try:
-                value = eth_abi.decode([i_type], encoded)[0]
+                value = decode([i_type], encoded)[0]
             except (InsufficientDataBytes, NoEntriesFound, OverflowError, InvalidPointer):
                 # an array or other data type that uses multiple slots
                 element["value"] = _0xstring(encoded)
