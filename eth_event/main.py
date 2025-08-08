@@ -21,7 +21,12 @@ from typing import (
 import cchecksum
 import hexbytes
 from faster_eth_abi import decode
-from faster_eth_abi.exceptions import InsufficientDataBytes, NoEntriesFound, NonEmptyPaddingBytes
+from faster_eth_abi.exceptions import (
+    InsufficientDataBytes,
+    InvalidPointer,
+    NoEntriesFound,
+    NonEmptyPaddingBytes,
+)
 from eth_hash import auto
 from eth_typing import (
     ABIComponent,
@@ -34,8 +39,6 @@ from eth_typing import (
     HexStr,
 )
 from typing_extensions import NotRequired
-
-from .conditional_imports import InvalidPointer
 
 
 @final
