@@ -6,6 +6,16 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+### Changed
+- bump mypyc compiler version
+
+## [1.4.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.0) - 2025-08-08
+### Changed
+- replace eth-abi with faster-eth-abi
+
+## [1.3.5](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.5) - 2025-08-05
+### Changed
+- add eth-abi to build deps
 
 ## [1.3.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.4) - 2025-07-19
 ### Fixed
