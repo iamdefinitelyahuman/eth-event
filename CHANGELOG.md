@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 ### Changed
-- bump mypyc compiler version
+- bump mypyc compiler version for faster C code
 
 ## [1.4.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.0) - 2025-08-08
 ### Changed
