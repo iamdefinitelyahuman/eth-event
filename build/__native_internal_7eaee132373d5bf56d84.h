@@ -6,7 +6,7 @@
 
 int CPyGlobalsInit(void);
 
-extern PyObject *CPyStatics[149];
+extern PyObject *CPyStatics[147];
 extern const char * const CPyLit_Str[];
 extern const char * const CPyLit_Bytes[];
 extern const char * const CPyLit_Int[];
@@ -14,11 +14,11 @@ extern const double CPyLit_Float[];
 extern const double CPyLit_Complex[];
 extern const int CPyLit_Tuple[];
 extern const int CPyLit_FrozenSet[];
-extern CPyModule *CPyModule_eth_event_internal;
+extern CPyModule *CPyModule_eth_event__internal;
 extern CPyModule *CPyModule_eth_event;
 extern PyObject *CPyStatic_eth_event___globals;
 extern CPyModule *CPyModule_builtins;
-extern CPyModule *CPyModule_eth_event___main_internal;
+extern CPyModule *CPyModule_eth_event___main__internal;
 extern CPyModule *CPyModule_eth_event___main;
 extern PyObject *CPyStatic_main___globals;
 extern CPyModule *CPyModule_functools;
