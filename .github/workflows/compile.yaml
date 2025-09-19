@@ -25,7 +25,7 @@ jobs:
           python-version: "3.12"
           
       - name: Install Mypyc
-        run: pip install mypy[mypyc]==1.18.1 types-PyYAML -r requirements.txt
+        run: pip install mypy[mypyc]==1.18.2 types-PyYAML -r requirements.txt
         
       - name: Run Mypyc
         run: make compile
