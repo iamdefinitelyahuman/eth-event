@@ -23,3 +23,16 @@ Pull requests are welcomed! Please adhere to the following:
 It's a good idea to make pull requests early on. A pull request represents the start of a discussion, and doesn't necessarily need to be the final, finished submission.
 
 If you are opening a work-in-progress pull request to verify that it passes CI tests, please consider [marking it as a draft](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests).
+
+## CodSpeed Benchmarks
+
+This project includes [CodSpeed](https://codspeed.io/) benchmarks to track improvements and regressions for all public functions.
+
+To run CodSpeed benchmarks locally:
+
+```sh
+pip install -r requirements-dev.txt
+pytest --codspeed benchmarks/
+```
+
+Benchmarks are also run automatically in CI via GitHub Actions in [.github/workflows/codspeed.yaml](.github/workflows/codspeed.yaml).
