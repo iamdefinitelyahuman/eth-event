@@ -65,8 +65,8 @@ class UnknownEvent(Exception):
 class EventData(TypedDict, total=False):
     name: str
     type: str
-    components: NotRequired[Sequence[ABIComponent]]  # TODO: define a typed dict for components
-    value: HexStr
+    components: NotRequired[Sequence[ABIComponent]]
+    value: Any
     decoded: bool
 
 
