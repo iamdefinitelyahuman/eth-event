@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 
+## [1.4.2](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.2) - 2025-09-20
+### Fixed
+- fix incorrect type hint for EventData.value
+- include faster-eth-abi in build dependencies
+- bump mypyc compiler version to latest patch
+
 ## [1.4.1](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.1) - 2025-09-13
 ### Changed
 - bump mypyc compiler version for faster C code
