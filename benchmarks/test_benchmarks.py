@@ -442,12 +442,19 @@ sample_struct_logs = [
         "depth": 0,
         "op": "LOG3",
         "stack": (
-            ["0x0"] * 5 +
-            [from_topic, to_topic, transfer_topic, "0x20", "0x00"]  # topic2, topic1, topic0, length, offset
+            ["0x0"] * 5
+            + [
+                from_topic,
+                to_topic,
+                transfer_topic,
+                "0x20",
+                "0x00",
+            ]  # topic2, topic1, topic0, length, offset
         ),
         "memory": transfer_memory,
     },
 ]
+
 
 @pytest.mark.benchmark(group="decode_traceTransaction")
 def test_decode_traceTransaction(benchmark: BenchmarkFixture):
