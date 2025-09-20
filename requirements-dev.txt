@@ -137,8 +137,11 @@ pyproject-hooks==1.2.0
 pytest==8.4.2
     # via
     #   -r requirements-dev.in
+    #   pytest-codspeed
     #   pytest-cov
 pytest-cov==7.0.0
+    # via -r requirements-dev.in
+pytest-codspeed==2.0.1
     # via -r requirements-dev.in
 pytokens==0.1.10
     # via black
