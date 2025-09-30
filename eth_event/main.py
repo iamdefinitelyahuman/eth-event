@@ -397,7 +397,7 @@ def decode_traceTransaction(
             raise StructLogError("Malformed stack") from e
 
         try:
-            data = _0xstring(("".join(step["memory"]))[offset : offset + length].hex())
+            data = _0xstring(HexBytes("".join(step["memory"]))[offset : offset + length].hex())
         except (KeyError, TypeError) as e:
             raise StructLogError("Malformed memory") from e
 
