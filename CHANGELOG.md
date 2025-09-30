@@ -6,6 +6,8 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+### Changed
+- include hexbytes in build dependencies
 
 ## [1.4.2](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.2) - 2025-09-20
 ### Fixed
