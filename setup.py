@@ -50,7 +50,7 @@ setup(
     keywords=["ethereum"],
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={"eth_event": ["py.typed"]},
-    python_requires=">=3.8,<4",
+    python_requires=">=3.9,<4",
     install_requires=requirements,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
