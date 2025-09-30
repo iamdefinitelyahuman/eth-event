@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 ### Changed
-- include hexbytes in build dependencies
+- replace [hexbytes](https://github.com/ethereum/hexbytes) with [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes/tree/master)
 
 ## [1.4.2](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.2) - 2025-09-20
 ### Fixed

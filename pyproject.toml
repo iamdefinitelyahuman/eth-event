@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel", "mypy[mypyc]>=1.14.1,<1.18.3", "faster-eth-abi>=4,<6", "hexbytes>1,<2"]
+requires = ["setuptools", "wheel", "mypy[mypyc]>=1.14.1,<1.18.3", "faster-eth-abi>=4,<6", "faster-hexbytes<2; python_version >= '3.9'"]
 
 
 # Black configuration

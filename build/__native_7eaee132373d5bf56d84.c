@@ -6260,13 +6260,14 @@ CPyL3: ;
     CPy_INCREF(CPyModule_typing);
     CPy_DECREF(cpy_r_r19);
     cpy_r_r20 = (PyObject **)&CPyModule_cchecksum;
-    cpy_r_r21 = (PyObject **)&CPyModule_hexbytes;
+    cpy_r_r21 = (PyObject **)&CPyModule_faster_hexbytes;
     PyObject **cpy_r_r22[2] = {cpy_r_r20, cpy_r_r21};
     cpy_r_r23 = (void *)&cpy_r_r22;
     int64_t cpy_r_r24[2] = {21, 22};
     cpy_r_r25 = (void *)&cpy_r_r24;
     cpy_r_r26 = CPyStatics[141]; /* (('cchecksum', 'cchecksum', 'cchecksum'),
-                                    ('hexbytes', 'hexbytes', 'hexbytes')) */
+                                    ('faster_hexbytes', 'faster_hexbytes',
+                                     'faster_hexbytes')) */
     cpy_r_r27 = CPyStatic_main___globals;
     cpy_r_r28 = CPyStatics[68]; /* 'eth_event/main.py' */
     cpy_r_r29 = CPyStatics[69]; /* '<module>' */
@@ -7223,7 +7224,7 @@ CPyL116: ;
         CPy_AddTraceback("eth_event/main.py", "<module>", 93, CPyStatic_main___globals);
         goto CPyL210;
     }
-    cpy_r_r381 = CPyModule_hexbytes;
+    cpy_r_r381 = CPyModule_faster_hexbytes;
     cpy_r_r382 = CPyStatics[119]; /* 'HexBytes' */
     cpy_r_r383 = CPyObject_GetAttr(cpy_r_r381, cpy_r_r382);
     if (unlikely(cpy_r_r383 == NULL)) {
@@ -7892,7 +7893,7 @@ int CPyGlobalsInit(void)
     CPyModule_re = Py_None;
     CPyModule_typing = Py_None;
     CPyModule_cchecksum = Py_None;
-    CPyModule_hexbytes = Py_None;
+    CPyModule_faster_hexbytes = Py_None;
     CPyModule_faster_eth_abi = Py_None;
     CPyModule_faster_eth_abi___exceptions = Py_None;
     CPyModule_eth_hash = Py_None;
@@ -7924,7 +7925,7 @@ const char * const CPyLit_Str[] = {
     "\002\rOverflowError)Cannot decode event due to overflow error",
     "\a\016NoEntriesFound\005value\tfunctools\002re\021eth_event/main.py\b<module>\003Any",
     "\t\bCallable\004Dict\005Final\004List\aLiteral\aMapping\bOptional\bSequence\tTypedDict",
-    "\a\005Union\005final\boverload\006typing\tcchecksum\bhexbytes\016faster_eth_abi",
+    "\a\005Union\005final\boverload\006typing\tcchecksum\017faster_hexbytes\016faster_eth_abi",
     "\004\031faster_eth_abi.exceptions\004auto\beth_hash\fABIComponent",
     "\005\023ABIComponentIndexed\nABIElement\bABIEvent\nAnyAddress\017ChecksumAddress",
     "\006\nHexAddress\006HexStr\neth_typing\vNotRequired\021typing_extensions\tException",
@@ -7963,7 +7964,7 @@ CPyModule *CPyModule_functools;
 CPyModule *CPyModule_re;
 CPyModule *CPyModule_typing;
 CPyModule *CPyModule_cchecksum;
-CPyModule *CPyModule_hexbytes;
+CPyModule *CPyModule_faster_hexbytes;
 CPyModule *CPyModule_faster_eth_abi;
 CPyModule *CPyModule_faster_eth_abi___exceptions;
 CPyModule *CPyModule_eth_hash;
