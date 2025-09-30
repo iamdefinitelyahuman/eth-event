@@ -30,7 +30,7 @@ colorama==0.4.6
     # via tox
 coverage[toml]==7.4.1
     # via pytest-cov
-cryptography==42.0.2
+cryptography==44.0.1
     # via secretstorage
 distlib==0.3.8
     # via virtualenv
