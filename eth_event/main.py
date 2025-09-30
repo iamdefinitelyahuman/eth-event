@@ -19,7 +19,7 @@ from typing import (
 )
 
 import cchecksum
-import hexbytes
+import faster_hexbytes
 from faster_eth_abi import decode
 from faster_eth_abi.exceptions import (
     InsufficientDataBytes,
@@ -92,7 +92,7 @@ Event = Union[DecodedEvent, NonDecodedEvent]
 
 ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
 
-HexBytes: Final = hexbytes.HexBytes
+HexBytes: Final = faster_hexbytes.HexBytes
 
 to_checksum_address: Final = cchecksum.to_checksum_address
 keccak: Final = auto.keccak
@@ -397,7 +397,7 @@ def decode_traceTransaction(
             raise StructLogError("Malformed stack") from e
 
         try:
-            data = _0xstring(HexBytes("".join(step["memory"]))[offset : offset + length].hex())
+            data = _0xstring(("".join(step["memory"]))[offset : offset + length].hex())
         except (KeyError, TypeError) as e:
             raise StructLogError("Malformed memory") from e
 
