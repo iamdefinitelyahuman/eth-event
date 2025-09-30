@@ -25,7 +25,7 @@ extern CPyModule *CPyModule_functools;
 extern CPyModule *CPyModule_re;
 extern CPyModule *CPyModule_typing;
 extern CPyModule *CPyModule_cchecksum;
-extern CPyModule *CPyModule_hexbytes;
+extern CPyModule *CPyModule_faster_hexbytes;
 extern CPyModule *CPyModule_faster_eth_abi;
 extern CPyModule *CPyModule_faster_eth_abi___exceptions;
 extern CPyModule *CPyModule_eth_hash;
