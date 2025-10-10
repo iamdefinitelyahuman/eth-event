@@ -53,19 +53,60 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       TOX_RECREATE_FLAG: ${{ github.event_name == 'schedule' && '-r' || '' }}
+      IS_UBUNTU_32BIT: ${{ matrix.os == 'ubuntu-latest' && matrix.architecture == 'x86' }}
     strategy:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
         pyversion: [ "3.9", "3.10", "3.11", "3.12", "3.13", "3.13t", "3.14", "3.14t" ]
+        architecture: [x64, x86]
+        exclude:
+          # Exclude x86 (32-bit) builds for macos, which doesn't support 32-bit at all
+          - os: macos-latest
+            architecture: x86
 
     steps:
     - uses: actions/checkout@v4
+      # Use i386/python Docker for all 32-bit Ubuntu jobs (TODO cache some of this)
+    - name: Run job in 32-bit Ubuntu Docker container
+      if: ${{ env.IS_UBUNTU_32BIT == 'true' }}
+      uses: addnab/docker-run-action@v3
+      with:
+        image: i386/python:${{ matrix.python-version }}
+        shell: bash
+        options: -v ${{ github.workspace }}:/workspace -w /workspace
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install tox
+          python -m tox -e ${{ env.TOXENV }} ${{ env.TOX_RECREATE_FLAG }}
+      # There are no prebuilt 32-bit freethreaded Python containers at the time of this commit, but
+      # we will keep these runners so they will activate on their own whenever such containers exist
+      continue-on-error: ${{ matrix.python-version == '3.13-t' || matrix.python-version == '3.14-t' }}
 
-    - name: Setup Python ${{ matrix.pyversion }}
+    # No architecture specified for MacOS
+    - name: Set up Python (macos)
+      if: ${{ matrix.os == 'macos-latest' }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.pyversion }}
+        python-version: ${{ matrix.python-version }}
+        cache: pip
+        cache: pip
+        cache-dependency-path: |
+          setup.py
+          setup.cfg
+          pyproject.toml
+          tox.ini
+          requirements.txt
+          requirements-dev.in
+          requirements-dev.txt
+      
+    # All other builds (64-bit Linux, 32-bit and 64-bit Windows)
+    - name: Set up Python
+      if: ${{ matrix.os != 'macos-latest' && env.IS_UBUNTU_32BIT != 'true' }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: ${{ matrix.architecture }}
         cache: pip
         cache-dependency-path: |
           setup.py
@@ -77,9 +118,11 @@ jobs:
           requirements-dev.txt
 
     - name: Install Tox
+      if: ${{ env.IS_UBUNTU_32BIT != 'true' }}
       run: pip install -U tox
 
     - name: Cache tox environment
+      if: ${{ env.IS_UBUNTU_32BIT != 'true' }}
       uses: actions/cache@v4
       with:
         path: .tox
@@ -87,11 +130,13 @@ jobs:
         save-always: ${{ env.TOX_RECREATE_FLAG == '-r' }}
 
     - name: Run Tox
+      if: ${{ env.IS_UBUNTU_32BIT != 'true' }}
       run: tox -e py${{ matrix.pyversion }} ${{ env.TOX_RECREATE_FLAG }}
       # python 3.13 free-threaded build currently fails only due to a dependency, so we treat this like an xfail
       continue-on-error: ${{ matrix.pyversion == '3.13t' }}
 
     - name: Upload coverage to Codecov
+      if: ${{ matrix.architecture == 'x64' }}
       uses: codecov/codecov-action@v1
       with:
         file: ./coverage.xml
