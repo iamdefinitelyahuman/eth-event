@@ -155,8 +155,10 @@ rfc3986==2.0.0
     # via twine
 rich==14.2.0
     # via twine
-secretstorage==3.4.0
-    # via keyring
+secretstorage==3.3.3
+    # via
+    #   -r requirements-dev.in
+    #   keyring
 tomli==2.3.0
     # via
     #   black
