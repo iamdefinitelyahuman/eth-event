@@ -47,7 +47,7 @@ jobs:
       run: pip install tox
 
     - name: Run Tox
-      run: tox -e lint
+      run: tox -e lint ${{ env.TOX_RECREATE_FLAG }}
 
   core:
     runs-on: ${{ matrix.os }}
