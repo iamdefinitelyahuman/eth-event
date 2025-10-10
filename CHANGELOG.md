@@ -6,30 +6,38 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+
+## [1.4.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.4) - 2025-10-10
+### Added
+- Support Python3.14
 ### Changed
-- replace [hexbytes](https://github.com/ethereum/hexbytes) with [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes/tree/master)
+- Require Python 3.9
+
+## [1.4.3](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.3) - 2025-09-30
+### Changed
+- Replace [hexbytes](https://github.com/ethereum/hexbytes) with [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes/tree/master)
 
 ## [1.4.2](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.2) - 2025-09-20
 ### Fixed
-- fix incorrect type hint for EventData.value
-- include faster-eth-abi in build dependencies
-- bump mypyc compiler version to latest patch
+- Fix incorrect type hint for EventData.value
+- Include faster-eth-abi in build dependencies
+- Bump mypyc compiler version to latest patch
 
 ## [1.4.1](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.1) - 2025-09-13
 ### Changed
-- bump mypyc compiler version for faster C code
+- Bump mypyc compiler version for faster C code
 
 ## [1.4.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.0) - 2025-08-08
 ### Changed
-- replace eth-abi with faster-eth-abi
+- Replace eth-abi with faster-eth-abi
 
 ## [1.3.5](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.5) - 2025-08-05
 ### Changed
-- add eth-abi to build deps
+- Add eth-abi to build deps
 
 ## [1.3.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.4) - 2025-07-19
 ### Fixed
-- type error if calling decode_traceTransaction with bytes-type `initial_address`
+- Type error if calling decode_traceTransaction with bytes-type `initial_address`
 
 ## [1.3.3](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.3) - 2025-07-16
 ### Added
