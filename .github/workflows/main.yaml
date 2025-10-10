@@ -61,6 +61,10 @@ jobs:
         pyversion: [ "3.9", "3.10", "3.11", "3.12", "3.13", "3.13t", "3.14", "3.14t" ]
         architecture: [x64, x86]
         exclude:
+          # Exclude x86 (32-bit) builds for windows, which blows up when trying to install
+          # rust toolchain for some dev dependency that eth-event doesn't depend on
+          - os: windows-latest
+            architecture: x86
           # Exclude x86 (32-bit) builds for macos, which doesn't support 32-bit at all
           - os: macos-latest
             architecture: x86
