@@ -61,8 +61,6 @@ jobs:
         exclude:
         # gh runner throws "Error: Version ${{ matrix.pyversion }} with arch arm64 not found"
         - os: macos-latest
-          pyversion: "3.8"
-        - os: macos-latest
           pyversion: "3.9"
         # gh runner cant build dependency `cffi`
         - os: macos-latest
@@ -94,7 +92,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: .tox
-        key: ${{ runner.os }}-tox-${{ hashFiles('pyproject.toml', 'setup.py', 'setup.cfg', 'pyproject.toml', 'tox.ini', 'requirements.txt', 'requirements-dev.in', 'requirements-dev.txt') }}-${{ matrix.pyversion }}
+        key: ${{ runner.os }}-core-${{ hashFiles('pyproject.toml', 'setup.py', 'setup.cfg', 'pyproject.toml', 'tox.ini', 'requirements.txt', 'requirements-dev.in', 'requirements-dev.txt') }}-${{ matrix.pyversion }}
         save-always: ${{ env.TOX_RECREATE_FLAG == '-r' }}
 
     - name: Run Tox
