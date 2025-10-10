@@ -58,15 +58,6 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
         pyversion: [ "3.9", "3.10", "3.11", "3.12", "3.13", "3.13t", "3.14", "3.14t" ]
-        exclude:
-        # gh runner throws "Error: Version ${{ matrix.pyversion }} with arch arm64 not found"
-        - os: macos-latest
-          pyversion: "3.9"
-        # gh runner cant build dependency `cffi`
-        - os: macos-latest
-          pyversion: "3.13"
-        - os: windows-latest
-          pyversion: "3.13"
 
     steps:
     - uses: actions/checkout@v4
@@ -96,9 +87,13 @@ jobs:
         save-always: ${{ env.TOX_RECREATE_FLAG == '-r' }}
 
     - name: Run Tox
+      id: tox
       run: tox -e py${{ matrix.pyversion }} ${{ env.TOX_RECREATE_FLAG }}
+      # python 3.13 free-threaded build currently fails only due to a dependency, so we treat this like an xfail
+      continue-on-error: ${{ matrix.python-version == '3.13t' }}
 
     - name: Upload coverage to Codecov
+      if: ${{ steps.tox.outcome == "success" }}
       uses: codecov/codecov-action@v1
       with:
         file: ./coverage.xml
