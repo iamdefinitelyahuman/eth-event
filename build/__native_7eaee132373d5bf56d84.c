@@ -6273,52 +6273,52 @@ CPyL3: ;
     cpy_r_r29 = CPyStatics[69]; /* '<module>' */
     cpy_r_r30 = CPyImport_ImportMany(cpy_r_r26, cpy_r_r23, cpy_r_r27, cpy_r_r28, cpy_r_r29, cpy_r_r25);
     if (!cpy_r_r30) goto CPyL210;
-    cpy_r_r31 = CPyStatics[142]; /* ('decode',) */
-    cpy_r_r32 = CPyStatics[86]; /* 'faster_eth_abi' */
+    cpy_r_r31 = CPyStatics[142]; /* ('auto',) */
+    cpy_r_r32 = CPyStatics[87]; /* 'eth_hash' */
     cpy_r_r33 = CPyStatic_main___globals;
     cpy_r_r34 = CPyImport_ImportFromMany(cpy_r_r32, cpy_r_r31, cpy_r_r31, cpy_r_r33);
     if (unlikely(cpy_r_r34 == NULL)) {
         CPy_AddTraceback("eth_event/main.py", "<module>", 23, CPyStatic_main___globals);
         goto CPyL210;
     }
-    CPyModule_faster_eth_abi = cpy_r_r34;
-    CPy_INCREF(CPyModule_faster_eth_abi);
+    CPyModule_eth_hash = cpy_r_r34;
+    CPy_INCREF(CPyModule_eth_hash);
     CPy_DECREF(cpy_r_r34);
-    cpy_r_r35 = CPyStatics[143]; /* ('InsufficientDataBytes', 'InvalidPointer',
-                                    'NoEntriesFound', 'NonEmptyPaddingBytes') */
-    cpy_r_r36 = CPyStatics[87]; /* 'faster_eth_abi.exceptions' */
+    cpy_r_r35 = CPyStatics[143]; /* ('ABIComponent', 'ABIComponentIndexed', 'ABIElement',
+                                    'ABIEvent', 'AnyAddress', 'ChecksumAddress',
+                                    'HexAddress', 'HexStr') */
+    cpy_r_r36 = CPyStatics[96]; /* 'eth_typing' */
     cpy_r_r37 = CPyStatic_main___globals;
     cpy_r_r38 = CPyImport_ImportFromMany(cpy_r_r36, cpy_r_r35, cpy_r_r35, cpy_r_r37);
     if (unlikely(cpy_r_r38 == NULL)) {
         CPy_AddTraceback("eth_event/main.py", "<module>", 24, CPyStatic_main___globals);
         goto CPyL210;
     }
-    CPyModule_faster_eth_abi___exceptions = cpy_r_r38;
-    CPy_INCREF(CPyModule_faster_eth_abi___exceptions);
+    CPyModule_eth_typing = cpy_r_r38;
+    CPy_INCREF(CPyModule_eth_typing);
     CPy_DECREF(cpy_r_r38);
-    cpy_r_r39 = CPyStatics[144]; /* ('auto',) */
-    cpy_r_r40 = CPyStatics[89]; /* 'eth_hash' */
+    cpy_r_r39 = CPyStatics[144]; /* ('decode',) */
+    cpy_r_r40 = CPyStatics[97]; /* 'faster_eth_abi' */
     cpy_r_r41 = CPyStatic_main___globals;
     cpy_r_r42 = CPyImport_ImportFromMany(cpy_r_r40, cpy_r_r39, cpy_r_r39, cpy_r_r41);
     if (unlikely(cpy_r_r42 == NULL)) {
-        CPy_AddTraceback("eth_event/main.py", "<module>", 30, CPyStatic_main___globals);
+        CPy_AddTraceback("eth_event/main.py", "<module>", 34, CPyStatic_main___globals);
         goto CPyL210;
     }
-    CPyModule_eth_hash = cpy_r_r42;
-    CPy_INCREF(CPyModule_eth_hash);
+    CPyModule_faster_eth_abi = cpy_r_r42;
+    CPy_INCREF(CPyModule_faster_eth_abi);
     CPy_DECREF(cpy_r_r42);
-    cpy_r_r43 = CPyStatics[145]; /* ('ABIComponent', 'ABIComponentIndexed', 'ABIElement',
-                                    'ABIEvent', 'AnyAddress', 'ChecksumAddress',
-                                    'HexAddress', 'HexStr') */
-    cpy_r_r44 = CPyStatics[98]; /* 'eth_typing' */
+    cpy_r_r43 = CPyStatics[145]; /* ('InsufficientDataBytes', 'InvalidPointer',
+                                    'NoEntriesFound', 'NonEmptyPaddingBytes') */
+    cpy_r_r44 = CPyStatics[98]; /* 'faster_eth_abi.exceptions' */
     cpy_r_r45 = CPyStatic_main___globals;
     cpy_r_r46 = CPyImport_ImportFromMany(cpy_r_r44, cpy_r_r43, cpy_r_r43, cpy_r_r45);
     if (unlikely(cpy_r_r46 == NULL)) {
-        CPy_AddTraceback("eth_event/main.py", "<module>", 31, CPyStatic_main___globals);
+        CPy_AddTraceback("eth_event/main.py", "<module>", 35, CPyStatic_main___globals);
         goto CPyL210;
     }
-    CPyModule_eth_typing = cpy_r_r46;
-    CPy_INCREF(CPyModule_eth_typing);
+    CPyModule_faster_eth_abi___exceptions = cpy_r_r46;
+    CPy_INCREF(CPyModule_faster_eth_abi___exceptions);
     CPy_DECREF(cpy_r_r46);
     cpy_r_r47 = CPyStatics[146]; /* ('NotRequired',) */
     cpy_r_r48 = CPyStatics[100]; /* 'typing_extensions' */
@@ -6852,7 +6852,7 @@ CPyL85: ;
         goto CPyL224;
     }
     cpy_r_r241 = CPyStatic_main___globals;
-    cpy_r_r242 = CPyStatics[95]; /* 'ChecksumAddress' */
+    cpy_r_r242 = CPyStatics[93]; /* 'ChecksumAddress' */
     cpy_r_r243 = CPyDict_GetItem(cpy_r_r241, cpy_r_r242);
     if (unlikely(cpy_r_r243 == NULL)) {
         CPy_AddTraceback("eth_event/main.py", "<module>", 78, CPyStatic_main___globals);
@@ -7047,7 +7047,7 @@ CPyL116: ;
         goto CPyL230;
     }
     cpy_r_r314 = CPyStatic_main___globals;
-    cpy_r_r315 = CPyStatics[97]; /* 'HexStr' */
+    cpy_r_r315 = CPyStatics[95]; /* 'HexStr' */
     cpy_r_r316 = CPyDict_GetItem(cpy_r_r314, cpy_r_r315);
     if (unlikely(cpy_r_r316 == NULL)) {
         CPy_AddTraceback("eth_event/main.py", "<module>", 85, CPyStatic_main___globals);
@@ -7070,7 +7070,7 @@ CPyL116: ;
         goto CPyL230;
     }
     cpy_r_r324 = CPyStatic_main___globals;
-    cpy_r_r325 = CPyStatics[95]; /* 'ChecksumAddress' */
+    cpy_r_r325 = CPyStatics[93]; /* 'ChecksumAddress' */
     cpy_r_r326 = CPyDict_GetItem(cpy_r_r324, cpy_r_r325);
     if (unlikely(cpy_r_r326 == NULL)) {
         CPy_AddTraceback("eth_event/main.py", "<module>", 87, CPyStatic_main___globals);
@@ -7261,7 +7261,7 @@ CPyL116: ;
         goto CPyL210;
     }
     cpy_r_r395 = CPyStatic_main___globals;
-    cpy_r_r396 = CPyStatics[88]; /* 'auto' */
+    cpy_r_r396 = CPyStatics[86]; /* 'auto' */
     cpy_r_r397 = CPyDict_GetItem(cpy_r_r395, cpy_r_r396);
     if (unlikely(cpy_r_r397 == NULL)) {
         CPy_AddTraceback("eth_event/main.py", "<module>", 98, CPyStatic_main___globals);
@@ -7509,7 +7509,7 @@ CPyL168: ;
         goto CPyL210;
     }
     cpy_r_r488 = CPyStatic_main___globals;
-    cpy_r_r489 = CPyStatics[97]; /* 'HexStr' */
+    cpy_r_r489 = CPyStatics[95]; /* 'HexStr' */
     cpy_r_r490 = CPyDict_GetItem(cpy_r_r488, cpy_r_r489);
     if (unlikely(cpy_r_r490 == NULL)) {
         CPy_AddTraceback("eth_event/main.py", "<module>", 133, CPyStatic_main___globals);
@@ -7894,10 +7894,10 @@ int CPyGlobalsInit(void)
     CPyModule_typing = Py_None;
     CPyModule_cchecksum = Py_None;
     CPyModule_faster_hexbytes = Py_None;
-    CPyModule_faster_eth_abi = Py_None;
-    CPyModule_faster_eth_abi___exceptions = Py_None;
     CPyModule_eth_hash = Py_None;
     CPyModule_eth_typing = Py_None;
+    CPyModule_faster_eth_abi = Py_None;
+    CPyModule_faster_eth_abi___exceptions = Py_None;
     CPyModule_typing_extensions = Py_None;
     if (CPyStatics_Initialize(CPyStatics, CPyLit_Str, CPyLit_Bytes, CPyLit_Int, CPyLit_Float, CPyLit_Complex, CPyLit_Tuple, CPyLit_FrozenSet) < 0) {
         return -1;
@@ -7925,10 +7925,10 @@ const char * const CPyLit_Str[] = {
     "\002\rOverflowError)Cannot decode event due to overflow error",
     "\a\016NoEntriesFound\005value\tfunctools\002re\021eth_event/main.py\b<module>\003Any",
     "\t\bCallable\004Dict\005Final\004List\aLiteral\aMapping\bOptional\bSequence\tTypedDict",
-    "\a\005Union\005final\boverload\006typing\tcchecksum\017faster_hexbytes\016faster_eth_abi",
-    "\004\031faster_eth_abi.exceptions\004auto\beth_hash\fABIComponent",
-    "\005\023ABIComponentIndexed\nABIElement\bABIEvent\nAnyAddress\017ChecksumAddress",
-    "\006\nHexAddress\006HexStr\neth_typing\vNotRequired\021typing_extensions\tException",
+    "\b\005Union\005final\boverload\006typing\tcchecksum\017faster_hexbytes\004auto\beth_hash",
+    "\005\fABIComponent\023ABIComponentIndexed\nABIElement\bABIEvent\nAnyAddress",
+    "\005\017ChecksumAddress\nHexAddress\006HexStr\neth_typing\016faster_eth_abi",
+    "\004\031faster_eth_abi.exceptions\vNotRequired\021typing_extensions\tException",
     "\005\017__mypyc_attrs__\b__dict__\n_TypedDict\016_TypedDictMeta\v__prepare__",
     "\005\tEventData\017__annotations__\026mypyc filler docstring\a__doc__\n__module__",
     "\005\fDecodedEvent\017NonDecodedEvent\005Event\blogIndex\vblockNumber",
@@ -7949,8 +7949,8 @@ const double CPyLit_Complex[] = {0};
 const int CPyLit_Tuple[] = {
     13, 9, 4, 5, 6, 7, 8, 9, 10, 11, 12, 3, 66, 66, 66, 3, 67, 67, 67,
     2, 135, 136, 13, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,
-    3, 84, 84, 84, 3, 85, 85, 85, 2, 139, 140, 1, 56, 4, 57, 61, 64, 59,
-    1, 88, 8, 90, 91, 92, 93, 94, 95, 96, 97, 1, 99
+    3, 84, 84, 84, 3, 85, 85, 85, 2, 139, 140, 1, 86, 8, 88, 89, 90, 91,
+    92, 93, 94, 95, 1, 56, 4, 57, 61, 64, 59, 1, 99
 };
 const int CPyLit_FrozenSet[] = {0};
 CPyModule *CPyModule_eth_event__internal = NULL;
@@ -7965,10 +7965,10 @@ CPyModule *CPyModule_re;
 CPyModule *CPyModule_typing;
 CPyModule *CPyModule_cchecksum;
 CPyModule *CPyModule_faster_hexbytes;
-CPyModule *CPyModule_faster_eth_abi;
-CPyModule *CPyModule_faster_eth_abi___exceptions;
 CPyModule *CPyModule_eth_hash;
 CPyModule *CPyModule_eth_typing;
+CPyModule *CPyModule_faster_eth_abi;
+CPyModule *CPyModule_faster_eth_abi___exceptions;
 CPyModule *CPyModule_typing_extensions;
 char CPyDef_eth_event_____top_level__(void);
 tuple_T3OOO CPyStatic_main___ADD_LOG_ENTRIES = { NULL, NULL, NULL };
