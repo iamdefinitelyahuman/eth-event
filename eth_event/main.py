@@ -163,7 +163,9 @@ def get_topic_map(abi: List[ABIElement]) -> Dict[HexStr, TopicMapData]:
     """
     try:
         return {
-            get_log_topic(i): {"name": i["name"], "inputs": i["inputs"]}  # type: ignore [typeddict-item]
+            get_log_topic(i): {
+                "name": i["name"], "inputs": i["inputs"],  # type: ignore [typeddict-item]
+            }
             for i in abi
             if i["type"] == "event" and not i.get("anonymous")
         }
@@ -240,18 +242,20 @@ def decode_log(
 
 
 @overload
-def decode_logs(
+def decode_logs(  # E704
     logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[True]
 ) -> List[DecodedEvent]: ...
 
 
 @overload
-def decode_logs(
+def decode_logs(  # E704
     logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[False]
 ) -> List[Event]: ...
 
 
-def decode_logs(logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: bool = False) -> List[Event]:  # type: ignore [misc]
+def decode_logs(  # type: ignore [misc]
+    logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: bool = False
+) -> List[Event]:
     """
     Decode a list of event logs from a transaction receipt.
 
@@ -447,7 +451,9 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
     return types
 
 
-def _decode(inputs: List[ABIComponentIndexed], topics: List, data: Any) -> List[EventData]:  # type: ignore[type-arg]
+def _decode(
+    inputs: List[ABIComponentIndexed], topics: List, data: Any  # type: ignore[type-arg]
+) -> List[EventData]:
     unindexed_types = []
     indexed_count = 0
     for i in inputs:
