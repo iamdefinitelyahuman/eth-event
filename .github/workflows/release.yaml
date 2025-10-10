@@ -31,13 +31,7 @@ jobs:
 
       - name: Install cibuildwheel
         run: |
-          python -m pip install --upgrade \
-            pip \
-            setuptools \
-            wheel \
-            cibuildwheel \
-            mypy[mypyc] \
-            -r requirements.txt
+          python -m pip install --upgrade pip setuptools wheel cibuildwheel mypy[mypyc] -r requirements.txt
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
