@@ -104,8 +104,9 @@ pathspec==0.12.1
     #   mypy
 pip-tools==7.5.1
     # via -r requirements-dev.in
-platformdirs==4.5.0
+platformdirs==4.4.0
     # via
+    #   -r requirements-dev.in
     #   black
     #   tox
     #   virtualenv
