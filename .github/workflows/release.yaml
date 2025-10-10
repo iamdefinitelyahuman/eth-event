@@ -30,14 +30,10 @@ jobs:
           python-version: "3.11"
 
       - name: Install cibuildwheel
-        run: |
-          python -m pip install --upgrade pip setuptools wheel cibuildwheel mypy[mypyc] -r requirements.txt
+        run: python -m pip install --upgrade pip setuptools wheel cibuildwheel mypy[mypyc] -r requirements.txt
 
       - name: Build wheels
-        env:
-          CIBW_BUILD: cp38-* cp39-* cp310-* cp311-* cp312-*
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse
+        run: python -m cibuildwheel --output-dir wheelhouse
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
