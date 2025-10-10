@@ -73,7 +73,7 @@ jobs:
       if: ${{ env.IS_UBUNTU_32BIT == 'true' }}
       uses: addnab/docker-run-action@v3
       with:
-        image: i386/python:${{ matrix.python-version }}
+        image: i386/python:${{ matrix.pyversion }}
         shell: bash
         options: -v ${{ github.workspace }}:/workspace -w /workspace
         run: |
@@ -82,14 +82,14 @@ jobs:
           python -m tox -e ${{ env.TOXENV }} ${{ env.TOX_RECREATE_FLAG }}
       # There are no prebuilt 32-bit freethreaded Python containers at the time of this commit, but
       # we will keep these runners so they will activate on their own whenever such containers exist
-      continue-on-error: ${{ matrix.python-version == '3.13t' || matrix.python-version == '3.14t' }}
+      continue-on-error: ${{ matrix.pyversion == '3.13t' || matrix.pyversion == '3.14t' }}
 
     # No architecture specified for MacOS
     - name: Set up Python (macos)
       if: ${{ matrix.os == 'macos-latest' }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: ${{ matrix.pyversion }}
         cache: pip
         cache-dependency-path: |
           setup.py
@@ -105,7 +105,7 @@ jobs:
       if: ${{ matrix.os != 'macos-latest' && env.IS_UBUNTU_32BIT != 'true' }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: ${{ matrix.pyversion }}
         architecture: ${{ matrix.architecture }}
         cache: pip
         cache-dependency-path: |
