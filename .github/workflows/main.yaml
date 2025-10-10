@@ -30,7 +30,8 @@ jobs:
 
   core:
     runs-on: ${{ matrix.os }}
-
+    env:
+      TOX_RECREATE_FLAG: ${{ github.event_name == 'schedule' && '-r' || '' }}
     strategy:
       fail-fast: false
       matrix:
@@ -66,12 +67,28 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.pyversion }}
+        cache: pip
+        cache-dependency-path: |
+          setup.py
+          setup.cfg
+          pyproject.toml
+          tox.ini
+          requirements.txt
+          requirements-dev.in
+          requirements-dev.txt
 
     - name: Install Tox
-      run: pip install tox
+      run: pip install -U tox
+
+    - name: Cache tox environment and hypothesis examples
+      uses: actions/cache@v4
+      with:
+        path: .tox
+        key: ${{ runner.os }}-tox-${{ hashFiles('pyproject.toml', 'setup.py', 'setup.cfg', 'pyproject.toml', 'tox.ini', 'requirements.txt', 'requirements-dev.in', 'requirements-dev.txt') }}-${{ matrix.python-version }}-${{ matrix.jobtype }}
+        save-always: ${{ env.TOX_RECREATE_FLAG == '-r' }}
 
     - name: Run Tox
-      run: tox -e ${{ matrix.toxenv }}
+      run: tox -e ${{ matrix.toxenv }} ${{ env.TOX_RECREATE_FLAG }}
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
