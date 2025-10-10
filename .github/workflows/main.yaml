@@ -82,7 +82,7 @@ jobs:
           python -m tox -e ${{ env.TOXENV }} ${{ env.TOX_RECREATE_FLAG }}
       # There are no prebuilt 32-bit freethreaded Python containers at the time of this commit, but
       # we will keep these runners so they will activate on their own whenever such containers exist
-      continue-on-error: ${{ matrix.python-version == '3.13-t' || matrix.python-version == '3.14-t' }}
+      continue-on-error: ${{ matrix.python-version == '3.13t' || matrix.python-version == '3.14t' }}
 
     # No architecture specified for MacOS
     - name: Set up Python (macos)
