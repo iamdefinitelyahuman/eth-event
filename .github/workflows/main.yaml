@@ -67,7 +67,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      # Use i386/python Docker for all 32-bit Ubuntu jobs (TODO cache some of this)
+    
+    # Use i386/python Docker for all 32-bit Ubuntu jobs (TODO cache some of this)
     - name: Run job in 32-bit Ubuntu Docker container
       if: ${{ env.IS_UBUNTU_32BIT == 'true' }}
       uses: addnab/docker-run-action@v3
@@ -90,7 +91,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: pip
-        cache: pip
         cache-dependency-path: |
           setup.py
           setup.cfg
@@ -99,7 +99,7 @@ jobs:
           requirements.txt
           requirements-dev.in
           requirements-dev.txt
-      
+
     # All other builds (64-bit Linux, 32-bit and 64-bit Windows)
     - name: Set up Python
       if: ${{ matrix.os != 'macos-latest' && env.IS_UBUNTU_32BIT != 'true' }}
