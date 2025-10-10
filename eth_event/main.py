@@ -243,13 +243,13 @@ def decode_log(
 
 
 @overload
-def decode_logs(  # E704
+def decode_logs(  # noqa: E704
     logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[True]
 ) -> List[DecodedEvent]: ...
 
 
 @overload
-def decode_logs(  # E704
+def decode_logs(  # noqa: E704
     logs: List[Mapping[str, Any]], topic_map: TopicMap, allow_undecoded: Literal[False]
 ) -> List[Event]: ...
 
