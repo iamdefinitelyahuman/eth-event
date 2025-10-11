@@ -5,6 +5,7 @@ isort
 mypy
 pip-tools
 pytest
+pytest-codspeed
 pytest-cov
 tox
 twine
