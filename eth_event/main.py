@@ -432,7 +432,7 @@ def decode_traceTransaction(
 
 
 def _0xstring(value: Any) -> HexStr:
-    return f"0x{HexBytes(value).hex()}"  # type: ignore [return-value]
+    return HexStr(f"0x{HexBytes(value).hex()}")
 
 
 def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
@@ -445,7 +445,7 @@ def _params(abi_params: List[Dict[str, Any]]) -> List[str]:
         if tuple_match := _tuple_match(i_type):
             _array, _size = tuple_match.group(1, 2)  # unpack the captured info
             tuple_type_tail = f"[{_size}]" if _array is not None else ""
-            types.append(f"({','.join(x for x in _params(i['components']))}){tuple_type_tail}")
+            types.append(f"({','.join(_params(i['components']))}){tuple_type_tail}")
             continue
         types.append(i_type)
 
@@ -468,9 +468,10 @@ def _decode(
         # we should still be able to decode the data
         unindexed_types = inputs
     else:
-        if indexed_count == len(topics):
+        topics_count = len(topics)
+        if indexed_count == topics_count:
             pass
-        elif indexed_count < len(topics):
+        elif indexed_count < topics_count:
             raise EventError(
                 "Event log does not contain enough topics for the given ABI - this"
                 " is usually because an event argument is not marked as indexed"
@@ -509,10 +510,9 @@ def _decode(
     for i in inputs:
         i_type = i["type"]
 
+        element = {"name": i["name"], "type": i_type}
         if "components" in i:
-            element = {"name": i["name"], "type": i_type, "components": i["components"]}
-        else:
-            element = {"name": i["name"], "type": i_type}
+            element["components"] = i["components"]}
 
         if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
