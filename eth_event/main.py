@@ -512,7 +512,7 @@ def _decode(
 
         element = {"name": i["name"], "type": i_type}
         if "components" in i:
-            element["components"] = i["components"]}
+            element["components"] = i["components"]
 
         if topics and i["indexed"]:
             encoded = HexBytes(topics.pop())
