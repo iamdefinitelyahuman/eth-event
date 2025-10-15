@@ -7,11 +7,11 @@ PyMODINIT_FUNC
 PyInit_eth_event(void)
 {
     PyObject *tmp;
-    if (!(tmp = PyImport_ImportModule("7eaee132373d5bf56d84__mypyc"))) return NULL;
+    if (!(tmp = PyImport_ImportModule("eth_event__mypyc"))) return NULL;
     PyObject *capsule = PyObject_GetAttrString(tmp, "init_eth_event");
     Py_DECREF(tmp);
     if (capsule == NULL) return NULL;
-    void *init_func = PyCapsule_GetPointer(capsule, "7eaee132373d5bf56d84__mypyc.init_eth_event");
+    void *init_func = PyCapsule_GetPointer(capsule, "eth_event__mypyc.init_eth_event");
     Py_DECREF(capsule);
     if (!init_func) {
         return NULL;
