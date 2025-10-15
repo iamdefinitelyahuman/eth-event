@@ -16,8 +16,8 @@
 #include "misc_ops.c"
 #include "generic_ops.c"
 #include "pythonsupport.c"
-#include "__native_7eaee132373d5bf56d84.h"
-#include "__native_internal_7eaee132373d5bf56d84.h"
+#include "__native_eth_event.h"
+#include "__native_internal_eth_event.h"
 static PyMethodDef eth_eventmodule_methods[] = {
     {NULL, NULL, 0, NULL}
 };
@@ -7938,14 +7938,14 @@ PyObject *CPyDef_main____decode(PyObject *cpy_r_inputs, PyObject *cpy_r_topics, 
 PyObject *CPyPy_main____decode(PyObject *self, PyObject *const *args, size_t nargs, PyObject *kwnames);
 char CPyDef_main_____top_level__(void);
 
-static int exec_7eaee132373d5bf56d84__mypyc(PyObject *module)
+static int exec_eth_event__mypyc(PyObject *module)
 {
     int res;
     PyObject *capsule;
     PyObject *tmp;
     
     extern PyObject *CPyInit_eth_event(void);
-    capsule = PyCapsule_New((void *)CPyInit_eth_event, "7eaee132373d5bf56d84__mypyc.init_eth_event", NULL);
+    capsule = PyCapsule_New((void *)CPyInit_eth_event, "eth_event__mypyc.init_eth_event", NULL);
     if (!capsule) {
         goto fail;
     }
@@ -7956,7 +7956,7 @@ static int exec_7eaee132373d5bf56d84__mypyc(PyObject *module)
     }
     
     extern PyObject *CPyInit_eth_event___main(void);
-    capsule = PyCapsule_New((void *)CPyInit_eth_event___main, "7eaee132373d5bf56d84__mypyc.init_eth_event___main", NULL);
+    capsule = PyCapsule_New((void *)CPyInit_eth_event___main, "eth_event__mypyc.init_eth_event___main", NULL);
     if (!capsule) {
         goto fail;
     }
@@ -7970,24 +7970,24 @@ static int exec_7eaee132373d5bf56d84__mypyc(PyObject *module)
     fail:
     return -1;
 }
-static PyModuleDef module_def_7eaee132373d5bf56d84__mypyc = {
+static PyModuleDef module_def_eth_event__mypyc = {
     PyModuleDef_HEAD_INIT,
-    .m_name = "7eaee132373d5bf56d84__mypyc",
+    .m_name = "eth_event__mypyc",
     .m_doc = NULL,
     .m_size = -1,
     .m_methods = NULL,
 };
-PyMODINIT_FUNC PyInit_7eaee132373d5bf56d84__mypyc(void) {
+PyMODINIT_FUNC PyInit_eth_event__mypyc(void) {
     static PyObject *module = NULL;
     if (module) {
         Py_INCREF(module);
         return module;
     }
-    module = PyModule_Create(&module_def_7eaee132373d5bf56d84__mypyc);
+    module = PyModule_Create(&module_def_eth_event__mypyc);
     if (!module) {
         return NULL;
     }
-    if (exec_7eaee132373d5bf56d84__mypyc(module) < 0) {
+    if (exec_eth_event__mypyc(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }
