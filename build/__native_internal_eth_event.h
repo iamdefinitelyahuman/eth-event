@@ -1,8 +1,8 @@
-#ifndef MYPYC_NATIVE_INTERNAL_7eaee132373d5bf56d84_H
-#define MYPYC_NATIVE_INTERNAL_7eaee132373d5bf56d84_H
+#ifndef MYPYC_NATIVE_INTERNAL_eth_event_H
+#define MYPYC_NATIVE_INTERNAL_eth_event_H
 #include <Python.h>
 #include <CPy.h>
-#include "__native_7eaee132373d5bf56d84.h"
+#include "__native_eth_event.h"
 
 int CPyGlobalsInit(void);
 
