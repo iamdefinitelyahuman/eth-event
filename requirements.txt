@@ -1,4 +1,4 @@
 cchecksum==0.3.3
 eth-hash[pycryptodome]>=0.2.0,<1.0.0
 faster-eth-abi>=5.2.1,<6
-faster-hexbytes>=1,<2
+faster-hexbytes==1.3.3
