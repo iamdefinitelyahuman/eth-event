@@ -1,5 +1,5 @@
-#ifndef MYPYC_NATIVE_INTERNAL_eth_event_H
-#define MYPYC_NATIVE_INTERNAL_eth_event_H
+#ifndef MYPYC_LIBRT_INTERNAL_eth_event_H
+#define MYPYC_LIBRT_INTERNAL_eth_event_H
 #include <Python.h>
 #include <CPy.h>
 #include "__native_eth_event.h"

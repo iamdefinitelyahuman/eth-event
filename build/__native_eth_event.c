@@ -649,7 +649,7 @@ CPyL3: ;
         goto CPyL34;
     }
     cpy_r_r14 = CPyStatics[DIFFCHECK_PLACEHOLDER]; /* 'event' */
-    cpy_r_r15 = CPyStr_Equal(cpy_r_r13, cpy_r_r14);
+    cpy_r_r15 = CPyStr_EqualLiteral(cpy_r_r13, cpy_r_r14, 5);
     CPy_DECREF(cpy_r_r13);
     if (cpy_r_r15) goto CPyL9;
     if (cpy_r_r15) {
@@ -2357,9 +2357,9 @@ CPyL34: ;
     }
     cpy_r_r49 = CPyStatics[DIFFCHECK_PLACEHOLDER]; /* 'CREATE' */
     cpy_r_r50 = CPyStatics[DIFFCHECK_PLACEHOLDER]; /* 'CREATE2' */
-    cpy_r_r51 = CPyStr_Equal(cpy_r_r48, cpy_r_r49);
+    cpy_r_r51 = CPyStr_EqualLiteral(cpy_r_r48, cpy_r_r49, 6);
     if (cpy_r_r51) goto CPyL208;
-    cpy_r_r52 = CPyStr_Equal(cpy_r_r48, cpy_r_r50);
+    cpy_r_r52 = CPyStr_EqualLiteral(cpy_r_r48, cpy_r_r50, 7);
     CPy_DECREF(cpy_r_r48);
     if (cpy_r_r52) goto CPyL40;
     if (0) {
