@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 
+## [1.4.5](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.5) - 2025-11-30
+### Changed
+- Bump mypyc compiler version to latest patch
+
 ## [1.4.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.4) - 2025-10-10
 ### Added
 - Support Python3.14
