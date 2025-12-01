@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 ### Changed
 - Bump [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes) to [v1.3.4](https://github.com/BobTheBuidler/faster-hexbytes/releases/tag/v1.3.4)
-- Bump [faster-eth-abi](https://github.com/BobTheBuidler/faster-eth-abi) to [v5.2.20](https://github.com/BobTheBuidler/faster-eth-abi/releases)
+- Bump [faster-eth-abi](https://github.com/BobTheBuidler/faster-eth-abi) to [v5.2.21](https://github.com/BobTheBuidler/faster-eth-abi/releases)
+- Bump [faster-eth-utils](https://github.com/BobTheBuidler/faster-eth-utils) to [v5.3.19](https://github.com/BobTheBuidler/faster-eth-utils/releases/tag/v5.3.19)
+- Bump [cchecksum](https://github.com/BobTheBuidler/cchecksum) to [v0.3.7.dev0](https://github.com/BobTheBuidler/cchecksum/releases/tag/v0.3.6)
 
 ## [1.4.5](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.5) - 2025-11-31
 ### Changed
