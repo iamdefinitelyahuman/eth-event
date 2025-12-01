@@ -3,8 +3,7 @@ requires = [
     "setuptools",
     "wheel",
     "mypy[mypyc]==1.19.0",
-    "faster-eth-abi==5.2.14",
-    "faster-eth-utils==5.3.16",
+    "faster-eth-abi==5.2.20",
     "faster-hexbytes==1.3.4",
 ]
 
