@@ -6,6 +6,12 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+### Changed
+- Bump [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes) to [v1.3.4](https://github.com/BobTheBuidler/faster-hexbytes/releases/tag/v1.3.4)
+
+## [1.4.5](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.5) - 2025-11-31
+### Changed
+- Bump mypyc compiler version to latest patch
 
 ## [1.4.4](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.4) - 2025-10-10
 ### Added
@@ -20,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.2](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.2) - 2025-09-20
 ### Fixed
 - Fix incorrect type hint for EventData.value
-- Include faster-eth-abi in build dependencies
+- Include [faster-eth-abi](https://github.com/BobTheBuidler/faster-eth-abi) in build dependencies
 - Bump mypyc compiler version to latest patch
 
 ## [1.4.1](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.1) - 2025-09-13
@@ -29,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.0) - 2025-08-08
 ### Changed
-- Replace eth-abi with faster-eth-abi
+- Replace [eth-abi](https://github.com/ethereum/eth-abi) with [faster-eth-abi](https://github.com/BobTheBuidler/faster-eth-abi)
 
 ## [1.3.5](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.3.5) - 2025-08-05
 ### Changed
