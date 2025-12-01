@@ -6,6 +6,8 @@ This changelog format is based on [Keep a Changelog](https://keepachangelog.com/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
+
+## [1.4.6](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.6) - 2025-12-01
 ### Changed
 - Bump [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes) to [v1.3.4](https://github.com/BobTheBuidler/faster-hexbytes/releases/tag/v1.3.4)
 - Bump [faster-eth-abi](https://github.com/BobTheBuidler/faster-eth-abi) to [v5.2.22](https://github.com/BobTheBuidler/faster-eth-abi/releases/tag/v5.2.22)
