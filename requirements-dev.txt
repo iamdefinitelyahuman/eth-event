@@ -141,7 +141,7 @@ pytest==8.4.2
     #   pytest-cov
 pytest-cov==7.0.0
     # via -r requirements-dev.in
-pytest-codspeed==4.1.1
+pytest-codspeed==4.2.0
     # via -r requirements-dev.in
 pytokens==0.1.10
     # via black
