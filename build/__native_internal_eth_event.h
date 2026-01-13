@@ -24,6 +24,7 @@ extern PyObject *CPyStatic_main___globals;
 extern CPyModule *CPyModule_functools;
 extern CPyModule *CPyModule_re;
 extern CPyModule *CPyModule_typing;
+extern CPyModule *CPyModule_collections___abc;
 extern CPyModule *CPyModule_cchecksum;
 extern CPyModule *CPyModule_faster_hexbytes;
 extern CPyModule *CPyModule_eth_hash;
