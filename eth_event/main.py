@@ -18,7 +18,7 @@ from eth_typing import (
     HexAddress,
     HexStr,
 )
-from faster_eth_abi import decode
+from faster_eth_abi import decode  # type: ignore [attr-defined]
 from faster_eth_abi.exceptions import (
     InsufficientDataBytes,
     InvalidPointer,
