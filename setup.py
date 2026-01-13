@@ -2,8 +2,8 @@
 
 import platform
 from pathlib import Path
-from setuptools import setup, find_packages
 
+from setuptools import find_packages, setup
 
 this_directory = Path(__file__).parent
 requirements = list(map(str.strip, (this_directory / "requirements.txt").read_text().splitlines()))
