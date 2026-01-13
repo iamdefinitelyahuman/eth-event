@@ -18,14 +18,7 @@ else:
         ext_modules = []
     else:
         ext_modules = mypycify(
-            [
-                "eth_event/__init__.py",
-                "eth_event/main.py",
-                "--strict",
-                "--pretty",
-                "--disable-error-code=typeddict-unknown-key",
-                "--disable-error-code=unused-ignore",
-            ],
+            ["eth_event/__init__.py", "eth_event/main.py", "--strict", "--pretty", "--disable-error-code=unused-ignore"],
             group_name="eth_event",
         )
 
