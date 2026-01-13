@@ -140,8 +140,6 @@ jobs:
     - name: Run Tox
       if: ${{ env.IS_UBUNTU_32BIT != 'true' }}
       run: tox -e py${{ matrix.pyversion }} ${{ env.TOX_RECREATE_FLAG }}
-      # python 3.13 free-threaded build currently fails only due to a dependency, so we treat this like an xfail
-      continue-on-error: ${{ matrix.pyversion == '3.13t' }}
 
     - name: Upload coverage to Codecov
       if: ${{ matrix.architecture == 'x64' }}
