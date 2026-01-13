@@ -4,7 +4,6 @@ from pytest_codspeed import BenchmarkFixture
 
 from eth_event import main
 
-
 # --- Event ABIs and logs for common on-chain event types ---
 
 # 1. ERC20 Transfer (address, address, uint256)
