@@ -306,7 +306,7 @@ def decode_logs(  # type: ignore [misc]
 def _append_additional_log_data(log: Mapping[str, Any], event: Event) -> None:
     for log_entry in ADD_LOG_ENTRIES:
         if log_entry in log:
-            event[log_entry] = log[log_entry]
+            event[log_entry] = log[log_entry]  # type: ignore [typeddict-unknown-key]
 
 
 class _TraceStep(TypedDict):
