@@ -3,7 +3,7 @@
 import functools
 import re
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Final, Literal, TypeAlias, TypedDict, Union, final, overload
+from typing import Any, Final, Literal, TypeAlias, TypedDict, final, overload
 
 import cchecksum
 import faster_hexbytes
