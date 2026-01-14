@@ -2,9 +2,8 @@
 
 import functools
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Final, Literal, Optional, TypedDict, Union, final, overload
-from collections.abc import Callable
 
 import cchecksum
 import faster_hexbytes
