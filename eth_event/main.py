@@ -3,7 +3,8 @@
 import functools
 import re
 from collections.abc import Mapping, Sequence
-from typing import Any, Callable, Final, Literal, Optional, TypedDict, Union, final, overload
+from typing import Any, Final, Literal, Optional, TypedDict, Union, final, overload
+from collections.abc import Callable
 
 import cchecksum
 import faster_hexbytes
@@ -320,7 +321,7 @@ def decode_traceTransaction(
     struct_logs: list[_TraceStep],
     topic_map: TopicMap,
     allow_undecoded: bool = False,
-    initial_address: Optional[AnyAddress] = None,
+    initial_address: AnyAddress | None = None,
 ) -> list[Event]:
     """
     Extract and decode a list of event logs from a transaction traceback.
@@ -344,7 +345,7 @@ def decode_traceTransaction(
     List
         A list of decoded events, formatted in the same structure as `decode_log`
     """
-    address_list: list[Optional[ChecksumAddress]]
+    address_list: list[ChecksumAddress | None]
 
     # we loosely cache the results to save time during processing
     # but discard the cache after each batch of logs is processed
