@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-        pyversion: [ "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.14t" ]
+        pyversion: [ "3.10", "3.11", "3.12", "3.13", "3.14", "3.14t" ]
         architecture: [x64, x86]
         exclude:
           # Exclude x86 (32-bit) builds for ubuntu, which blows up when trying to install

@@ -2,8 +2,8 @@
 
 import functools
 import re
-from collections.abc import Mapping, Sequence
-from typing import Any, Callable, Final, Literal, Optional, TypedDict, Union, final, overload
+from collections.abc import Callable, Mapping, Sequence
+from typing import Any, Final, Literal, TypeAlias, TypedDict, final, overload
 
 import cchecksum
 import faster_hexbytes
@@ -74,7 +74,7 @@ class NonDecodedEvent(TypedDict, total=False):
     address: ChecksumAddress
 
 
-Event = Union[DecodedEvent, NonDecodedEvent]
+Event: TypeAlias = DecodedEvent | NonDecodedEvent
 
 
 ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
@@ -117,7 +117,7 @@ class TopicMapData(TypedDict):
     inputs: list[ABIComponentIndexed]
 
 
-TopicMap = Mapping[HexStr, TopicMapData]
+TopicMap: TypeAlias = Mapping[HexStr, TopicMapData]
 # must use Mapping instead of Dict because this change will be breaking if we don't.
 # brownie passes in an AttributeDict not a dict.
 
@@ -320,7 +320,7 @@ def decode_traceTransaction(
     struct_logs: list[_TraceStep],
     topic_map: TopicMap,
     allow_undecoded: bool = False,
-    initial_address: Optional[AnyAddress] = None,
+    initial_address: AnyAddress | None = None,
 ) -> list[Event]:
     """
     Extract and decode a list of event logs from a transaction traceback.
@@ -344,7 +344,7 @@ def decode_traceTransaction(
     List
         A list of decoded events, formatted in the same structure as `decode_log`
     """
-    address_list: list[Optional[ChecksumAddress]]
+    address_list: list[ChecksumAddress | None]
 
     # we loosely cache the results to save time during processing
     # but discard the cache after each batch of logs is processed
