@@ -3,7 +3,7 @@
 import functools
 import re
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Final, Literal, TypedDict, Union, final, overload
+from typing import Any, Final, Literal, TypeAlias, TypedDict, Union, final, overload
 
 import cchecksum
 import faster_hexbytes
@@ -74,7 +74,7 @@ class NonDecodedEvent(TypedDict, total=False):
     address: ChecksumAddress
 
 
-Event = Union[DecodedEvent, NonDecodedEvent]
+Event: TypeAlias = DecodedEvent | NonDecodedEvent
 
 
 ADD_LOG_ENTRIES: Final = "logIndex", "blockNumber", "transactionIndex"
@@ -117,7 +117,7 @@ class TopicMapData(TypedDict):
     inputs: list[ABIComponentIndexed]
 
 
-TopicMap = Mapping[HexStr, TopicMapData]
+TopicMap: TypeAlias = Mapping[HexStr, TopicMapData]
 # must use Mapping instead of Dict because this change will be breaking if we don't.
 # brownie passes in an AttributeDict not a dict.
 
