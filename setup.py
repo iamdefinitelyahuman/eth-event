@@ -18,13 +18,7 @@ else:
         ext_modules = []
     else:
         ext_modules = mypycify(
-            [
-                "eth_event/__init__.py",
-                "eth_event/main.py",
-                "--strict",
-                "--pretty",
-                "--disable-error-code=unused-ignore",
-            ],
+            ["eth_event/__init__.py", "eth_event/main.py", "--strict", "--pretty", "--disable-error-code=unused-ignore"],
             group_name="eth_event",
         )
 
@@ -49,7 +43,7 @@ setup(
     keywords=["ethereum"],
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={"eth_event": ["py.typed"]},
-    python_requires=">=3.9,<4",
+    python_requires=">=3.10,<4",
     install_requires=requirements,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -57,7 +51,6 @@ setup(
         "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
