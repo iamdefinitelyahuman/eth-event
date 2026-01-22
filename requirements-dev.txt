@@ -96,6 +96,7 @@ packaging==25.0
     #   pytest
     #   tox
     #   twine
+    #   wheel
 pathspec==0.12.1
     # via
     #   black
@@ -185,7 +186,7 @@ urllib3==2.6.3
     #   twine
 virtualenv==20.36.1
     # via tox
-wheel==0.45.1
+wheel==0.46.2
     # via
     #   -r requirements-dev.in
     #   pip-tools
