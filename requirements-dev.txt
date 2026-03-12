@@ -6,7 +6,7 @@
 #
 backports-tarfile==1.2.0
     # via jaraco-context
-black==25.9.0
+black==26.3.1
     # via -r requirements-dev.in
 build==1.3.0
     # via pip-tools
@@ -97,7 +97,7 @@ packaging==25.0
     #   tox
     #   twine
     #   wheel
-pathspec==0.12.1
+pathspec==1.0.4
     # via
     #   black
     #   mypy
@@ -139,7 +139,7 @@ pytest-codspeed==4.2.0
     # via -r requirements-dev.in
 pytest-cov==7.0.0
     # via -r requirements-dev.in
-pytokens==0.1.10
+pytokens==0.4.1
     # via black
 readme-renderer==44.0
     # via twine
