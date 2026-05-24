@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/iamdefinitelyahuman/eth-event)
 
+## [1.4.8](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.7) - 2026-05-24
+### Changed
+- Bump [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes) to [v1.3.7](https://github.com/BobTheBuidler/faster-hexbytes/releases/tag/v1.3.7)
+- Bump [faster-hexbytes](https://github.com/BobTheBuidler/faster-hexbytes) to [v1.3.8](https://github.com/BobTheBuidler/faster-hexbytes/releases/tag/v1.3.8)
+
 ## [1.4.7](https://github.com/iamdefinitelyahuman/eth-event/releases/tag/v1.4.7) - 2026-04-06
 ### Changed
 - Require Python3.10
