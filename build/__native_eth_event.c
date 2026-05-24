@@ -1,22 +1,22 @@
 #ifndef DIFFCHECK_PLACEHOLDER
 #define DIFFCHECK_PLACEHOLDER 0
 #endif
-#include "init.c"
-#include "getargs.c"
-#include "getargsfast.c"
-#include "int_ops.c"
-#include "float_ops.c"
-#include "str_ops.c"
-#include "bytes_ops.c"
-#include "list_ops.c"
-#include "dict_ops.c"
-#include "set_ops.c"
-#include "tuple_ops.c"
-#include "exc_ops.c"
-#include "misc_ops.c"
-#include "generic_ops.c"
-#include "pythonsupport.c"
-#include "function_wrapper.c"
+#include <init.c>
+#include <getargs.c>
+#include <getargsfast.c>
+#include <int_ops.c>
+#include <float_ops.c>
+#include <str_ops.c>
+#include <bytes_ops.c>
+#include <list_ops.c>
+#include <dict_ops.c>
+#include <set_ops.c>
+#include <tuple_ops.c>
+#include <exc_ops.c>
+#include <misc_ops.c>
+#include <generic_ops.c>
+#include <pythonsupport.c>
+#include <function_wrapper.c>
 #include "__native_eth_event.h"
 #include "__native_internal_eth_event.h"
 static PyMethodDef eth_eventmodule_methods[] = {
@@ -74,6 +74,20 @@ PyObject *CPyInit_eth_event(void)
         goto fail;
     modname = PyUnicode_FromString("eth_event");
     if (modname == NULL) CPyError_OutOfMemory();
+    int rv = 0;
+    PyObject *mod_dict = PyImport_GetModuleDict();
+    PyObject *shared_lib = NULL;
+    rv = PyDict_GetItemStringRef(mod_dict, "eth_event__mypyc", &shared_lib);
+    if (rv < 0) goto fail;
+    PyObject *shared_lib_file = PyObject_GetAttrString(shared_lib, "__file__");
+    if (shared_lib_file == NULL) goto fail;
+    PyObject *ext_suffix = PyUnicode_FromString(".cpython-313-x86_64-linux-gnu.so");
+    if (ext_suffix == NULL) CPyError_OutOfMemory();
+    Py_ssize_t is_pkg = 1;
+    rv = CPyImport_SetDunderAttrs(CPyModule_eth_event__internal, modname, shared_lib_file, ext_suffix, is_pkg);
+    Py_DECREF(ext_suffix);
+    Py_DECREF(shared_lib_file);
+    if (rv < 0) goto fail;
     if (PyObject_SetItem(PyImport_GetModuleDict(), modname, CPyModule_eth_event__internal) < 0)
         goto fail;
     Py_CLEAR(modname);
@@ -397,6 +411,20 @@ CPyL11: ;
             goto fail;
         modname = PyUnicode_FromString("eth_event.main");
         if (modname == NULL) CPyError_OutOfMemory();
+        int rv = 0;
+        PyObject *mod_dict = PyImport_GetModuleDict();
+        PyObject *shared_lib = NULL;
+        rv = PyDict_GetItemStringRef(mod_dict, "eth_event__mypyc", &shared_lib);
+        if (rv < 0) goto fail;
+        PyObject *shared_lib_file = PyObject_GetAttrString(shared_lib, "__file__");
+        if (shared_lib_file == NULL) goto fail;
+        PyObject *ext_suffix = PyUnicode_FromString(".cpython-313-x86_64-linux-gnu.so");
+        if (ext_suffix == NULL) CPyError_OutOfMemory();
+        Py_ssize_t is_pkg = 0;
+        rv = CPyImport_SetDunderAttrs(CPyModule_eth_event___main__internal, modname, shared_lib_file, ext_suffix, is_pkg);
+        Py_DECREF(ext_suffix);
+        Py_DECREF(shared_lib_file);
+        if (rv < 0) goto fail;
         if (PyObject_SetItem(PyImport_GetModuleDict(), modname, CPyModule_eth_event___main__internal) < 0)
             goto fail;
         Py_CLEAR(modname);
@@ -8122,6 +8150,7 @@ CPyL249: ;
             }
             if (exec_eth_event__mypyc(module) < 0) {
                 Py_DECREF(module);
+                module = NULL;
                 return NULL;
             }
             return module;
