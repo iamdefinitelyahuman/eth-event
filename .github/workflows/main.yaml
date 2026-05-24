@@ -52,6 +52,7 @@ jobs:
       run: tox -e lint ${{ env.TOX_RECREATE_FLAG }}
 
   core:
+    name: core (${{ matrix.os }}, 3.${{ matrix.pyminor }}, ${{ matrix.architecture }})
     runs-on: ${{ matrix.os }}
     env:
       TOX_RECREATE_FLAG: ${{ github.event_name == 'schedule' && '-r' || '' }}
@@ -60,7 +61,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-        pyversion: [ "3.10", "3.11", "3.12", "3.13", "3.14", "3.14t" ]
+        pyminor: [ "10", "11", "12", "13", "14", "14t" ]
         architecture: [x64, x86]
         exclude:
           # Exclude x86 (32-bit) builds for ubuntu, which blows up when trying to install
@@ -81,23 +82,23 @@ jobs:
       if: ${{ env.IS_UBUNTU_32BIT == 'true' }}
       uses: addnab/docker-run-action@v3
       with:
-        image: i386/python:${{ matrix.pyversion }}
+        image: i386/python:3.${{ matrix.pyminor }}
         shell: bash
         options: -v ${{ github.workspace }}:/workspace -w /workspace
         run: |
           python -m pip install --upgrade pip
           python -m pip install tox
-          python -m tox -e py${{ matrix.pyversion }} ${{ env.TOX_RECREATE_FLAG }}
+          python -m tox -e py3${{ matrix.pyminor }} ${{ env.TOX_RECREATE_FLAG }}
       # There are no prebuilt 32-bit freethreaded Python containers at the time of this commit, but
       # we will keep these runners so they will activate on their own whenever such containers exist
-      continue-on-error: ${{ matrix.pyversion == '3.13t' || matrix.pyversion == '3.14t' }}
+      continue-on-error: ${{ matrix.pyminor == '13t' || matrix.pyminor == '14t' }}
 
     # No architecture specified for MacOS
     - name: Set up Python (macos)
       if: ${{ matrix.os == 'macos-latest' }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.pyversion }}
+        python-version: 3.${{ matrix.pyminor }}
         cache: pip
         cache-dependency-path: |
           setup.py
@@ -113,7 +114,7 @@ jobs:
       if: ${{ matrix.os != 'macos-latest' && env.IS_UBUNTU_32BIT != 'true' }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.pyversion }}
+        python-version: 3.${{ matrix.pyminor }}
         architecture: ${{ matrix.architecture }}
         cache: pip
         cache-dependency-path: |
@@ -134,12 +135,12 @@ jobs:
       uses: actions/cache@v4
       with:
         path: .tox
-        key: ${{ runner.os }}-core-${{ hashFiles('pyproject.toml', 'setup.py', 'setup.cfg', 'pyproject.toml', 'tox.ini', 'requirements.txt', 'requirements-dev.in', 'requirements-dev.txt') }}-${{ matrix.pyversion }}
+        key: ${{ runner.os }}-core-${{ hashFiles('pyproject.toml', 'setup.py', 'setup.cfg', 'pyproject.toml', 'tox.ini', 'requirements.txt', 'requirements-dev.in', 'requirements-dev.txt') }}-3.${{ matrix.pyminor }}
         save-always: ${{ env.TOX_RECREATE_FLAG == '-r' }}
 
     - name: Run Tox
       if: ${{ env.IS_UBUNTU_32BIT != 'true' }}
-      run: tox -e py${{ matrix.pyversion }} ${{ env.TOX_RECREATE_FLAG }}
+      run: tox -e py3${{ matrix.pyminor }} ${{ env.TOX_RECREATE_FLAG }}
 
     - name: Upload coverage to Codecov
       if: ${{ matrix.architecture == 'x64' }}
