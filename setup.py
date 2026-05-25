@@ -34,7 +34,7 @@ with open("README.md") as fh:
 
 setup(
     name="eth-event",
-    version="1.4.8",  # do not edit directly, use bumpversion
+    version="1.4.9",  # do not edit directly, use bumpversion
     license="MIT",
     description="Ethereum event decoder and topic generator",
     long_description=long_description,
