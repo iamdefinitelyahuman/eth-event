@@ -16,7 +16,7 @@ bumpversion==0.6.0
     # via -r requirements-dev.in
 cachetools==6.2.0
     # via tox
-certifi==2025.10.5
+certifi==2026.10.19
     # via requests
 cffi==2.0.0
     # via
